@@ -1,5 +1,15 @@
 /* Landing */
 .landing {
   width: 100%;
-  background-color: #f1f1f1;
+  background-color: #fff;
+}
+.landing-section {
+  width: 100%;
+}
+.landing-container {
+  width: 110rem;
+  margin: 0 auto;
+}
+.landing-logo {
+  width: 150px;
 }

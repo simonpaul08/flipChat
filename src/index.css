@@ -3,4 +3,15 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+:root {
+  --color-green-primary: #109449;
+  --color-green-secondary: #4FC080;
+  --color-green-ternary: #72CE9A;
+  --color-green-light: #EAFBEA;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-black-secondary: #333;
+}
+html {
+  font-size: 62.5%;
+}
