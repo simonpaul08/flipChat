@@ -1,5 +1,6 @@
 import React from 'react'
 import LOGO from "../assets/Flipchat-Transperent.png"
+import { Link } from 'react-router-dom'
 
 const Landing = () => {
   return (
@@ -12,8 +13,13 @@ const Landing = () => {
             <div className="landing-header-logo">
               <img src={LOGO} alt="flipchat-logo" className='landing-logo'/>
             </div>
-            <div className="landing-header-nav"></div>
-            <div className="landing-header-cta"></div>
+            <div className="landing-header-nav">
+              
+              <Link/><Link/>
+            </div>
+            <div className="landing-header-cta">
+              <button className='auth-cta btn-primary'>Login / Register</button>
+            </div>
           </div>
         </div>
       </div>

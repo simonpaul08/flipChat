@@ -7,8 +7,15 @@
   width: 100%;
 }
 .landing-container {
-  width: 110rem;
+  max-width: 160rem;
   margin: 0 auto;
+  padding: 0 2rem;
+}
+.landing-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .landing-logo {
   width: 150px;
