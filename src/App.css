@@ -1,7 +1,23 @@
+/* Utils */
+.btn-primary {
+  display: inline-block;
+  padding: 1rem 2.8rem;
+  background-color: var(--color-green-primary);
+  color: var(--color-white);
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 300;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.65px;
+}
+
 /* Landing */
 .landing {
   width: 100%;
   background-color: #fff;
+  scroll-behavior: smooth;
 }
 .landing-section {
   width: 100%;
@@ -19,4 +35,305 @@
 }
 .landing-logo {
   width: 150px;
+}
+.landing-nav-item {
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.75rem;
+  color: var(--color-black-secondary);
+  font-weight: 500;
+  margin: 0 1.8rem;
+}
+.landing-showcase {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 2.5rem 1.5rem;
+}
+.showcase-title {
+  font-size: 5.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.showcase-title-green {
+  color: var(--color-green-primary);
+  margin-bottom: 2rem;
+}
+.showcase-para {
+  max-width: 450px;
+  font-size: 2rem;
+  line-height: 1.5;
+  margin-bottom: 3rem;
+  color: var(--color-black-secondary);
+}
+.showcase-cta {
+  font-size: 1.8rem;
+  padding: 1rem 3.5rem;
+}
+.landing-grid-right {
+  width: 100%;
+}
+.landing-features {
+  width: 100%;
+  padding: 2.5rem 1.5rem;
+}
+.landing-features-head {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+}
+.landing-features-bar {
+  width: 15px;
+  height: 35px;
+  background-color: var(--color-green-secondary);
+  border-radius: 8px;
+  margin-right: 2rem;
+}
+.landing-features-title {
+  font-size: 3.15rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.landing-features-para {
+  font-size: 1.8rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+.landing-features-sub-title {
+  font-size: 2.25rem;
+  font-weight: 500;
+  margin-bottom: 2.5rem;
+}
+.landing-features-animation {
+  padding: 3rem 0;
+  width: 100%;
+  text-align: center; 
+}
+.landing-features-image {
+  width: 70%;
+}
+.sub-features {
+  width: 100%;
+  padding: 6rem 1.5rem;;
+  background-color: var(--color-gray-light);
+}
+.sub-features-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.landing-form {
+  width: 450px;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 4rem 3.5rem;
+  margin:  0 auto 6rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.form-item {
+  width: 100%;
+  margin-bottom: 3rem;
+}
+.landing-form-label {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem; 
+  letter-spacing: 0.6px;
+}
+.form-input-flex {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.landing-form-select {
+  padding: 1.5rem 1.5rem;
+  font-size: 1.6rem;
+  background-color: var(--color-gray-primary);
+  border: none;
+  border-radius: 8px;
+  color: var(--color-gray-secondary);
+  font-family: inherit;
+  margin-right: 1rem;
+}
+.landing-form-input {
+  flex: 1;
+  padding: 1.5rem 1.75rem;
+  font-size: 1.6rem;
+  background-color: var(--color-gray-primary);
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  color: var(--color-gray-secondary);
+  font-family: inherit;
+}
+.landing-form-input::placeholder,
+.landing-form-textarea::placeholder {
+  color: var(--color-gray-secondary);
+}
+.landing-form-input::-webkit-inner-spin-button {
+  display: none;
+}
+.landing-form-textarea {
+  width: 100%;
+  padding: 1.5rem 1.75rem;
+  font-size: 1.6rem;
+  background-color: var(--color-gray-primary);
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  color: var(--color-gray-secondary);
+  font-family: inherit;
+  resize: none;
+}
+.landing-form-cta {
+  width: 100%;
+  font-size: 1.8rem;
+  padding: 1.5rem 1.75rem;
+}
+.landing-find {
+  max-width: 90rem;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 3.5rem;
+  margin:  0 auto 2rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: flex;
+  align-items: center;
+}
+.landing-find-input {
+  flex: 1;
+  padding: 1.75rem 2rem;
+  font-size: 1.7rem;
+  background-color: var(--color-gray-primary);
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  color: var(--color-gray-secondary);
+  font-family: inherit;
+}
+.landing-find-cta {
+  font-size: 1.7rem;
+  padding: 1.75rem 2rem;
+  margin-left: 1.5rem;
+}
+.landing-find-cta-icon {
+  color: #fff;
+  margin-right: 0.8rem;
+  margin-bottom: -0.17rem;
+}
+.landing-pricing {
+  width: 100%;
+  padding: 6rem 1.5rem;
+  background-color: var(--color-green-light);
+}
+.landing-price-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.price-grid-left {
+  padding: 2rem;
+}
+.price-features {
+  width: 100%;
+  padding: 2rem;
+}
+.price-features-item {
+  width: 100%;
+  display: flex;
+  margin-bottom: 1.75rem;
+}
+.price-features-item-icon {
+  margin-right: 0.6rem;
+}
+.price-features-item-para {
+  font-size: 1.6rem;
+}
+.price-grid-right {
+  width: 100%;
+  padding: 2rem;
+}
+.price-card {
+  width: 350px;
+  margin: 0 auto 2.5rem;
+}
+.price-card-btn {
+  width: 100%;
+  border-radius: 50px;
+  padding: 1.75rem 2rem;
+  border: 1px solid var(--color-black);
+  color: var(--color-black);
+  text-align: center;
+  font-size: 1.7rem;
+  margin-bottom: 1.5rem;
+}
+.price-card-list {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.price-card-list-item {
+  font-size: 1.6rem;
+  margin: 0 auto;
+}
+.price-card-2 {
+  background-color: var(--color-green-ternary);
+  border: none;
+}
+.price-card-3 {
+  background-color: var(--color-green-secondary);
+  border: none;
+}
+.landing-footer {
+  width: 100%;
+  padding: 4rem 1.5rem;;
+  background-color: var(--color-green-secondary);
+}
+.landing-footer-head {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+.landing-footer-head-title {
+  font-size: 3.5rem;
+  font-weight: 500;
+  color: #fff;
+}
+.landing-footer-head-icon {
+  margin-right: 1.5rem;
+}
+.landing-footer-para {
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+.landing-footer-email {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+.landing-footer-social {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.landing-footer-social-item {
+  margin: 0 1rem;
+}
+.landing-footer-social-item:first-child {
+  margin-left: 0;
+}
+
+/* --------------- Media Queries --------------- */
+
+/* < 1500 */
+@media screen and (max-width: 150rem){
+  .landing-container {
+    max-width: 140rem;
+  }
 }

@@ -9,28 +9,17 @@
   --color-green-ternary: #72CE9A;
   --color-green-light: #EAFBEA;
   --color-white: #fff;
+  --color-gray-light: #fafafa;
+  --color-gray-primary: #ddd;
+  --color-gray-secondary: #888;
   --color-black: #000;
   --color-black-secondary: #333;
 }
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 body {
   font-family: "Poppins", sans-serif;
-  letter-spacing: 0.65px;
 }
 
-/* Utils */
-.btn-primary {
-  display: inline-block;
-  padding: 1rem 2.8rem;
-  background-color: var(--color-green-primary);
-  color: var(--color-white);
-  font-size: 1.6rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: 300;
-  cursor: pointer;
-  font-family: inherit;
-  letter-spacing: inherit;
-}
