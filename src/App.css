@@ -330,6 +330,12 @@
 }
 
 /* --------------- Media Queries --------------- */
+@media screen and (min-width: 160rem){
+  .landing-container {
+    width: 160rem;
+  }
+}
+
 
 /* < 1500 */
 @media screen and (max-width: 150rem){

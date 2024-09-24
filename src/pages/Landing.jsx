@@ -166,13 +166,11 @@ const Landing = () => {
 
             <p className='landing-footer-email'>support.flipchat@gmail.com</p>
             <div className='landing-footer-social'>
-              <Link className='landing-footer-social-item'><img src={WhatsApp} alt='whatsapp icon'/></Link>
-              <Link className='landing-footer-social-item'><img src={facebook} alt='facebook icon'/></Link>
               <Link className='landing-footer-social-item'><img src={Instagram} alt='instagram icon'/></Link>
               <Link className='landing-footer-social-item'><img src={twitter} alt='twitter icon'/></Link>
               <Link className='landing-footer-social-item'><img src={linkedin} alt='linkedin icon'/></Link>
             </div>
-          </div>
+         </div>
         </section>
       </div>
     </div>
