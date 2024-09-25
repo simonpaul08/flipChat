@@ -1,10 +1,8 @@
 .animationContainer {
     position: relative;
-    width: 350px;
-    height: 350px;
-    margin-bottom: -3rem;
-    margin-top: -3rem;
-    margin-left: 3rem;
+    width: 500px;
+    height: 450px;
+    margin: 0 auto;
 }
 
 .animationLink {
@@ -20,20 +18,20 @@
 .animationIcon {
     position: absolute;
     top: calc(50% - 21px);
-    background-color: #dcf8c6;
     left: 110px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
+    width: 40px;
+    height: auto;
     z-index: 20;
     font-size: 14px;
     line-height: 1;
     text-align: center;
 }
+.chat-vector {
+    width: 100%;
+}
 
 .animationIcon::before,
 .animationIcon::after {
-    /* content: ''; */
     position: absolute;
     top: 0;
     bottom: 0;
@@ -43,10 +41,6 @@
 }
 
 .animationIcon::before {
-    /* content: 'i'; */
-    /* color: #000; */
-    /* font-weight: 700;
-    font-size: 1.3rem; */
     display: grid;
     place-items: center;
     z-index: 10;
@@ -55,28 +49,35 @@
 
 .animationPaths {
     position: absolute;
+    top: 0;
+    left: 0;
     stroke: #000;
-    stroke-width: 0.5;
-    /* z-index: 1; */
+    stroke-width: 0.5;  
+    width: 450px;
+    z-index: 1;
 }
 
 .animationItems {
     font-size: 16px;
     position: absolute;
-    top: calc(50% - 145px);
+    top: calc(50% - 185px);
     right: 5px;
     display: flex;
     flex-direction: column;
 }
 
-.animationItems div {
-    margin: 30px 0px;
+.animationItem {
+    width: 40px;
+    margin: 40px 0px;
     padding: 5px 10px;
     color: #000;
     opacity: 0.4;
     text-align: center;
     border: 1px solid #000;
-    border-radius: 25px;
+    border-radius: 8px;
+}
+.animationItem-image {
+    width: 100%;
 }
 
 .animationCard {
