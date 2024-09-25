@@ -7,10 +7,9 @@ import SearchIcon from "../assets/search.svg"
 import CheckIcon from "../assets/check.svg"
 import MailIcon from "../assets/inbox.svg"
 import Instagram from "../assets/instagram.svg"
-import WhatsApp from "../assets/whatsapp.svg"
-import facebook from "../assets/facebook.svg"
 import twitter from "../assets/twitter.svg"
 import linkedin from "../assets/linkedin.svg"
+import AgentAnimation from "../components/Animation";
 
 
 const Landing = () => {
@@ -93,6 +92,8 @@ const Landing = () => {
             </form>
           </div>
         </div>
+
+        <AgentAnimation />
 
         {/* Pricing */}
         <section id='pricing' className="landing-pricing">

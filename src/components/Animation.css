@@ -1,0 +1,138 @@
+.animationContainer {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    margin-bottom: -3rem;
+    margin-top: -3rem;
+    margin-left: 3rem;
+}
+
+.animationLink {
+    font-size: 18px;
+    position: absolute;
+    top: calc(50% - 13px);
+    left: -50px;
+    z-index: 50;
+    word-break: break-all;
+    /* text-decoration: underline; */
+}
+
+.animationIcon {
+    position: absolute;
+    top: calc(50% - 21px);
+    background-color: #dcf8c6;
+    left: 110px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    z-index: 20;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+}
+
+.animationIcon::before,
+.animationIcon::after {
+    /* content: ''; */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+}
+
+.animationIcon::before {
+    /* content: 'i'; */
+    /* color: #000; */
+    /* font-weight: 700;
+    font-size: 1.3rem; */
+    display: grid;
+    place-items: center;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.animationPaths {
+    position: absolute;
+    stroke: #000;
+    stroke-width: 0.5;
+    /* z-index: 1; */
+}
+
+.animationItems {
+    font-size: 16px;
+    position: absolute;
+    top: calc(50% - 145px);
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.animationItems div {
+    margin: 30px 0px;
+    padding: 5px 10px;
+    color: #000;
+    opacity: 0.4;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 25px;
+}
+
+.animationCard {
+    min-width: 320px;
+    /* margin: 1rem; */
+    flex-basis: 45%;
+    padding: 0 1rem;
+    text-align: left;
+    text-decoration: none;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+}
+
+@-webkit-keyframes mover {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes mover {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-7px);
+    }
+}
+
+.animationIcon {
+    -webkit-animation: mover 1s infinite alternate;
+    animation: mover 1s infinite alternate;
+}
+
+.animationIcon {
+    -webkit-animation: mover 1s infinite alternate;
+    animation: mover 1s infinite alternate;
+}
+
+.howItWorksCard {
+    display: none;
+    padding: 0 1rem;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+}
+
+@media (max-width: 500px) {
+    .animationCard {
+        display: none;
+    }
+
+    .howItWorksCard {
+        display: block;
+    }
+}
