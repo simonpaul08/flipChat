@@ -1,0 +1,88 @@
+import React from "react";
+import LOGO from "../assets/Flipchat-Transperent.png";
+import PIE_ICON from "../assets/icon_pie_chart.svg";
+import PIE_ICON_WHITE from "../assets/icon_pie_chart_active.svg";
+import PLAN_ICON from "../assets/icon_plan.svg";
+import PROFILE_ICON from "../assets/icon_profile.svg";
+import CARD_ICON from "../assets/icon_card.svg";
+import HELP_ICON from "../assets/icon_help.svg";
+import LOGOUT_ICON from "../assets/icon_logout.svg";
+import { useSidebarContext } from "../context/SidebarContext";
+import { useNavigate } from "react-router-dom";
+
+const NAV_LINKS = [
+  {
+    id: 1,
+    name: "My Links",
+    image: PIE_ICON,
+    imageWhite: PIE_ICON_WHITE,
+    link: "/dashboard",
+  },
+  {
+    id: 2,
+    name: "Plans",
+    image: PLAN_ICON,
+    imageWhite: PLAN_ICON,
+    link: "/dashboard/plans",
+  },
+  {
+    id: 3,
+    name: "My Profile",
+    image: PROFILE_ICON,
+    imageWhite: PROFILE_ICON,
+    link: "/dashboard/profile",
+  },
+  {
+    id: 4,
+    name: "Billing",
+    image: CARD_ICON,
+    imageWhite: CARD_ICON,
+    link: "/dashboard/billing",
+  },
+  {
+    id: 5,
+    name: "Help",
+    image: HELP_ICON,
+    imageWhite: HELP_ICON,
+    link: "/dashboard/help",
+  },
+];
+
+const Sidebar = () => {
+
+    const { currentTab, handleChangeTab } = useSidebarContext()
+    const navigate = useNavigate()
+
+    const handleClickTab = (tab) => {
+        handleChangeTab(tab)
+    }
+  return (
+    <div className="sidebar">
+      <div className="sidebar-header">
+        <img src={LOGO} alt="flipchat logo" className="sidebar-header-logo" />
+      </div>
+      <div className="sidebar-body">
+        <div className="sidebar-nav">
+          {NAV_LINKS?.map((item) => {
+            return (
+              <div key={item.id} className={`sidebar-nav-item ${item.name === "My Links" ? "active": ""}`} onClick={() => handleClickTab(item.link)}>
+                <img
+                  src={item?.imageWhite}
+                  alt="pie icon"
+                  className="sidebar-nav-item-logo"
+                />
+                <p className="sidebar-nav-item-text">{item?.name}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="sidebar-footer">
+          <img src={LOGOUT_ICON} alt="logout icon" className="sidebar-footer-icon"/>
+          <p className="sidebar-footer-text">Sign Out</p>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

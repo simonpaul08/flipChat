@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./Animation.css";
-import WhatsappIcon from "../assets/whatsapp-icon.svg";
-import ChatVector from "../assets/chat-vector.svg";
+import WhatsappIcon from "../../assets/whatsapp-icon.svg";
+import ChatVector from "../../assets/chat-vector.svg";
 
 const Animation = () => {
   const [counter, setCounter] = useState(0);

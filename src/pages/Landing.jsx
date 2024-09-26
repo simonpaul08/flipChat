@@ -9,7 +9,7 @@ import MailIcon from "../assets/inbox.svg"
 import Instagram from "../assets/instagram.svg"
 import twitter from "../assets/twitter.svg"
 import linkedin from "../assets/linkedin.svg"
-import AgentAnimation from "../components/Animation";
+import AgentAnimation from "../components/animation/Animation";
 
 
 const Landing = () => {

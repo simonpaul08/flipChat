@@ -425,6 +425,96 @@
   font-weight: 500;
   color: var(--color-black);
 }
+
+/* Dashboard Layout */
+.dashboard-layout {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
+
+/* Sidebar */
+.sidebar {
+  width: 30rem;
+  height: 100%;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header {
+  padding: 2rem;
+  text-align: center;
+}
+.sidebar-header-logo {
+  width: 15rem;
+}
+.sidebar-body {
+  padding: 2rem;
+  flex: 1;
+}
+.sidebar-nav{
+  width: 100%;
+}
+.sidebar-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 2.75rem;
+  cursor: pointer;
+}
+.sidebar-nav-item.active {
+  color: #fff;
+  background-color: var(--color-green-primary);
+}
+.sidebar-nav-item-logo {
+  width: 2.5rem;
+  margin-right: 1.5rem;
+}
+.sidebar-nav-item-text {
+  font-size: 1.8rem;
+}
+.sidebar-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  background-color: var(--color-green-primary);
+}
+.sidebar-footer-icon {
+  margin-right: 1.25rem;
+}
+.sidebar-footer-text {
+  font-size: 1.8rem;
+  color: var(--color-white);
+}
+
+
+/* Dashboard */
+.dashboard {
+  flex: 1;
+  height: 100%;
+}
+.dashboard-header {
+  padding: 2rem 3rem;
+}
+.dashboard-header-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.dashboard-header-title-normal {
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+
+
+
 /* --------------- Media Queries --------------- */
 @media screen and (min-width: 160rem){
   .landing-container {
