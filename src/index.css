@@ -14,6 +14,7 @@
   --color-gray-secondary: #888;
   --color-black: #000;
   --color-black-secondary: #333;
+  --color-blue-primary: #007bff;
 }
 html {
   font-size: 62.5%;

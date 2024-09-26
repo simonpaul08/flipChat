@@ -94,6 +94,7 @@ const Animation = () => {
     <>
       <div className="animationCard">
         <div className="animationContainer">
+            <p className="animation-link">flipchat.link/YourBrand</p>
           <div
             ref={iconRef}
             id="icon"

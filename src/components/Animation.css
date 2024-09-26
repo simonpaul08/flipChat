@@ -19,12 +19,15 @@
     position: absolute;
     top: calc(50% - 21px);
     left: 110px;
-    width: 40px;
+    width: 60px;
     height: auto;
     z-index: 20;
     font-size: 14px;
     line-height: 1;
     text-align: center;
+    padding: 1.5rem;
+    background-color: var(--color-green-light);
+    border-radius: 50%;
 }
 .chat-vector {
     width: 100%;
@@ -90,6 +93,7 @@
     border: 1px solid #eaeaea;
     border-radius: 10px;
 }
+
 
 @-webkit-keyframes mover {
     0% {

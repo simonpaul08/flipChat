@@ -1,6 +1,6 @@
 import React from 'react'
 import LOGO from "../assets/Flipchat-Transperent.png"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ShowcaseBG from "../assets/showcase-bg.png"
 import Animation from "../assets/flipchat-animation.png"
 import SearchIcon from "../assets/search.svg"
@@ -13,6 +13,12 @@ import AgentAnimation from "../components/Animation";
 
 
 const Landing = () => {
+
+  const navigate = useNavigate();
+
+  const handleAuth = () => {
+    navigate('/register')
+  }
   return (
     <div className='landing'>
       <div className="landing-section">
@@ -29,7 +35,7 @@ const Landing = () => {
               <a href="#footer" className='landing-nav-item'>Contact Us</ a>
             </div>
             <div className="landing-header-cta">
-              <button className='auth-cta btn-primary'>Login / Register</button>
+              <button className='auth-cta btn-primary' onClick={handleAuth}>Login / Register</button>
             </div>
           </section>
 
@@ -58,7 +64,7 @@ const Landing = () => {
             <p className='landing-features-para'>Your customers will click on your Multiagent link. Each click will open a chat with a different WhatsApp line. Try clicking multiple times on the following link to see a visual example:</p>
 
             <div className='landing-features-animation'>
-              <img src={Animation} className="landing-features-image" />
+              <AgentAnimation />
             </div>
           </section>
         </div>
@@ -93,7 +99,6 @@ const Landing = () => {
           </div>
         </div>
 
-        <AgentAnimation />
 
         {/* Pricing */}
         <section id='pricing' className="landing-pricing">
@@ -167,11 +172,11 @@ const Landing = () => {
 
             <p className='landing-footer-email'>support.flipchat@gmail.com</p>
             <div className='landing-footer-social'>
-              <Link className='landing-footer-social-item'><img src={Instagram} alt='instagram icon'/></Link>
-              <Link className='landing-footer-social-item'><img src={twitter} alt='twitter icon'/></Link>
-              <Link className='landing-footer-social-item'><img src={linkedin} alt='linkedin icon'/></Link>
+              <Link className='landing-footer-social-item'><img src={Instagram} alt='instagram icon' /></Link>
+              <Link className='landing-footer-social-item'><img src={twitter} alt='twitter icon' /></Link>
+              <Link className='landing-footer-social-item'><img src={linkedin} alt='linkedin icon' /></Link>
             </div>
-         </div>
+          </div>
         </section>
       </div>
     </div>
