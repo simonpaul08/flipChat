@@ -17,6 +17,9 @@ const Register = () => {
           </div>
           <div className="auth-form-body">
             <div className="form-item">
+              <input type="text" name='name' className='form-input' placeholder='Enter name' />
+            </div>
+            <div className="form-item">
               <input type="email" name='email' className='form-input' placeholder='Enter email' />
             </div>
             <div className="form-item">
