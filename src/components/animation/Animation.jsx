@@ -94,7 +94,7 @@ const Animation = () => {
     <>
       <div className="animationCard">
         <div className="animationContainer">
-            <p className="animation-link">flipchat.link/YourBrand</p>
+          <p className="animationLink" onClick={handleLinkClick}>flipchat.link/YourBrand</p>
           <div
             ref={iconRef}
             id="icon"
@@ -118,6 +118,7 @@ const Animation = () => {
                 alt="whatsapp icon"
                 className="animationItem-image"
               />
+              <p className="animationItem-text">Line 1</p>
             </div>
             <div ref={item2Ref} id="item2" className="animationItem">
               <img
@@ -125,6 +126,7 @@ const Animation = () => {
                 alt="whatsapp icon"
                 className="animationItem-image"
               />
+              <p className="animationItem-text">Line 2</p>
             </div>
             <div ref={item3Ref} id="item3" className="animationItem">
               <img
@@ -132,6 +134,7 @@ const Animation = () => {
                 alt="whatsapp icon"
                 className="animationItem-image"
               />
+              <p className="animationItem-text">Line 3</p>
             </div>
           </div>
         </div>

@@ -6,13 +6,17 @@
 }
 
 .animationLink {
-    font-size: 18px;
+    font-size: 2rem;
     position: absolute;
     top: calc(50% - 13px);
-    left: -50px;
+    left: -125px;
     z-index: 50;
     word-break: break-all;
-    /* text-decoration: underline; */
+    cursor: pointer;
+    text-decoration: underline;
+}
+.animationLink:hover {
+    color: var(--color-blue-primary);
 }
 
 .animationIcon {
@@ -61,26 +65,29 @@
 }
 
 .animationItems {
-    font-size: 16px;
     position: absolute;
-    top: calc(50% - 185px);
-    right: 5px;
+    top: calc(50% - 195px);
+    right: 40px;
     display: flex;
     flex-direction: column;
 }
-
 .animationItem {
-    width: 40px;
+    display: flex;
+    align-items: center;
     margin: 40px 0px;
     padding: 5px 10px;
     color: #000;
     opacity: 0.4;
     text-align: center;
-    border: 1px solid #000;
+    border: 1px solid var(--color-green-primary);
     border-radius: 8px;
 }
+.animationItem-text {
+    font-size: 1.8rem;
+}
 .animationItem-image {
-    width: 100%;
+    width: 35px;
+    margin-right: 1rem;
 }
 
 .animationCard {

@@ -135,21 +135,21 @@ const Landing = () => {
               </div>
               <div className="price-grid-right">
                 <div className="price-card">
-                  <div className="price-card-btn">Business Starter</div>
+                  <div className="price-card-btn">Essential</div>
                   <ul className='price-card-list'>
                     <li className='price-card-list-item'>3 Branded Links</li>
                     <li className='price-card-list-item'>3 Agents Per Link</li>
                   </ul>
                 </div>
                 <div className="price-card">
-                  <div className="price-card-btn price-card-2">Business Standard</div>
+                  <div className="price-card-btn price-card-2">Expand</div>
                   <ul className='price-card-list'>
                     <li className='price-card-list-item'>8 Branded Links</li>
                     <li className='price-card-list-item'>5 Agents Per Link</li>
                   </ul>
                 </div>
                 <div className="price-card">
-                  <div className="price-card-btn price-card-3">Business Plus</div>
+                  <div className="price-card-btn price-card-3">Elite</div>
                   <ul className='price-card-list'>
                     <li className='price-card-list-item'>20 Branded Links</li>
                     <li className='price-card-list-item'>10 Agents Per Link</li>
