@@ -125,12 +125,19 @@
   text-align: center;
   margin-bottom: 4rem;
 }
+.landing-form-flex {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6rem;
+}
 .landing-form {
   width: 450px;
   border-radius: 8px;
   background-color: #fff;
   padding: 4rem 3.5rem;
-  margin:  0 auto 6rem;
+  margin:  0;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .form-item {
@@ -192,6 +199,13 @@
   width: 100%;
   font-size: 1.8rem;
   padding: 1.5rem 1.75rem;
+}
+.landing-form-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  padding: 0 2rem;
 }
 .landing-find {
   max-width: 90rem;
@@ -498,6 +512,7 @@
 .dashboard {
   flex: 1;
   height: 100%;
+  overflow-y: auto;
 }
 .dashboard-header {
   padding: 0 3rem;
@@ -568,15 +583,15 @@
 .dashboard-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
   gap: 1.5rem;
 }
 .dashboard-grid-item {
-  width: 30rem;
   padding: 2rem;
   background-color: var(--color-white);
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  cursor: pointer;
 }
 .dashboard-grid-item-link {
   font-size: 1.6rem;
@@ -586,22 +601,43 @@
   text-transform: lowercase;
 }
 .dashboard-grid-item-message {
+  max-width: 200px;
   font-size: 1.4rem;
   font-weight: 400;
   color: var(--color-gray-secondary);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .dashboard-grid-item-tag {
   display: inline-block;
   padding: 0.25rem 1rem;
   border-radius: 25px;
-  border: 1px solid;
+  border: 2px solid;
   margin-bottom: 1.5rem;
 }
 .plan-tag {
   font-size: 1.25rem;
+  text-transform: capitalize;
+  font-weight: 500;
 }
-
+.plan-free {
+  color: var(--color-green-primary);
+  border-color: var(--color-green-primary);
+}
+.plan-essential {
+  color: var(--color-blue-primary);
+  border-color: var(--color-blue-primary);
+}
+.plan-expand {
+  color: var(--color-gold-primary);
+  border-color: var(--color-gold-primary);
+}
+.plan-elite {
+  color: var(--color-purple-primary);
+  border-color: var(--color-purple-primary);
+}
 
 /* --------------- Media Queries --------------- */
 @media screen and (min-width: 160rem){

@@ -19,14 +19,20 @@ const Dashboard = () => {
     {
       id: 3,
       link: "flipchat.link/demo3",
-      message: "demo of expand plan",
-      type: "essential"
+      message: "demo of expand plan Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis, dolor.",
+      type: "expand" 
     },
     {
       id: 4,
       link: "flipchat.link/demo4",
       message: "This is a demo 4 link",
       type: "elite"
+    },
+    {
+      id: 5,
+      link: "flipchat.link/demo5",
+      message: "This is a free demo 5 link",
+      type: "free"
     },
   ])
   return (
@@ -47,19 +53,23 @@ const Dashboard = () => {
               name="search"
               placeholder="Search Here"
             />
-            <img src={SearchIcon} alt="search icon" className="search-icon"/>
+            <img src={SearchIcon} alt="search icon" className="search-icon" />
           </div>
           <button className="dashboard-main-header-cta btn-primary">Create New</button>
         </div>
         <div className="dashboard-main-content">
           <div className="dashboard-grid">
-            <div className="dashboard-grid-item">
-              <h3 className="dashboard-grid-item-link">flipchat.link/demo1</h3>
-              <p className="dashboard-grid-item-message">"{"Hey, What's Up ?"}"</p>
-              <div className="dashboard-grid-item-tag">
-               <p className="plan-tag">Free</p> 
-              </div>
-            </div>
+            {links?.map(item => {
+              return (
+                <div key={item?.id} className="dashboard-grid-item">
+                  <h3 className="dashboard-grid-item-link">{item?.link}</h3>
+                  <p className="dashboard-grid-item-message">"{item?.message}"</p>
+                  <div className={`dashboard-grid-item-tag plan-${item?.type ?? ""}`}>
+                    <p className="plan-tag">{item?.type}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LOGO from "../assets/Flipchat-Transperent.png"
 import { Link, useNavigate } from 'react-router-dom'
 import ShowcaseBG from "../assets/showcase-bg.png"
-import Animation from "../assets/flipchat-animation.png"
 import SearchIcon from "../assets/search.svg"
 import CheckIcon from "../assets/check.svg"
 import MailIcon from "../assets/inbox.svg"
@@ -10,11 +9,37 @@ import Instagram from "../assets/instagram.svg"
 import twitter from "../assets/twitter.svg"
 import linkedin from "../assets/linkedin.svg"
 import AgentAnimation from "../components/animation/Animation";
+import Device from '../components/device/Device'
+import CountryList from 'country-list-with-dial-code-and-flag'
+
+const COUNTRYLIST = CountryList.getAll() 
 
 
 const Landing = () => {
 
   const navigate = useNavigate();
+  const [countries, setCountries] = useState([])
+  const [countryCode, setCountryCode] = useState('+91');
+  const [number, setNumber] = useState('');
+  const [message, setMessage] = useState('');
+
+
+  useEffect(() => {
+    if(COUNTRYLIST.length){
+      let filtered = COUNTRYLIST.map(item => {
+        return {
+          country: item.name,
+          countryCode: item.countryCode,
+          flag: item.flag
+        }
+      })
+
+      setCountries(filtered)
+    }
+  }, [])
+
+  console.log("countries --- ", countries)
+  
 
   const handleAuth = () => {
     navigate('/register')
@@ -72,24 +97,38 @@ const Landing = () => {
         <div className="sub-features">
           <div className="landing-container">
             <h3 className='sub-features-title'>Create Your Free Link Today</h3>
-            <form className='landing-form'>
-              <div className="form-item">
-                <label htmlFor="number" className='landing-form-label'>Type Your WhatsApp Number</label>
-                <div className='form-input-flex'>
-                  <select name="country-code" id="country-code" className='landing-form-select'>
-                    <option value="+91">+91</option>
-                    <option value="+44">+44</option>
-                    <option value="+1">+1</option>
-                  </select>
-                  <input type="number" name='number' id='number' className='landing-form-input' placeholder='Your phone number here....' />
+            <div className='landing-form-flex'>
+              <form className='landing-form'>
+                <div className="form-item">
+                  <label htmlFor="number" className='landing-form-label'>Type Your WhatsApp Number</label>
+                  <div className='form-input-flex'>
+                    <select name="country-code" id="country-code" className='landing-form-select' 
+                    value={countryCode} 
+                    onChange={(e) => setCountryCode(e.target.value)}>
+                      {countries.map(item => {
+                        return (
+                          <option value={item?.countryCode}>{item?.countryCode}</option>
+                        )
+                      })}
+                    </select>
+                    <input type="number" name='number' id='number' className='landing-form-input' placeholder='Your phone number here....' 
+                      value={number}
+                      onChange={(e) => setNumber(e.target.value)}
+                      maxLength={10}
+                    />
+                  </div>
                 </div>
+                <div className="form-item">
+                  <label htmlFor="message" className='landing-form-label'>Custom Message</label>
+                  <textarea type="text" name='message' id='message' className='landing-form-textarea' rows={5} placeholder='Add a custom message...'  value={message} onChange={(e) => setMessage(e.target.value)}/>
+                </div>
+                <button type='submit' className='btn-primary landing-form-cta'>Generate My Link</button>
+              </form>
+              <div className='landing-form-divider'>
+                {">"}
               </div>
-              <div className="form-item">
-                <label htmlFor="message" className='landing-form-label'>Custom Message</label>
-                <textarea type="text" name='message' id='message' className='landing-form-textarea' rows={5} placeholder='Add a custom message...' />
-              </div>
-              <button type='submit' className='btn-primary landing-form-cta'>Generate My Link</button>
-            </form>
+              <Device countryCode={countryCode} number={number} message={message}/>
+            </div>
 
             <h3 className='sub-features-title'>Find A FlipChat.link For Your Brand</h3>
             <form className='landing-find'>
@@ -137,22 +176,22 @@ const Landing = () => {
                 <div className="price-card">
                   <div className="price-card-btn">Essential</div>
                   <ul className='price-card-list'>
-                    <li className='price-card-list-item'>3 Branded Links</li>
-                    <li className='price-card-list-item'>3 Agents Per Link</li>
+                    <li className='price-card-list-item'>1 Branded Links</li>
+                    <li className='price-card-list-item'>2 Agents Per Link</li>
                   </ul>
                 </div>
                 <div className="price-card">
                   <div className="price-card-btn price-card-2">Expand</div>
                   <ul className='price-card-list'>
-                    <li className='price-card-list-item'>8 Branded Links</li>
-                    <li className='price-card-list-item'>5 Agents Per Link</li>
+                    <li className='price-card-list-item'>3 Branded Links</li>
+                    <li className='price-card-list-item'>3 Agents Per Link</li>
                   </ul>
                 </div>
                 <div className="price-card">
                   <div className="price-card-btn price-card-3">Elite</div>
                   <ul className='price-card-list'>
-                    <li className='price-card-list-item'>20 Branded Links</li>
-                    <li className='price-card-list-item'>10 Agents Per Link</li>
+                    <li className='price-card-list-item'>8 Branded Links</li>
+                    <li className='price-card-list-item'>5 Agents Per Link</li>
                   </ul>
                 </div>
               </div>
