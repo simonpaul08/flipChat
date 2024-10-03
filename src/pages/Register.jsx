@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Logo from "../assets/Flipchat-Transperent.png"
+import Logo from "../assets/Flipchat-Transperent.png";
+import GoogleIcon from "../assets/icon_google.svg";
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from "yup";
@@ -107,6 +108,14 @@ const Register = () => {
 
               <button type='submit' className='auth-form-cta btn-primary'>Register</button>
               <p className='auth-footer-text'>Already have an account ? <Link className='auth-redirect' to="/login">Login Here</Link></p>
+            </div>
+
+            <div className='auth-google-block'>
+                <p className='auth-form-seperator'>or</p>
+                <div className='auth-google-btn'>
+                  <img src={GoogleIcon} className='auth-google-btn-icon'/>
+                  <p className='auth-google-btn-text'>Sign up with google</p>
+                </div>
             </div>
           </form>
         </div>

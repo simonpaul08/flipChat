@@ -449,6 +449,51 @@
   color: var(--color-danger);
   font-size: 1.2rem;
 }
+.auth-google-block {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  text-align: center
+}
+.auth-form-seperator {
+  font-size: 1.6rem;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.auth-form-seperator::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 45%;
+  transform: translateY(-50%);
+  border-bottom: 1px solid var(--color-black-secondary);
+}
+.auth-form-seperator::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 45%;
+  transform: translateY(-50%);
+  border-bottom: 1px solid var(--color-black-secondary);
+}
+.auth-google-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;;
+  cursor: pointer;
+}
+.auth-google-btn-icon {
+  margin-right: 1rem;
+}
+.auth-google-btn-text {
+  font-size: 1.6rem;
+}
 
 /* Dashboard Layout */
 .dashboard-layout {
