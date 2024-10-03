@@ -445,6 +445,10 @@
   font-weight: 500;
   color: var(--color-black);
 }
+.auth-error {
+  color: var(--color-danger);
+  font-size: 1.2rem;
+}
 
 /* Dashboard Layout */
 .dashboard-layout {

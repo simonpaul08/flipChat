@@ -45,7 +45,6 @@ const Landing = () => {
     },
   });
 
-  console.log(formik.errors);
 
   useEffect(() => {
     if (COUNTRYLIST.length) {
@@ -164,13 +163,14 @@ const Landing = () => {
                       })}
                     </select>
                     <input
-                      type="number"
+                      type="text"
                       name="number"
                       id="number"
                       className="landing-form-input"
                       placeholder="Your phone number here...."
                       value={formik.values.number}
                       onChange={formik.handleChange}
+                      maxLength={12}
                     />
                   </div>
                   {formik.errors.number && (
