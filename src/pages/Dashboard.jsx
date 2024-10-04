@@ -8,7 +8,7 @@ const Dashboard = () => {
       id: 1,
       link: "flipchat.link/demo1",
       message: "Hey, What's Up ?",
-      type: "free"
+      type: "elite"
     },
     {
       id: 2,

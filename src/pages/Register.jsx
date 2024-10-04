@@ -67,7 +67,7 @@ const Register = () => {
     {isLoading && <Loader />}
       <div className='auth'>
         <div className="auth-container">
-          <form className='auth-form' onSubmit={formik.handleSubmit} method='POST'>
+          <form className='auth-form auth-register' onSubmit={formik.handleSubmit} method='POST'>
             <div className="auth-form-header">
               <div className="auth-logo-container">
                 <img src={Logo} alt="flichat logo" className='auth-logo' />
@@ -82,28 +82,28 @@ const Register = () => {
                   value={formik.values.name}
                   onChange={formik.handleChange}
                 />
-                {formik.errors.name && <p className='auth-error'>{formik.errors.name}</p>}
+                {/* {formik.errors.name && <p className='auth-error'>{formik.errors.name}</p>} */}
               </div>
               <div className="form-item">
                 <input type="email" name='email' className='form-input' placeholder='Enter email'
                   value={formik.values.email}
                   onChange={formik.handleChange}
                 />
-                {formik.errors.email && <p className='auth-error'>{formik.errors.email}</p>}
+                {/* {formik.errors.email && <p className='auth-error'>{formik.errors.email}</p>} */}
               </div>
               <div className="form-item">
                 <input type="password" name='password' className='form-input' placeholder='Enter password'
                   value={formik.values.password}
                   onChange={formik.handleChange}
                 />
-                {formik.errors.password && <p className='auth-error'>{formik.errors.password}</p>}
+                {/* {formik.errors.password && <p className='auth-error'>{formik.errors.password}</p>} */}
               </div>
               <div className="form-item">
                 <input type="password" name='confirmPassword' className='form-input' placeholder='Confirm password'
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                 />
-                {formik.errors.confirmPassword && <p className='auth-error'>{formik.errors.confirmPassword}</p>}
+                {/* {formik.errors.confirmPassword && <p className='auth-error'>{formik.errors.confirmPassword}</p>} */}
               </div>
 
               <button type='submit' className='auth-form-cta btn-primary'>Register</button>

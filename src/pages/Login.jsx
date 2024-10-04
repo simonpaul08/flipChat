@@ -85,9 +85,9 @@ const Login = () => {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                 />
-                {formik.errors.email && (
+                {/* {formik.errors.email && (
                   <p className="auth-error">{formik.errors.email}</p>
-                )}
+                )} */}
               </div>
               <div className="form-item">
                 <input
@@ -98,9 +98,9 @@ const Login = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                 />
-                {formik.errors.password && (
+                {/* {formik.errors.password && (
                   <p className="auth-error">{formik.errors.password}</p>
-                )}
+                )} */}
               </div>
               <button type="submit" className="auth-form-cta btn-primary">
                 Login
