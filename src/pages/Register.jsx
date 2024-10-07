@@ -61,6 +61,10 @@ const Register = () => {
     onSubmit: handleSubmit
   })
 
+  const handleGoogleSignUp = async () => {
+    window.open(`${SERVER_URL}google`, "_self")
+  }
+
 
   return (
     <>
@@ -112,7 +116,7 @@ const Register = () => {
 
             <div className='auth-google-block'>
                 <p className='auth-form-seperator'>or</p>
-                <div className='auth-google-btn'>
+                <div className='auth-google-btn' onClick={handleGoogleSignUp}>
                   <img src={GoogleIcon} className='auth-google-btn-icon'/>
                   <p className='auth-google-btn-text'>Sign up with google</p>
                 </div>
