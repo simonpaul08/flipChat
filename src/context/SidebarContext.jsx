@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SidebarContext = createContext(null);
 
@@ -10,9 +10,11 @@ export const useSidebarContext = () => {
 const SidebarContextProvider = ({ children }) => {
   const [currentTab, setCurrentTab] = useState("dashboard");
   const location = useLocation();
-  // handle change tab
+  const navigate = useNavigate()
+
+  // handle change sidebar tab
   const handleChangeTab = (tab) => {
-    console.log(tab)
+    navigate(tab)
     setCurrentTab(tab);
   };
 
@@ -21,11 +23,11 @@ const SidebarContextProvider = ({ children }) => {
     handleChangeTab,
   };
 
+  // handle sidebar state on page reload 
   useEffect(() => {
     const path = location.pathname;
-    const match = path.match(/[^/]+$/);
-    if (match) {
-      handleChangeTab(match[0]);
+    if (path) {
+      handleChangeTab(path);
     }
   }, []);
 

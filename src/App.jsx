@@ -3,6 +3,8 @@ import "./App.css";
 import Register from "./pages/Register";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Plans from "./pages/Plans";
+import Profile from "./pages/Profile";
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 
@@ -15,8 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="plans" element={<Dashboard />} />
-          <Route path="profile" element={<Dashboard />} />
+          <Route path="plans" element={<Plans />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="billing" element={<Dashboard />} />
           <Route path="help" element={<Dashboard />} />
         </Route>
