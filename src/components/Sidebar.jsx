@@ -3,12 +3,15 @@ import LOGO from "../assets/Flipchat-Transperent.png";
 import PIE_ICON from "../assets/icon_pie_chart.svg";
 import PIE_ICON_WHITE from "../assets/icon_pie_chart_active.svg";
 import PLAN_ICON from "../assets/icon_plan.svg";
+import PLAN_ICON_WHITE from "../assets/icon_plan_active.svg";
 import PROFILE_ICON from "../assets/icon_profile.svg";
+import PROFILE_ICON_WHITE from "../assets/icon_profile_active.svg";
 import CARD_ICON from "../assets/icon_card.svg";
+import CARD_ICON_WHITE from "../assets/icon_card_active.svg";
 import HELP_ICON from "../assets/icon_help.svg";
+import HELP_ICON_WHITE from "../assets/icon_help_active.svg";
 import LOGOUT_ICON from "../assets/icon_logout.svg";
 import { useSidebarContext } from "../context/SidebarContext";
-import { useNavigate } from "react-router-dom";
 
 const NAV_LINKS = [
   {
@@ -22,28 +25,28 @@ const NAV_LINKS = [
     id: 2,
     name: "Plans",
     image: PLAN_ICON,
-    imageWhite: PLAN_ICON,
+    imageWhite: PLAN_ICON_WHITE,
     link: "/dashboard/plans",
   },
   {
     id: 3,
     name: "My Profile",
     image: PROFILE_ICON,
-    imageWhite: PROFILE_ICON,
+    imageWhite: PROFILE_ICON_WHITE,
     link: "/dashboard/profile",
   },
   {
     id: 4,
     name: "Billing",
     image: CARD_ICON,
-    imageWhite: CARD_ICON,
+    imageWhite: CARD_ICON_WHITE,
     link: "/dashboard/billing",
   },
   {
     id: 5,
     name: "Help",
     image: HELP_ICON,
-    imageWhite: HELP_ICON,
+    imageWhite: HELP_ICON_WHITE,
     link: "/dashboard/help",
   },
 ];
@@ -51,7 +54,6 @@ const NAV_LINKS = [
 const Sidebar = () => {
 
     const { currentTab, handleChangeTab } = useSidebarContext()
-    const navigate = useNavigate()
 
     const handleClickTab = (tab) => {
         handleChangeTab(tab)
@@ -65,9 +67,9 @@ const Sidebar = () => {
         <div className="sidebar-nav">
           {NAV_LINKS?.map((item) => {
             return (
-              <div key={item.id} className={`sidebar-nav-item ${item.name === "My Links" ? "active": ""}`} onClick={() => handleClickTab(item.link)}>
+              <div key={item.id} className={`sidebar-nav-item ${item.link === currentTab ? "active": ""}`} onClick={() => handleClickTab(item.link)}>
                 <img
-                  src={item?.imageWhite}
+                  src={item.link === currentTab  ? item?.imageWhite : item?.image}
                   alt="pie icon"
                   className="sidebar-nav-item-logo"
                 />
