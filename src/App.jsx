@@ -7,6 +7,8 @@ import Plans from "./pages/Plans";
 import Profile from "./pages/Profile";
 import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
+import Billing from "./pages/Billing";
+import Help from "./pages/Help";
 
 function App() {
   return (
@@ -19,8 +21,8 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="plans" element={<Plans />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="billing" element={<Dashboard />} />
-          <Route path="help" element={<Dashboard />} />
+          <Route path="billing" element={<Billing />} />
+          <Route path="help" element={<Help />} />
         </Route>
       </Routes>
     </>

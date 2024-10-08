@@ -14,6 +14,7 @@ import CountryList from "country-list-with-dial-code-and-flag";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import LandingModal from "../components/landingModal/landingModal";
+import axios from "axios";
 
 const COUNTRYLIST = CountryList.getAll();
 
@@ -35,6 +36,19 @@ const Landing = () => {
       .required("message is required!"),
   });
 
+  // handle submit
+  const handleSubmit = async (values) => {
+    let body = {
+      ...values
+    }
+
+    try {
+      const res = await axios.post()
+    }catch(e) {
+      console.log(e)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       countryCode: "+91",
@@ -49,7 +63,6 @@ const Landing = () => {
   });
 
   const handleCloseModal = () => setIsModal(false)
-
 
   useEffect(() => {
     if (COUNTRYLIST.length) {

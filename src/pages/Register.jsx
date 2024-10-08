@@ -6,12 +6,14 @@ import { useFormik } from 'formik';
 import * as yup from "yup";
 import axios from 'axios';
 import Loader from '../components/loader/loader';
+import VerifyOTP from '../components/modal/verifyOTP';
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Register = () => {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isVerify, setIsVerify] = useState(false);
   const navigate = useNavigate();
 
   const formSchema = yup.object().shape({
@@ -41,7 +43,7 @@ const Register = () => {
 
       console.log(res.data)
       if(res.data){
-        navigate("/dashboard")
+        setIsVerify(true)
       }
     } catch (e) {
       console.log(e)
@@ -69,6 +71,7 @@ const Register = () => {
   return (
     <>
     {isLoading && <Loader />}
+    {isVerify && <VerifyOTP />}
       <div className='auth'>
         <div className="auth-container">
           <form className='auth-form auth-register' onSubmit={formik.handleSubmit} method='POST'>
