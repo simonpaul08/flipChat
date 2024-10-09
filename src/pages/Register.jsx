@@ -52,6 +52,27 @@ const Register = () => {
     }
   }
 
+  const handleVerifyOtp = async (otp) => {
+    let body = {
+      email: formik.values.email,
+      otp: otp
+    }
+
+    try { 
+      const res = await axios.post(`${SERVER_URL}api/auth/verifyOTP`, { ...body }, {
+        headers: {
+          'Content-Type': "application/json"
+        }
+      });
+      console.log(res.data)
+      if(res.data){
+        navigate("/dashboard")
+      }
+    }catch(e) {
+      console.log(e)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -71,7 +92,7 @@ const Register = () => {
   return (
     <>
     {isLoading && <Loader />}
-    {isVerify && <VerifyOTP />}
+    {isVerify && <VerifyOTP handleVerifyOtp={handleVerifyOtp}/>}
       <div className='auth'>
         <div className="auth-container">
           <form className='auth-form auth-register' onSubmit={formik.handleSubmit} method='POST'>
