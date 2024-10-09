@@ -12,6 +12,7 @@ import HELP_ICON from "../assets/icon_help.svg";
 import HELP_ICON_WHITE from "../assets/icon_help_active.svg";
 import LOGOUT_ICON from "../assets/icon_logout.svg";
 import { useSidebarContext } from "../context/SidebarContext";
+import { useNavigate } from "react-router-dom";
 
 const NAV_LINKS = [
   {
@@ -58,6 +59,12 @@ const Sidebar = () => {
     const handleClickTab = (tab) => {
         handleChangeTab(tab)
     }
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+      // need to be added logout api
+      navigate("/register")
+    }
   return (
     <div className="sidebar">
       <div className="sidebar-header">
@@ -79,7 +86,7 @@ const Sidebar = () => {
           })}
         </div>
       </div>
-      <div className="sidebar-footer">
+      <div className="sidebar-footer" onClick={handleLogout}>
           <img src={LOGOUT_ICON} alt="logout icon" className="sidebar-footer-icon"/>
           <p className="sidebar-footer-text">Sign Out</p>
       </div>

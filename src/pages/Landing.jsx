@@ -8,6 +8,7 @@ import MailIcon from "../assets/inbox.svg";
 import Instagram from "../assets/instagram.svg";
 import twitter from "../assets/twitter.svg";
 import linkedin from "../assets/linkedin.svg";
+import CrossIcon from "../assets/cross.svg";
 import AgentAnimation from "../components/animation/Animation";
 import Device from "../components/device/Device";
 import CountryList from "country-list-with-dial-code-and-flag";
@@ -17,11 +18,15 @@ import LandingModal from "../components/landingModal/landingModal";
 import axios from "axios";
 
 const COUNTRYLIST = CountryList.getAll();
+const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Landing = () => {
   const navigate = useNavigate();
   const [countries, setCountries] = useState([]);
-  const [isModal, setIsModal] = useState(false)
+  const [isModal, setIsModal] = useState(false);
+  const [unknownLink, setUnknownLink] = useState('');
+  const [isBrand, setIsBrand] = useState(false);
+  const [brandName, setBrandName] = useState('');
 
   const formSchema = yup.object().shape({
     countryCode: yup.string().required("country code is required!"),
@@ -43,7 +48,38 @@ const Landing = () => {
     }
 
     try {
-      const res = await axios.post()
+      const res = await axios.post(`${SERVER_URL}api/link/unknown`, { ...body }, {
+        headers: {
+          'Content-Type': "application/json"
+        }
+      });
+      console.log(res.data)
+      if(res.data){
+        setUnknownLink(res.data?.shortLink?.username)
+        setIsModal(true)
+      }
+    }catch(e) {
+      console.log(e)
+    }
+  }
+
+  // handle check brand
+  const handleCheckBrand = async (e) => {
+    e.preventDefault();
+    let body = {
+      name: brandName
+    }
+
+    try {
+      const res = await axios.post(`${SERVER_URL}api/link/brand/check`, { ...body }, {
+        headers: {
+          'Content-Type': "application/json"
+        }
+      });
+      if(res.data){
+        console.log(res.data)
+        setIsBrand(true)
+      }
     }catch(e) {
       console.log(e)
     }
@@ -56,13 +92,18 @@ const Landing = () => {
       message: "",
     },
     validationSchema: formSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      setIsModal(true)
-    },
+    onSubmit: handleSubmit
   });
 
-  const handleCloseModal = () => setIsModal(false)
+  const handleCloseModal = () => {
+    setIsModal(false);
+    setUnknownLink("")
+  }
+
+  const handleCloseBrand = () => {
+    setIsBrand(false)
+    setBrandName("")
+  }
 
   useEffect(() => {
     if (COUNTRYLIST.length) {
@@ -83,7 +124,7 @@ const Landing = () => {
   };
   return (
     <>
-      {isModal && <LandingModal handleCloseModal={handleCloseModal} handleAuth={handleAuth}/>}
+      {isModal && <LandingModal handleCloseModal={handleCloseModal} handleAuth={handleAuth} unknownLink={unknownLink}/>}
       <div className="landing">
         <div className="landing-section">
           <div className="landing-container">
@@ -230,13 +271,15 @@ const Landing = () => {
               <h3 className="sub-features-title">
                 Find A FlipChat.link For Your Brand
               </h3>
-              <form className="landing-find">
+              <form className="landing-find" method="POST" onSubmit={handleCheckBrand}>
                 <input
                   type="text"
                   className="landing-find-input"
                   name="name"
                   id="name"
                   placeholder="Enter your brand name..."
+                  value={brandName}
+                  onChange={(e) => setBrandName(e.target.value)}
                 />
                 <button className="btn-primary landing-find-cta">
                   {" "}
@@ -244,6 +287,17 @@ const Landing = () => {
                   Search FlipChat Link
                 </button>
               </form>
+              {isBrand && <div className="brandcheck">
+                  <div className="brandcheck-header">
+                      <img src={CrossIcon} alt="cross icon" className="brandcheck-cross" onClick={handleCloseBrand}/>
+                  </div>
+                  <div className="brandcheck-body">
+                      <h3 className="brandcheck-title">🎉 flipchat.link/{brandName} 🎉 <span className="brandcheck-title-sub">is available as a Premium Link.</span> </h3>
+                      <p className="brandcheck-para">It includes clicks analytics, multiple agent support, updatable info and much more.</p>
+                      <p className="brandcheck-para">Get it now before someone else does</p>
+                      <button className="brandcheck-cta btn-primary">Get It Now!</button>
+                  </div>
+              </div>}
             </div>
           </div>
 

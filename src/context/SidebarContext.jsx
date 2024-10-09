@@ -8,9 +8,11 @@ export const useSidebarContext = () => {
 };
 
 const SidebarContextProvider = ({ children }) => {
-  const [currentTab, setCurrentTab] = useState("dashboard");
+  const [currentTab, setCurrentTab] = useState("/dashboard");
   const location = useLocation();
   const navigate = useNavigate()
+
+  const path = location.pathname;
 
   // handle change sidebar tab
   const handleChangeTab = (tab) => {
@@ -25,11 +27,10 @@ const SidebarContextProvider = ({ children }) => {
 
   // handle sidebar state on page reload 
   useEffect(() => {
-    const path = location.pathname;
     if (path) {
       handleChangeTab(path);
     }
-  }, []);
+  }, [path]);
 
   return (
     <SidebarContext.Provider value={items}>{children}</SidebarContext.Provider>

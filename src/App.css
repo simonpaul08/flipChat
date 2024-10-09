@@ -244,6 +244,48 @@
   margin-right: 0.8rem;
   margin-bottom: -0.17rem;
 }
+.brandcheck {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 3rem;
+  background-color: var(--color-green-light);
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.brandcheck-header {
+  width: 100%;
+  text-align: right;
+}
+.brandcheck-cross {
+  cursor: pointer;
+}
+.brandcheck-body {
+  width: 100%;
+}
+.brandcheck-title {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--color-green-primary);
+  margin-bottom: 1.5rem;
+}
+.brandcheck-title-sub {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.brandcheck-para {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--color-green-primary);
+  margin-bottom: 0.75rem;
+}
+.brandcheck-cta {
+  margin-top: 2rem;
+  display: inline-block;
+  font-size: 1.5rem;
+  background-color: var(--color-black-secondary);
+  color: var(--color-white);
+  border-radius: 25px;
+}
 .landing-pricing {
   width: 100%;
   padding: 6rem 1.5rem;
@@ -556,6 +598,7 @@
   justify-content: center;
   padding: 2.5rem 1rem;
   background-color: var(--color-green-primary);
+  cursor: pointer;
 }
 .sidebar-footer-icon {
   margin-right: 1.25rem;
