@@ -8,7 +8,7 @@ import { Tooltip } from "react-tooltip";
 
 const LandingModal = ({ handleCloseModal, handleAuth, unknownLink }) => {
   const copyToClpboard = () => {
-    navigator.clipboard.writeText(unknownLink);
+    navigator.clipboard.writeText(`flipchat.link/${unknownLink}`);
   };
   return (
     <div className="landingModal-overlay">
