@@ -740,6 +740,63 @@
   border-color: var(--color-purple-primary);
 }
 
+/* Plans */
+.plan {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+}
+.plan-main-text {
+  width: 100%;
+  padding: 2rem;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+.plan-main-para {
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.plan-main-para-span {
+  color: var(--color-green-primary);
+}
+.plan-card-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2.5rem;
+}
+.plan-card-item {
+  width: 100%;
+  padding: 3rem 2rem;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.plan-card-item-header {
+  width: 100%;
+  text-align: center;
+  
+}
+.plan-card-item-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+.plan-card-item-price {
+  color: var(--color-green-primary);
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+.plan-card-item-sub-title {
+  font-size: 2rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
 /* --------------- Media Queries --------------- */
 @media screen and (min-width: 160rem){
   .landing-container {
