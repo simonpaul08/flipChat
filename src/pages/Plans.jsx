@@ -1,8 +1,8 @@
-
+import Check from "../assets/check.svg";
 
 const Plans = () => {
   return (
-    <div className='dashboard'>
+    <div className="dashboard">
       <div className="dashboard-header">
         <div className="dashboard-header-title">
           <h3 className="dashboard-header-title-normal">Dashboard</h3>
@@ -12,7 +12,13 @@ const Plans = () => {
       </div>
       <div className="dashboard-main">
         <div className="plan-main-text">
-          <p className="plan-main-para">At <span className="plan-main-para-span">Flipchat.link</span>, we offer a range of plans tailored to meet the diverse needs of our users. Whether you're just starting out, looking to grow, or managing a large business, we have a plan that will help you connect with your customers more effectively.</p>
+          <p className="plan-main-para">
+            At <span className="plan-main-para-span">Flipchat.link</span>, we
+            offer a range of plans tailored to meet the diverse needs of our
+            users. Whether you're just starting out, looking to grow, or
+            managing a large business, we have a plan that will help you connect
+            with your customers more effectively.
+          </p>
         </div>
 
         <div className="plan-card-grid">
@@ -22,13 +28,51 @@ const Plans = () => {
               <h3 className="plan-card-item-price">INR 499/month</h3>
               <p className="plan-card-item-sub-title">Features & Benefits</p>
             </div>
+            <div className="plan-card-item-main">
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">1 Custom Link</p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">
+                  2 Whatsapp agent support per link
+                </p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">Analytics Dashboard</p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">
+                  Access to 24*7 email support
+                </p>
+              </div>
+            </div>
           </div>
           <div className="plan-card-item"></div>
           <div className="plan-card-item"></div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Plans
+export default Plans;

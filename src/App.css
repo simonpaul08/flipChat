@@ -768,6 +768,7 @@
 }
 .plan-card-item {
   width: 100%;
+  max-width: 38rem;
   padding: 3rem 2rem;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -776,10 +777,10 @@
 .plan-card-item-header {
   width: 100%;
   text-align: center;
-  
+  border-bottom: 1px solid var(--color-gray-primary);
 }
 .plan-card-item-title {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 500;
   margin-bottom: 0.45rem;
 }
@@ -791,10 +792,25 @@
   margin-bottom: 1.5rem;
 }
 .plan-card-item-sub-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 400;
   font-style: italic;
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
+}
+.plan-card-item-main {
+  padding: 2rem 1rem;
+}
+.plan-card-list-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.plan-card-list-icon {
+  margin-right: 1rem;
+  font-weight: 500;
+}
+.plan-card-list-text {
+  font-size: 1.5rem;
 }
 
 /* --------------- Media Queries --------------- */
