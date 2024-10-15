@@ -66,9 +66,106 @@ const Plans = () => {
                 </p>
               </div>
             </div>
+            <button className="btn-primary cta-upgrade">Upgrade Now</button>
           </div>
-          <div className="plan-card-item"></div>
-          <div className="plan-card-item"></div>
+          <div className="plan-card-item">
+            <div className="plan-card-item-header">
+              <h3 className="plan-card-item-title">Plan - Expand</h3>
+              <h3 className="plan-card-item-price">INR 1999/month</h3>
+              <p className="plan-card-item-sub-title">Features & Benefits</p>
+            </div>
+            <div className="plan-card-item-main">
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">3 Custom Link</p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">
+                  3 Whatsapp agent support per link
+                </p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">Analytics Dashboard</p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">
+                  Access to 24*7 email support
+                </p>
+              </div>
+            </div>
+            <button className="btn-primary cta-upgrade">Upgrade Now</button>
+          </div>
+          <div className="plan-card-item">
+            <div className="plan-card-item-header">
+              <h3 className="plan-card-item-title">Plan - Elite</h3>
+              <h3 className="plan-card-item-price">INR 5999/month</h3>
+              <p className="plan-card-item-sub-title">Features & Benefits</p>
+            </div>
+            <div className="plan-card-item-main">
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">8 Custom Link</p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">
+                  5 Whatsapp agent support per link
+                </p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">Analytics Dashboard</p>
+              </div>
+              <div className="plan-card-list-item">
+                <img
+                  src={Check}
+                  alt="check icon"
+                  className="plan-card-list-icon"
+                />
+                <p className="plan-card-list-text">
+                  Access to 24*7 email support & WhatsApp support
+                </p>
+              </div>
+            </div>
+            <button className="btn-primary cta-upgrade">Upgrade Now</button>
+          </div>
+        </div>
+
+        <div className="plan-main-text">
+          <p className="plan-main-para">
+          <span className="plan-main-para-blue">Still Not Sure?</span> Our flexible plans allow you to choose exactly what you need. Start small and upgrade anytime as your business grows. If you’re ready to enhance your WhatsApp communication, choose a plan that suits your business and start experiencing the benefits today!
+          </p>
         </div>
       </div>
     </div>

@@ -765,6 +765,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 2.5rem;
+  margin-bottom: 3rem;
 }
 .plan-card-item {
   width: 100%;
@@ -795,7 +796,7 @@
   font-size: 1.8rem;
   font-weight: 400;
   font-style: italic;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 .plan-card-item-main {
   padding: 2rem 1rem;
@@ -804,6 +805,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 1.75rem;
 }
 .plan-card-list-icon {
   margin-right: 1rem;
@@ -811,6 +813,45 @@
 }
 .plan-card-list-text {
   font-size: 1.5rem;
+}
+.cta-upgrade {
+  width: 100%;
+  font-size: 1.75rem;
+}
+.plan-main-para-blue {
+  color: var(--color-blue-primary);
+}
+
+/* Profile */
+.profile-container {
+  width: 100%;
+  padding: 3rem;
+  background-color: var(--color-white);
+  border-radius: 8px;
+}
+.profile-form {
+  width: 100%;
+}
+.profile-form-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.profile-form-label {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-right: 2rem;
+}
+.profile-form-input {
+  width: 35rem;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 1.75rem;
+  font-size: 1.5rem;
+  font-family: inherit;
+  background-color: var(--color-gray-primary);
+  color: var(--color-gray-secondary);
+  outline: none;
 }
 
 /* --------------- Media Queries --------------- */
