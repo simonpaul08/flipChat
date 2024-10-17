@@ -12,7 +12,28 @@
   font-family: inherit;
   letter-spacing: 0.65px;
 }
+.btn-secondary {
+  display: inline-block;
+  padding: 1rem 2.8rem;
+  background-color: transparent;
+  color: var(--color-green-primary);
+  border: 1px solid var(--color-green-primary);
+  font-size: 1.6rem;
+  border-radius: 8px;
+  font-weight: 300;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.65px;
+}
 
+/* Utils - Select */
+select {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
 /* Utils - formik */
 .error {
   font-size: 1.2rem;
@@ -115,14 +136,14 @@
 .landing-features-animation {
   padding: 3rem 0;
   width: 100%;
-  text-align: center; 
+  text-align: center;
 }
 .landing-features-image {
   width: 70%;
 }
 .sub-features {
   width: 100%;
-  padding: 6rem 1.5rem;;
+  padding: 6rem 1.5rem;
   background-color: var(--color-gray-light);
 }
 .sub-features-title {
@@ -143,7 +164,7 @@
   border-radius: 8px;
   background-color: #fff;
   padding: 4rem 3.5rem;
-  margin:  0;
+  margin: 0;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .form-item {
@@ -153,7 +174,7 @@
 .landing-form-label {
   display: block;
   font-size: 1.6rem;
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
   letter-spacing: 0.6px;
 }
 .form-input-flex {
@@ -218,7 +239,7 @@
   border-radius: 8px;
   background-color: #fff;
   padding: 3.5rem;
-  margin:  0 auto 2rem;
+  margin: 0 auto 2rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   display: flex;
   align-items: center;
@@ -352,7 +373,7 @@
 }
 .landing-footer {
   width: 100%;
-  padding: 4rem 1.5rem;;
+  padding: 4rem 1.5rem;
   background-color: var(--color-green-secondary);
 }
 .landing-footer-head {
@@ -391,7 +412,6 @@
 .landing-footer-social-item:first-child {
   margin-left: 0;
 }
-
 
 /* Auth - (Register / Login) */
 .auth {
@@ -467,7 +487,7 @@
   color: var(--color-gray-secondary);
   outline: none;
 }
-.form-input::placeholder{
+.form-input::placeholder {
   font-family: inherit;
   font-size: 1.6rem;
 }
@@ -497,7 +517,7 @@
 .auth-google-block {
   width: 100%;
   padding: 1rem 1.5rem;
-  text-align: center
+  text-align: center;
 }
 .auth-form-seperator {
   font-size: 1.6rem;
@@ -505,7 +525,7 @@
   margin-bottom: 1.5rem;
 }
 .auth-form-seperator::before {
-  content: '';
+  content: "";
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -515,7 +535,7 @@
   border-bottom: 1px solid var(--color-black-secondary);
 }
 .auth-form-seperator::after {
-  content: '';
+  content: "";
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -530,7 +550,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   cursor: pointer;
 }
 .auth-google-btn-icon {
@@ -547,7 +567,6 @@
   display: flex;
   align-items: center;
 }
-
 
 /* Sidebar */
 .sidebar {
@@ -567,7 +586,7 @@
   padding: 2rem;
   flex: 1;
 }
-.sidebar-nav{
+.sidebar-nav {
   width: 100%;
 }
 .sidebar-nav-item {
@@ -607,7 +626,6 @@
   font-size: 1.8rem;
   color: var(--color-white);
 }
-
 
 /* Dashboard */
 .dashboard {
@@ -836,14 +854,15 @@
   width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 2.75rem;
 }
 .profile-form-label {
   font-size: 1.8rem;
   font-weight: 400;
-  margin-right: 2rem;
+  margin-right: 2.5rem;
 }
 .profile-form-input {
-  width: 35rem;
+  width: 32rem;
   border: none;
   border-radius: 8px;
   padding: 1rem 1.75rem;
@@ -853,17 +872,39 @@
   color: var(--color-gray-secondary);
   outline: none;
 }
+.profile-cta-edit {
+  margin-right: 2rem;
+}
+
+/* Billing */
+.billing-container {
+  width: 100%;
+  padding: 3rem;
+}
+.billing-table {
+  width: 100%;
+}
+.billing-table-head {
+  background-color: var(--color-gray-primary);
+}
+.billing-table-th {
+  font-size: 1.6rem;
+  font-weight: 400;
+  padding: 1rem;
+}
+
+
+
 
 /* --------------- Media Queries --------------- */
-@media screen and (min-width: 160rem){
+@media screen and (min-width: 160rem) {
   .landing-container {
     width: 160rem;
   }
 }
 
-
 /* < 1500 */
-@media screen and (max-width: 150rem){
+@media screen and (max-width: 150rem) {
   .landing-container {
     max-width: 140rem;
   }
