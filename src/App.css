@@ -886,15 +886,49 @@ select {
 }
 .billing-table-head {
   background-color: var(--color-gray-primary);
+  border-radius: 8px 8px 0 0;
 }
 .billing-table-th {
   font-size: 1.6rem;
   font-weight: 400;
   padding: 1rem;
 }
+.billing-table-body {
+  background-color: var(--color-white);
+}
+.billing-table-data {
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding: 1rem;
+  color: var(--color-gray-secondary);
+  text-align: center;
+}
+.billing-status-tag {
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  border-radius: 25px;
+  border: 1px solid;
+}
+.billing-status {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.billing-success {
+  color: var(--color-green-primary);
+  border-color: var(--color-green-primary);
+}
+.billing-failure {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
 
-
-
+/* Help */
+.help-accordion  {
+  width: 100%;
+}
+.help-accordion-item {
+  width: 100%;
+}
 
 /* --------------- Media Queries --------------- */
 @media screen and (min-width: 160rem) {
