@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SearchIcon from "../assets/search-icon.svg";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 
@@ -35,6 +36,11 @@ const Dashboard = () => {
       type: "free"
     },
   ])
+  const navigate = useNavigate()
+
+  const handleCreate = () => {
+    navigate("create")
+  }
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -55,7 +61,7 @@ const Dashboard = () => {
             />
             <img src={SearchIcon} alt="search icon" className="search-icon" />
           </div>
-          <button className="dashboard-main-header-cta btn-primary">Create New</button>
+          <button className="dashboard-main-header-cta btn-primary" onClick={handleCreate}>Create New</button>
         </div>
         <div className="dashboard-main-content">
           <div className="dashboard-grid">

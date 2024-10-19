@@ -40,6 +40,24 @@ select {
   color: var(--color-danger);
 }
 
+/* Common */
+.back-button {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--color-bg-primary);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.back-button-icon {
+  transform: rotate(-180deg);
+  margin-right: 0.75rem;
+}
+.back-button-text {
+  font-size: 1.6rem;
+}
+
+
 /* Landing */
 .landing {
   width: 100%;
@@ -925,10 +943,108 @@ select {
 /* Help */
 .help-accordion  {
   width: 100%;
+  padding: 2.5rem 3rem;
+  background-color: var(--color-white);
+  border-radius: 8px;
 }
-.help-accordion-item {
+.help-accordion-title {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+.help-accordion-para {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--color-gray-secondary);
+  margin-bottom: 3rem;
+}
+.help-accordion-faq {
   width: 100%;
 }
+.faq-item {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+.faq-item-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-gray-primary);
+}
+.faq-item-title-text {
+  font-size: 1.5rem;
+}
+.faq-item-title-icon {
+  transform: rotate(90deg);
+}
+.open-accordion .faq-item-title-icon {
+  transform: rotate(-90deg);
+}
+.faq-item-content {
+  background-color: var(--color-gray-light);
+  border-radius: 0 0 8px 8px;
+  max-height: 0;
+  transition: max-height 0.6s ease;
+  overflow: hidden;
+}
+.faq-item-content-text {
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--color-gray-secondary);
+  line-height: 1.75;
+  display: none;
+}
+.open-accordion .faq-item-content {
+  max-height: 500px;
+  transition: max-height 0.6s ease;
+  padding: 2rem 1.5rem;
+}
+.open-accordion .faq-item-content-text  {
+  display: block;
+}
+
+
+/* Create Link */
+.create-container {
+  width: 100%;
+  padding: 2.5rem 3rem;
+  background-color: var(--color-white);
+  border-radius: 8px;
+}
+.create-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.create-main {
+  padding: 2rem 0;
+}
+.create-switch-tabs {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+}
+.switch-tab {
+  width: 100%;
+  border: 1px solid var(--color-gray-secondary);
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+.switch-tab-active {
+  background-color: var(--color-green-primary);
+  border-color: var(--color-green-primary);
+  color: var(--color-white);
+}
+.switch-tab-text {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
 
 /* --------------- Media Queries --------------- */
 @media screen and (min-width: 160rem) {

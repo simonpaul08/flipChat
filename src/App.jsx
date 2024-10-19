@@ -9,6 +9,7 @@ import DashboardLayout from "./layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Billing from "./pages/Billing";
 import Help from "./pages/Help";
+import CreateLink from "./pages/CreateLink";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
+          <Route path="create" element={<CreateLink />} />
           <Route path="plans" element={<Plans />} />
           <Route path="profile" element={<Profile />} />
           <Route path="billing" element={<Billing />} />
