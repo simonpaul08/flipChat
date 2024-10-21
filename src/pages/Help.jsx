@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ArrowIcon from "../assets/icon_arrow.svg";
-import "@szhsin/react-accordion/"
 
 const Help = () => {
   const ACCORDION_LIST = [

@@ -21,6 +21,7 @@ const NAV_LINKS = [
     image: PIE_ICON,
     imageWhite: PIE_ICON_WHITE,
     link: "/dashboard",
+    children: ["/dashboard/create"],
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ const NAV_LINKS = [
     image: PLAN_ICON,
     imageWhite: PLAN_ICON_WHITE,
     link: "/dashboard/plans",
+    children: [],
   },
   {
     id: 3,
@@ -35,6 +37,7 @@ const NAV_LINKS = [
     image: PROFILE_ICON,
     imageWhite: PROFILE_ICON_WHITE,
     link: "/dashboard/profile",
+    children: [],
   },
   {
     id: 4,
@@ -42,6 +45,7 @@ const NAV_LINKS = [
     image: CARD_ICON,
     imageWhite: CARD_ICON_WHITE,
     link: "/dashboard/billing",
+    children: [],
   },
   {
     id: 5,
@@ -49,22 +53,22 @@ const NAV_LINKS = [
     image: HELP_ICON,
     imageWhite: HELP_ICON_WHITE,
     link: "/dashboard/help",
+    children: [],
   },
 ];
 
 const Sidebar = () => {
+  const { currentTab, handleChangeTab } = useSidebarContext();
 
-    const { currentTab, handleChangeTab } = useSidebarContext()
+  const handleClickTab = (tab) => {
+    handleChangeTab(tab);
+  };
+  const navigate = useNavigate();
 
-    const handleClickTab = (tab) => {
-        handleChangeTab(tab)
-    }
-    const navigate = useNavigate()
-
-    const handleLogout = () => {
-      // need to be added logout api
-      navigate("/register")
-    }
+  const handleLogout = () => {
+    // need to be added logout api
+    navigate("/register");
+  };
   return (
     <div className="sidebar">
       <div className="sidebar-header">
@@ -73,10 +77,19 @@ const Sidebar = () => {
       <div className="sidebar-body">
         <div className="sidebar-nav">
           {NAV_LINKS?.map((item) => {
+            const selected = item.link === currentTab || item.children.includes(currentTab)
             return (
-              <div key={item.id} className={`sidebar-nav-item ${item.link === currentTab ? "active": ""}`} onClick={() => handleClickTab(item.link)}>
+              <div
+                key={item.id}
+                className={`sidebar-nav-item ${
+                  selected ? "active" : ""
+                }`}
+                onClick={() => handleClickTab(item.link)}
+              >
                 <img
-                  src={item.link === currentTab  ? item?.imageWhite : item?.image}
+                  src={
+                    selected ? item?.imageWhite : item?.image
+                  }
                   alt="pie icon"
                   className="sidebar-nav-item-logo"
                 />
@@ -87,8 +100,12 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="sidebar-footer" onClick={handleLogout}>
-          <img src={LOGOUT_ICON} alt="logout icon" className="sidebar-footer-icon"/>
-          <p className="sidebar-footer-text">Sign Out</p>
+        <img
+          src={LOGOUT_ICON}
+          alt="logout icon"
+          className="sidebar-footer-icon"
+        />
+        <p className="sidebar-footer-text">Sign Out</p>
       </div>
     </div>
   );
