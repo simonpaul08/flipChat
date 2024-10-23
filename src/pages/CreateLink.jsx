@@ -27,21 +27,25 @@ const CreateLink = () => {
           <div className="create-main">
             <div className="create-switch-tabs">
               <div
-                className={`switch-tab ${
-                  currentTab === TABS.PREMIUM ? "switch-tab-active" : ""
-                }`}
+                className={`switch-tab ${currentTab === TABS.PREMIUM ? "switch-tab-active" : ""
+                  }`}
                 onClick={() => handleSwitchTab(TABS.PREMIUM)}
               >
                 <p className="switch-tab-text">Premium Link</p>
               </div>
               <div
-                className={`switch-tab ${
-                  currentTab === TABS.FREE ? "switch-tab-active" : ""
-                }`}
+                className={`switch-tab ${currentTab === TABS.FREE ? "switch-tab-active" : ""
+                  }`}
                 onClick={() => handleSwitchTab(TABS.FREE)}
               >
                 <p className="switch-tab-text">Free Link</p>
               </div>
+            </div>
+
+            <div className="create-form-container">
+              <form method="POST" className="create-form">
+                    
+              </form>
             </div>
           </div>
         </div>
