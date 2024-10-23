@@ -1,5 +1,6 @@
 import { useState } from "react";
 import BackButton from "../components/common/BackButton";
+import WarningIcon from "../assets/icon_warning.svg";
 
 const TABS = {
   PREMIUM: "premium",
@@ -27,24 +28,65 @@ const CreateLink = () => {
           <div className="create-main">
             <div className="create-switch-tabs">
               <div
-                className={`switch-tab ${currentTab === TABS.PREMIUM ? "switch-tab-active" : ""
-                  }`}
+                className={`switch-tab ${
+                  currentTab === TABS.PREMIUM ? "switch-tab-active" : ""
+                }`}
                 onClick={() => handleSwitchTab(TABS.PREMIUM)}
               >
                 <p className="switch-tab-text">Premium Link</p>
               </div>
               <div
-                className={`switch-tab ${currentTab === TABS.FREE ? "switch-tab-active" : ""
-                  }`}
+                className={`switch-tab ${
+                  currentTab === TABS.FREE ? "switch-tab-active" : ""
+                }`}
                 onClick={() => handleSwitchTab(TABS.FREE)}
               >
                 <p className="switch-tab-text">Free Link</p>
               </div>
             </div>
 
+            <div className="create-warning-container">
+                <div className="warning">
+                  <img src={WarningIcon} alt="warning icon" className="warning-icon"/>
+                  <p className="warning-text">There are links available in your plan. Upgrade Now</p>
+                </div>
+            </div>
+
             <div className="create-form-container">
-              <form method="POST" className="create-form">
-                    
+              <form method="POST" className="create-form profile-form">
+                <div className="profile-form-item">
+                  <label htmlFor="username" className="profile-form-label">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    className="profile-form-input"
+                    placeholder="username..."
+                  />
+                </div>
+                <div className="profile-form-item">
+                  <label htmlFor="username" className="profile-form-label">
+                    Agent Number
+                  </label>
+                  <div className="create-form-number-block">
+                    <select
+                      id="countryCode"
+                      name="countryCode"
+                      className="profile-form-select"
+                    >
+                      <option value="+91">+91</option>
+                    </select>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    className="profile-form-input"
+                    placeholder="username..."
+                  />
+                  </div>
+                </div>
               </form>
             </div>
           </div>
