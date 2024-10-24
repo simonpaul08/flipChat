@@ -1,6 +1,8 @@
 import { useState } from "react";
 import BackButton from "../components/common/BackButton";
 import WarningIcon from "../assets/icon_warning.svg";
+import CreatePremiumLink from "../components/CreatePremiumLink";
+import CreateFreeLink from "../components/CreateFreeLink";
 
 const TABS = {
   PREMIUM: "premium",
@@ -9,6 +11,7 @@ const TABS = {
 
 const CreateLink = () => {
   const [currentTab, setCurrentTab] = useState(TABS.PREMIUM);
+
 
   const handleSwitchTab = (tab) => setCurrentTab(tab);
   return (
@@ -52,43 +55,8 @@ const CreateLink = () => {
                 </div>
             </div>
 
-            <div className="create-form-container">
-              <form method="POST" className="create-form profile-form">
-                <div className="profile-form-item">
-                  <label htmlFor="username" className="profile-form-label">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    className="profile-form-input"
-                    placeholder="username..."
-                  />
-                </div>
-                <div className="profile-form-item">
-                  <label htmlFor="username" className="profile-form-label">
-                    Agent Number
-                  </label>
-                  <div className="create-form-number-block">
-                    <select
-                      id="countryCode"
-                      name="countryCode"
-                      className="profile-form-select"
-                    >
-                      <option value="+91">+91</option>
-                    </select>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    className="profile-form-input"
-                    placeholder="username..."
-                  />
-                  </div>
-                </div>
-              </form>
-            </div>
+              {currentTab === TABS.PREMIUM && <CreatePremiumLink />}
+              {currentTab === TABS.FREE && <CreateFreeLink />}
           </div>
         </div>
       </div>
