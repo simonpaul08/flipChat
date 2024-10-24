@@ -4,17 +4,16 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import SidebarContextProvider from "./context/SidebarContext.jsx";
-import { Provider } from "react-redux";
-import { store } from "./store/store.js";
+import AuthProvider from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
+      <AuthProvider>
         <SidebarContextProvider>
           <App />
         </SidebarContextProvider>
-      </Provider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

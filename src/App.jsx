@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Billing from "./pages/Billing";
 import Help from "./pages/Help";
 import CreateLink from "./pages/CreateLink";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (

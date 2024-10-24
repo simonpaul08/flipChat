@@ -88,22 +88,28 @@ const Billing = () => {
         <div className="billing-container">
           <table className="billing-table">
             <thead className="billing-table-head">
-              <th className="billing-table-th">Transaction Id</th>
-              <th className="billing-table-th">Date</th>
-              <th className="billing-table-th">Amount</th>
-              <th className="billing-table-th">Plan Type</th>
-              <th className="billing-table-th">Status</th>
+              <tr>
+                <th className="billing-table-th">Transaction Id</th>
+                <th className="billing-table-th">Date</th>
+                <th className="billing-table-th">Amount</th>
+                <th className="billing-table-th">Plan Type</th>
+                <th className="billing-table-th">Status</th>
+              </tr>
             </thead>
             <tbody className="billing-table-body">
               {Transactions?.map((item) => {
                 return (
-                  <tr className="billing-table-row">
+                  <tr key={item.id} className="billing-table-row">
                     <td className="billing-table-data">{item?.id}</td>
                     <td className="billing-table-data">{item?.date}</td>
                     <td className="billing-table-data">RS {item?.amount}</td>
                     <td className="billing-table-data">{item.planType}</td>
                     <td className="billing-table-data">
-                      <div className={`billing-status-tag billing-${item?.status ?? ""}`}>
+                      <div
+                        className={`billing-status-tag billing-${
+                          item?.status ?? ""
+                        }`}
+                      >
                         <p className="billing-status">{item?.status}</p>
                       </div>
                     </td>

@@ -20,3 +20,10 @@ export const PLANS_RATE = {
     EXPAND: 1999,
     ELITE: 5499,
 }
+
+// agents per plan
+export const AGENT_PER_PLAN = {
+  ESSENTIAL: 2,
+  EXPAND: 3,
+  ELITE: 5
+}
