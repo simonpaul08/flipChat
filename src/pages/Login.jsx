@@ -146,7 +146,7 @@ const Login = () => {
               </button>
               <p className="auth-footer-text">
                 Unable to login ?{" "}
-                <Link className="auth-forget" to="/login">
+                <Link className="auth-forget" to="/forget/password">
                   Forget password
                 </Link>
               </p>

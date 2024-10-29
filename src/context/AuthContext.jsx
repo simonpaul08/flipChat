@@ -32,7 +32,6 @@ const AuthProvider = ({ children }) => {
         }
     }, [])
 
-
     let values = {
         currentUser,
         handleSetUser,
