@@ -6,18 +6,22 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
 import Loader from "../components/loader/loader";
+import { useAuthContext } from "../context/AuthContext";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { handleSetUser } = useAuthContext()
 
   const formScehma = yup.object().shape({
     email: yup.string().required("email is required"),
     password: yup.string().required("password is required"),
   });
 
+  // handle submit form
   const handleSubmit = async (values) => {
     setIsLoading(true);
 
@@ -34,7 +38,8 @@ const Login = () => {
 
       console.log(res.data);
       if (res.data) {
-        navigate("/dashboard");
+        handleSetUser(res.data?.user)
+        navigate('/dashboard')
       }
     } catch (e) {
       console.log(e);
@@ -43,6 +48,7 @@ const Login = () => {
     }
   };
 
+  // initialize formik
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -52,6 +58,39 @@ const Login = () => {
     onSubmit: handleSubmit,
   });
 
+  // handle google success
+  const handleGoogleSuccess = async (data) => {
+    const { code } = data;
+
+    setIsLoading(true)
+
+    let body = {
+      code
+    }
+
+    try {
+      const res = await axios.post(`${SERVER_URL}api/auth/google/login`, { ...body }, {
+        headers: {
+          'Content-Type': "application/json"
+        }
+      });
+      console.log(res.data)
+      if(res.data){
+        handleSetUser(res.data?.user)
+        navigate("/dashboard")
+      }
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleGoogleSignUp = useGoogleLogin({
+    onSuccess: (data) => handleGoogleSuccess(data),
+    onError: (error) => console.log("errro: ", error),
+    flow: 'auth-code'
+  })
   return (
     <>
       {isLoading && <Loader />}
@@ -115,9 +154,9 @@ const Login = () => {
 
             <div className="auth-google-block">
               <p className="auth-form-seperator">or</p>
-              <div className="auth-google-btn">
+              <div className="auth-google-btn" onClick={handleGoogleSignUp}>
                 <img src={GoogleIcon} className="auth-google-btn-icon" />
-                <p className="auth-google-btn-text">Sign up with google</p>
+                <p className="auth-google-btn-text">Sign in with google</p>
               </div>
             </div>
           </form>

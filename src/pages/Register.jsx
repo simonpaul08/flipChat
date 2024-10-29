@@ -7,6 +7,8 @@ import * as yup from "yup";
 import axios from 'axios';
 import Loader from '../components/loader/loader';
 import VerifyOTP from '../components/modal/verifyOTP';
+import { useGoogleLogin } from '@react-oauth/google';
+import { useAuthContext } from '../context/AuthContext';
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -15,7 +17,9 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
   const navigate = useNavigate();
+  const { handleSetUser } = useAuthContext();
 
+  // form schema 
   const formSchema = yup.object().shape({
     name: yup.string()
       .min(3, "minimum 3 characters")
@@ -27,6 +31,7 @@ const Register = () => {
       .required('Confirm Password is required'),
   })
 
+  // handle submit form
   const handleSubmit = async (values) => {
     let body = {
       name: values?.name,
@@ -52,6 +57,7 @@ const Register = () => {
     }
   }
 
+  // handle verify otp
   const handleVerifyOtp = async (otp) => {
     let body = {
       email: formik.values.email,
@@ -73,6 +79,7 @@ const Register = () => {
     }
   }
 
+  // initialize formik
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -84,9 +91,39 @@ const Register = () => {
     onSubmit: handleSubmit
   })
 
-  const handleGoogleSignUp = async () => {
-    window.open(`${SERVER_URL}google`, "_self")
+  // handle google success
+  const handleGoogleSuccess = async (data) => {
+    const { code } = data;
+
+    setIsLoading(true)
+
+    let body = {
+      code
+    }
+
+    try {
+      const res = await axios.post(`${SERVER_URL}api/auth/google/register`, { ...body }, {
+        headers: {
+          'Content-Type': "application/json"
+        }
+      });
+      console.log(res.data)
+      if(res.data){
+        handleSetUser(res.data?.user)
+        navigate("/dashboard")
+      }
+    }catch(e) {
+      console.log(e)
+    }finally {
+      setIsLoading(false)
+    }
   }
+
+  const handleGoogleSignUp = useGoogleLogin({
+    onSuccess: (data) => handleGoogleSuccess(data),
+    onError: (error) => console.log("errro: ", error),
+    flow: 'auth-code'
+  })
 
 
   return (

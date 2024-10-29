@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Register from "./pages/Register";
 import Landing from "./pages/Landing";
@@ -10,15 +10,27 @@ import Dashboard from "./pages/Dashboard";
 import Billing from "./pages/Billing";
 import Help from "./pages/Help";
 import CreateLink from "./pages/CreateLink";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useAuthContext } from "./context/AuthContext";
+
+const CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
 
 function App() {
+
+  const { currentUser } = useAuthContext();
+
+  const GoogleWrapper = ({ children }) => (
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
+      {children}
+    </GoogleOAuthProvider>
+  )
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={!currentUser ? <GoogleWrapper><Register /></GoogleWrapper> : <Navigate to={"/dashboard"} />} />
+        <Route path="/login" element={!currentUser ? <GoogleWrapper><Login /></GoogleWrapper> : <Navigate to={"/dashboard"} />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="create" element={<CreateLink />} />

@@ -13,6 +13,7 @@ import HELP_ICON_WHITE from "../assets/icon_help_active.svg";
 import LOGOUT_ICON from "../assets/icon_logout.svg";
 import { useSidebarContext } from "../context/SidebarContext";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 const NAV_LINKS = [
   {
@@ -59,6 +60,7 @@ const NAV_LINKS = [
 
 const Sidebar = () => {
   const { currentTab, handleChangeTab } = useSidebarContext();
+  const { handleLogout: logoutUser } = useAuthContext();
 
   const handleClickTab = (tab) => {
     handleChangeTab(tab);
@@ -67,6 +69,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     // need to be added logout api
+    logoutUser()
     navigate("/register");
   };
   return (
