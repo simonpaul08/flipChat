@@ -9,6 +9,7 @@ import Loader from '../components/loader/loader';
 import VerifyOTP from '../components/modal/verifyOTP';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useAuthContext } from '../context/AuthContext';
+import { toast, Toaster } from 'sonner';
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -27,12 +28,16 @@ const Register = () => {
     email: yup.string().required("email is required"),
     password: yup.string().required("password is required"),
     confirmPassword: yup.string()
-      .oneOf([yup.ref('password')], 'Passwords must match')
-      .required('Confirm Password is required'),
+      .oneOf([yup.ref('password')], 'passwords must match')
+      .required('confirm Password is required'),
   })
 
   // handle submit form
   const handleSubmit = async (values) => {
+
+    if (formik.errors) {
+      formik.validateForm()
+    }
     let body = {
       name: values?.name,
       email: values?.email,
@@ -47,11 +52,19 @@ const Register = () => {
       });
 
       console.log(res.data)
-      if(res.data){
+      if (res.data) {
+        toast.success(res.data?.message)
         setIsVerify(true)
       }
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error)
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       setIsLoading(false)
     }
@@ -64,18 +77,26 @@ const Register = () => {
       otp: otp
     }
 
-    try { 
+    try {
       const res = await axios.post(`${SERVER_URL}api/auth/verifyOTP`, { ...body }, {
         headers: {
           'Content-Type': "application/json"
         }
       });
       console.log(res.data)
-      if(res.data){
+      if (res.data) {
+        handleSetUser(res.data?.user)
         navigate("/dashboard")
       }
-    }catch(e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error)
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     }
   }
 
@@ -88,7 +109,8 @@ const Register = () => {
       confirmPassword: ''
     },
     validationSchema: formSchema,
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
+    validateOnChange: false,
   })
 
   // handle google success
@@ -108,28 +130,36 @@ const Register = () => {
         }
       });
       console.log(res.data)
-      if(res.data){
+      if (res.data) {
         handleSetUser(res.data?.user)
         navigate("/dashboard")
       }
-    }catch(e) {
-      console.log(e)
-    }finally {
+    } catch (error) {
+      console.log(error)
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
       setIsLoading(false)
     }
   }
 
   const handleGoogleSignUp = useGoogleLogin({
     onSuccess: (data) => handleGoogleSuccess(data),
-    onError: (error) => console.log("errro: ", error),
+    onError: () => toast.error("unable to sign up with google"),
     flow: 'auth-code'
   })
 
 
   return (
     <>
-    {isLoading && <Loader />}
-    {isVerify && <VerifyOTP handleVerifyOtp={handleVerifyOtp}/>}
+      {isLoading && <Loader />}
+      {isVerify && <VerifyOTP handleVerifyOtp={handleVerifyOtp} />}
+      <Toaster richColors position='top-center' duration={2000} />
       <div className='auth'>
         <div className="auth-container">
           <form className='auth-form auth-register' onSubmit={formik.handleSubmit} method='POST'>
@@ -147,28 +177,28 @@ const Register = () => {
                   value={formik.values.name}
                   onChange={formik.handleChange}
                 />
-                {/* {formik.errors.name && <p className='auth-error'>{formik.errors.name}</p>} */}
+                {formik.errors.name && <p className='auth-error'>{formik.errors.name}</p>}
               </div>
               <div className="form-item">
                 <input type="email" name='email' className='form-input' placeholder='Enter email'
                   value={formik.values.email}
                   onChange={formik.handleChange}
                 />
-                {/* {formik.errors.email && <p className='auth-error'>{formik.errors.email}</p>} */}
+                {formik.errors.email && <p className='auth-error'>{formik.errors.email}</p>}
               </div>
               <div className="form-item">
                 <input type="password" name='password' className='form-input' placeholder='Enter password'
                   value={formik.values.password}
                   onChange={formik.handleChange}
                 />
-                {/* {formik.errors.password && <p className='auth-error'>{formik.errors.password}</p>} */}
+                {formik.errors.password && <p className='auth-error'>{formik.errors.password}</p>}
               </div>
               <div className="form-item">
                 <input type="password" name='confirmPassword' className='form-input' placeholder='Confirm password'
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                 />
-                {/* {formik.errors.confirmPassword && <p className='auth-error'>{formik.errors.confirmPassword}</p>} */}
+                {formik.errors.confirmPassword && <p className='auth-error'>{formik.errors.confirmPassword}</p>}
               </div>
 
               <button type='submit' className='auth-form-cta btn-primary'>Register</button>
@@ -176,11 +206,11 @@ const Register = () => {
             </div>
 
             <div className='auth-google-block'>
-                <p className='auth-form-seperator'>or</p>
-                <div className='auth-google-btn' onClick={handleGoogleSignUp}>
-                  <img src={GoogleIcon} className='auth-google-btn-icon'/>
-                  <p className='auth-google-btn-text'>Sign up with google</p>
-                </div>
+              <p className='auth-form-seperator'>or</p>
+              <div className='auth-google-btn' onClick={handleGoogleSignUp}>
+                <img src={GoogleIcon} className='auth-google-btn-icon' />
+                <p className='auth-google-btn-text'>Sign up with google</p>
+              </div>
             </div>
           </form>
         </div>

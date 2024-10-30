@@ -8,6 +8,7 @@ import axios from "axios";
 import Loader from "../components/loader/loader";
 import { useAuthContext } from "../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
+import { toast, Toaster } from "sonner";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -23,6 +24,10 @@ const Login = () => {
 
   // handle submit form
   const handleSubmit = async (values) => {
+
+    if(formik.errors){
+      formik.validateForm()
+    }
     setIsLoading(true);
 
     try {
@@ -41,8 +46,15 @@ const Login = () => {
         handleSetUser(res.data?.user)
         navigate('/dashboard')
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +68,7 @@ const Login = () => {
     },
     validationSchema: formScehma,
     onSubmit: handleSubmit,
+    validateOnChange: false
   });
 
   // handle google success
@@ -75,12 +88,19 @@ const Login = () => {
         }
       });
       console.log(res.data)
-      if(res.data){
+      if (res.data) {
         handleSetUser(res.data?.user)
         navigate("/dashboard")
       }
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error)
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       setIsLoading(false)
     }
@@ -88,12 +108,13 @@ const Login = () => {
 
   const handleGoogleSignUp = useGoogleLogin({
     onSuccess: (data) => handleGoogleSuccess(data),
-    onError: (error) => console.log("errro: ", error),
+    onError: () => toast.error("unable to login via google"),
     flow: 'auth-code'
   })
   return (
     <>
       {isLoading && <Loader />}
+      <Toaster richColors duration={2000} position="top-center" />
       <div className="auth">
         <div className="auth-container">
           <form
@@ -124,9 +145,9 @@ const Login = () => {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                 />
-                {/* {formik.errors.email && (
+                {formik.errors.email && (
                   <p className="auth-error">{formik.errors.email}</p>
-                )} */}
+                )}
               </div>
               <div className="form-item">
                 <input
@@ -137,9 +158,9 @@ const Login = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                 />
-                {/* {formik.errors.password && (
+                {formik.errors.password && (
                   <p className="auth-error">{formik.errors.password}</p>
-                )} */}
+                )}
               </div>
               <button type="submit" className="auth-form-cta btn-primary">
                 Login

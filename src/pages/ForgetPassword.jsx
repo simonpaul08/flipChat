@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import ChangePassword from "../components/modal/changePassword"
+import { toast, Toaster } from "sonner";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -34,9 +35,19 @@ const ForgetPassword = () => {
         }
       );
 
-      console.log(res.data);    
-    } catch (e) {
-      console.log(e);
+      if(res.data){
+        toast.success(res.data?.message)
+        setIsModal(true)
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -51,11 +62,11 @@ const ForgetPassword = () => {
     onSubmit: handleSubmit,
   });
 
-  console.log(formik.errors)
   return (
     <>
       {isLoading && <Loader />}
-      {!isModal && <ChangePassword />}
+      {isModal && <ChangePassword />}
+      <Toaster richColors duration={2000} position="top-center"/>
       <div className="auth">
         <div className="auth-container">
           <form
@@ -90,6 +101,12 @@ const ForgetPassword = () => {
               <button type="submit" className="auth-form-cta btn-primary">
                 Submit
               </button>
+              <p className="auth-footer-text">
+                Don't have an account ?{" "}
+                <Link className="auth-forget" to="/register">
+                  Register Here
+                </Link>
+              </p>
             </div>
           </form>
         </div>
