@@ -15,8 +15,9 @@ const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { handleSetUser } = useAuthContext()
+  const { handleSetUser } = useAuthContext();
 
+  // form schema
   const formScehma = yup.object().shape({
     email: yup.string().required("email is required"),
     password: yup.string().required("password is required"),
@@ -24,9 +25,8 @@ const Login = () => {
 
   // handle submit form
   const handleSubmit = async (values) => {
-
-    if(formik.errors){
-      formik.validateForm()
+    if (formik.errors) {
+      formik.validateForm();
     }
     setIsLoading(true);
 
@@ -41,10 +41,12 @@ const Login = () => {
         }
       );
 
-      console.log(res.data);
       if (res.data) {
-        handleSetUser(res.data?.user)
-        navigate('/dashboard')
+        toast.success(res.data?.message);
+        setTimeout(() => {
+          handleSetUser(res.data?.user);
+          navigate("/dashboard");
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
@@ -68,32 +70,38 @@ const Login = () => {
     },
     validationSchema: formScehma,
     onSubmit: handleSubmit,
-    validateOnChange: false
+    validateOnChange: false,
   });
 
   // handle google success
   const handleGoogleSuccess = async (data) => {
     const { code } = data;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     let body = {
-      code
-    }
+      code,
+    };
 
     try {
-      const res = await axios.post(`${SERVER_URL}api/auth/google/login`, { ...body }, {
-        headers: {
-          'Content-Type': "application/json"
+      const res = await axios.post(
+        `${SERVER_URL}api/auth/google/login`,
+        { ...body },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
-      console.log(res.data)
+      );
       if (res.data) {
-        handleSetUser(res.data?.user)
-        navigate("/dashboard")
+        toast.success(res.data?.message);
+        setTimeout(() => {
+          handleSetUser(res.data?.user);
+          navigate("/dashboard");
+        }, 1000);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       } else if (error?.message) {
@@ -102,15 +110,15 @@ const Login = () => {
         toast.error("something went wrong");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignUp = useGoogleLogin({
     onSuccess: (data) => handleGoogleSuccess(data),
     onError: () => toast.error("unable to login via google"),
-    flow: 'auth-code'
-  })
+    flow: "auth-code",
+  });
   return (
     <>
       {isLoading && <Loader />}

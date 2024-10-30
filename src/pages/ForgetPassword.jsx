@@ -16,12 +16,14 @@ const ForgetPassword = () => {
 
   // form shcema
   const formScehma = yup.object().shape({
-    email: yup.string().required("email is required"),
+    email: yup.string().email().required("email is required"),
   });
 
   // handle submit form
   const handleSubmit = async (values) => {
-    console.log(values)
+    if(formik.errors){
+      formik.validateForm()
+    }
     setIsLoading(true);
 
     try {
@@ -60,12 +62,13 @@ const ForgetPassword = () => {
     },
     validationSchema: formScehma,
     onSubmit: handleSubmit,
+    validateOnChange: false
   });
 
   return (
     <>
       {isLoading && <Loader />}
-      {isModal && <ChangePassword />}
+      {isModal && <ChangePassword email={formik.values.email}/>}
       <Toaster richColors duration={2000} position="top-center"/>
       <div className="auth">
         <div className="auth-container">
@@ -93,10 +96,11 @@ const ForgetPassword = () => {
                   placeholder="Enter email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
+                  required
                 />
-                {/* {formik.errors.email && (
+                {formik.errors.email && (
                   <p className="auth-error">{formik.errors.email}</p>
-                )} */}
+                )}
               </div>
               <button type="submit" className="auth-form-cta btn-primary">
                 Submit

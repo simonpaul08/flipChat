@@ -16,24 +16,26 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import LandingModal from "../components/landingModal/landingModal";
 import axios from "axios";
+import { toast, Toaster } from "sonner";
 
 const COUNTRYLIST = CountryList.getAll();
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const Landing = () => {
   const navigate = useNavigate();
   const [countries, setCountries] = useState([]);
   const [isModal, setIsModal] = useState(false);
-  const [unknownLink, setUnknownLink] = useState('');
+  const [unknownLink, setUnknownLink] = useState("");
   const [isBrand, setIsBrand] = useState(false);
-  const [brandName, setBrandName] = useState('');
+  const [brandName, setBrandName] = useState("");
 
   const formSchema = yup.object().shape({
     countryCode: yup.string().required("country code is required!"),
     number: yup
       .string()
-      .min(6, "minimum 6 digits are required")
-      .max(12, "maximum 12 digits are allowed")
+      .matches(phoneRegExp, "phone number is not valid")
       .required("number is required!"),
     message: yup
       .string()
@@ -43,47 +45,72 @@ const Landing = () => {
 
   // handle submit
   const handleSubmit = async (values) => {
-    let body = {
-      ...values
+    if (formik.errors) {
+      formik.validateForm();
     }
+    let body = {
+      ...values,
+    };
 
     try {
-      const res = await axios.post(`${SERVER_URL}api/link/unknown`, { ...body }, {
-        headers: {
-          'Content-Type': "application/json"
+      const res = await axios.post(
+        `${SERVER_URL}api/link/unknown`,
+        { ...body },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
-      console.log(res.data)
-      if(res.data){
-        setUnknownLink(res.data?.shortLink?.username)
-        setIsModal(true)
+      );
+      console.log(res.data);
+      if (res.data) {
+        setUnknownLink(res.data?.shortLink?.username);
+        setIsModal(true);
       }
-    }catch(e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     }
-  }
+  };
 
   // handle check brand
   const handleCheckBrand = async (e) => {
     e.preventDefault();
     let body = {
-      name: brandName
-    }
+      name: brandName,
+    };
 
     try {
-      const res = await axios.post(`${SERVER_URL}api/link/brand/check`, { ...body }, {
-        headers: {
-          'Content-Type': "application/json"
+      const res = await axios.post(
+        `${SERVER_URL}api/link/brand/check`,
+        { ...body },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
-      if(res.data){
-        console.log(res.data)
-        setIsBrand(true)
+      );
+      if (res.data) {
+        console.log(res.data);
+        setIsBrand(true);
       }
-    }catch(e) {
-      console.log(e)
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -92,18 +119,19 @@ const Landing = () => {
       message: "",
     },
     validationSchema: formSchema,
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
+    validateOnChange: false,
   });
 
   const handleCloseModal = () => {
     setIsModal(false);
-    setUnknownLink("")
-  }
+    setUnknownLink("");
+  };
 
   const handleCloseBrand = () => {
-    setIsBrand(false)
-    setBrandName("")
-  }
+    setIsBrand(false);
+    setBrandName("");
+  };
 
   useEffect(() => {
     if (COUNTRYLIST.length) {
@@ -124,7 +152,14 @@ const Landing = () => {
   };
   return (
     <>
-      {isModal && <LandingModal handleCloseModal={handleCloseModal} handleAuth={handleAuth} unknownLink={unknownLink}/>}
+      {isModal && (
+        <LandingModal
+          handleCloseModal={handleCloseModal}
+          handleAuth={handleAuth}
+          unknownLink={unknownLink}
+        />
+      )}
+      <Toaster richColors duration={1000} position="text-center" />
       <div className="landing">
         <div className="landing-section">
           <div className="landing-container">
@@ -162,7 +197,10 @@ const Landing = () => {
                   Build you brand’s recognition and how get detailed insights on
                   how your links are performing
                 </p>
-                <button className="showcase-cta btn-primary" onClick={handleAuth}>
+                <button
+                  className="showcase-cta btn-primary"
+                  onClick={handleAuth}
+                >
                   Generate WhatsApp Link
                 </button>
               </div>
@@ -187,9 +225,9 @@ const Landing = () => {
               </p>
               <h3 className="landing-features-sub-title">How It Works:</h3>
               <p className="landing-features-para">
-                Your customers will click on your Multiagent link. Each click will
-                open a chat with a different WhatsApp line. Try clicking multiple
-                times on the following link to see a visual example:
+                Your customers will click on your Multiagent link. Each click
+                will open a chat with a different WhatsApp line. Try clicking
+                multiple times on the following link to see a visual example:
               </p>
 
               <div className="landing-features-animation">
@@ -200,7 +238,9 @@ const Landing = () => {
           {/* Sub Features */}
           <div className="sub-features">
             <div className="landing-container">
-              <h3 className="sub-features-title">Create Your Free Link Today</h3>
+              <h3 className="sub-features-title">
+                Create Your Free Link Today
+              </h3>
               <div className="landing-form-flex">
                 <form className="landing-form" onSubmit={formik.handleSubmit}>
                   <div className="form-item">
@@ -231,12 +271,14 @@ const Landing = () => {
                         placeholder="Your phone number here...."
                         value={formik.values.number}
                         onChange={formik.handleChange}
+                        minLength={6}
                         maxLength={12}
+                        required
                       />
                     </div>
-                    {/* {formik.errors.number && (
+                    {formik.errors.number && (
                       <p className="error">{formik.errors.number}</p>
-                    )} */}
+                    )}
                   </div>
                   <div className="form-item">
                     <label htmlFor="message" className="landing-form-label">
@@ -252,11 +294,14 @@ const Landing = () => {
                       value={formik.values.message}
                       onChange={formik.handleChange}
                     />
-                    {/* {formik.errors.message && (
+                    {formik.errors.message && (
                       <p className="error">{formik.errors.message}</p>
-                    )} */}
+                    )}
                   </div>
-                  <button type="submit" className="btn-primary landing-form-cta">
+                  <button
+                    type="submit"
+                    className="btn-primary landing-form-cta"
+                  >
                     Generate My Link
                   </button>
                 </form>
@@ -271,7 +316,11 @@ const Landing = () => {
               <h3 className="sub-features-title">
                 Find A FlipChat.link For Your Brand
               </h3>
-              <form className="landing-find" method="POST" onSubmit={handleCheckBrand}>
+              <form
+                className="landing-find"
+                method="POST"
+                onSubmit={handleCheckBrand}
+              >
                 <input
                   type="text"
                   className="landing-find-input"
@@ -280,6 +329,8 @@ const Landing = () => {
                   placeholder="Enter your brand name..."
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
+                  minLength={3}
+                  required
                 />
                 <button className="btn-primary landing-find-cta">
                   {" "}
@@ -287,17 +338,36 @@ const Landing = () => {
                   Search FlipChat Link
                 </button>
               </form>
-              {isBrand && <div className="brandcheck">
+              {isBrand && (
+                <div className="brandcheck">
                   <div className="brandcheck-header">
-                      <img src={CrossIcon} alt="cross icon" className="brandcheck-cross" onClick={handleCloseBrand}/>
+                    <img
+                      src={CrossIcon}
+                      alt="cross icon"
+                      className="brandcheck-cross"
+                      onClick={handleCloseBrand}
+                    />
                   </div>
                   <div className="brandcheck-body">
-                      <h3 className="brandcheck-title">🎉 flipchat.link/{brandName} 🎉 <span className="brandcheck-title-sub">is available as a Premium Link.</span> </h3>
-                      <p className="brandcheck-para">It includes clicks analytics, multiple agent support, updatable info and much more.</p>
-                      <p className="brandcheck-para">Get it now before someone else does</p>
-                      <button className="brandcheck-cta btn-primary">Get It Now!</button>
+                    <h3 className="brandcheck-title">
+                      🎉 flipchat.link/{brandName} 🎉{" "}
+                      <span className="brandcheck-title-sub">
+                        is available as a Premium Link.
+                      </span>{" "}
+                    </h3>
+                    <p className="brandcheck-para">
+                      It includes clicks analytics, multiple agent support,
+                      updatable info and much more.
+                    </p>
+                    <p className="brandcheck-para">
+                      Get it now before someone else does
+                    </p>
+                    <button className="brandcheck-cta btn-primary">
+                      Get It Now!
+                    </button>
                   </div>
-              </div>}
+                </div>
+              )}
             </div>
           </div>
 
@@ -311,8 +381,8 @@ const Landing = () => {
               <div className="landing-price-grid">
                 <div className="price-grid-left">
                   <p className="landing-features-para">
-                    WhatsApp click to chat links with enhanced features that drive
-                    more customers to your chat
+                    WhatsApp click to chat links with enhanced features that
+                    drive more customers to your chat
                   </p>
                   <div className="price-features">
                     <div className="price-features-item">
@@ -370,21 +440,27 @@ const Landing = () => {
                     <div className="price-card-btn">Essential</div>
                     <ul className="price-card-list">
                       <li className="price-card-list-item">1 Branded Links</li>
-                      <li className="price-card-list-item">2 Agents Per Link</li>
+                      <li className="price-card-list-item">
+                        2 Agents Per Link
+                      </li>
                     </ul>
                   </div>
                   <div className="price-card">
                     <div className="price-card-btn price-card-2">Expand</div>
                     <ul className="price-card-list">
                       <li className="price-card-list-item">3 Branded Links</li>
-                      <li className="price-card-list-item">3 Agents Per Link</li>
+                      <li className="price-card-list-item">
+                        3 Agents Per Link
+                      </li>
                     </ul>
                   </div>
                   <div className="price-card">
                     <div className="price-card-btn price-card-3">Elite</div>
                     <ul className="price-card-list">
                       <li className="price-card-list-item">8 Branded Links</li>
-                      <li className="price-card-list-item">5 Agents Per Link</li>
+                      <li className="price-card-list-item">
+                        5 Agents Per Link
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -405,10 +481,10 @@ const Landing = () => {
               </div>
 
               <p className="landing-footer-para">
-                Flipchat.link is neither associated with nor sponsored by WhatsApp
-                LLC or Meta Platforms, Inc. We offer a service based on WhatsApp’s
-                public API. By using our service, you are accepting our terms of
-                service and privacy policy.
+                Flipchat.link is neither associated with nor sponsored by
+                WhatsApp LLC or Meta Platforms, Inc. We offer a service based on
+                WhatsApp’s public API. By using our service, you are accepting
+                our terms of service and privacy policy.
               </p>
 
               <p className="landing-footer-email">support.flipchat@gmail.com</p>

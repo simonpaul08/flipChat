@@ -8,40 +8,48 @@ import { toast, Toaster } from "sonner";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
-const ChangePassword = () => {
+const ChangePassword = ({ email }) => {
   const [otp, setotp] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const formSchema = yup.object().shape({
     password: yup.string().required("password is required"),
-    confirmPassword: yup.string()
-      .oneOf([yup.ref('password')], 'Passwords must match')
-      .required('Confirm Password is required'),
-  })
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password")], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
 
   const handleChangePassword = async (values) => {
+    if (formik.errors) {
+      formik.validateForm();
+    }
     let body = {
       otp: otp,
-      password: values?.password
-    }
-    setIsLoading(true)
+      password: values?.password,
+    };
+    setIsLoading(true);
     try {
-      const res = await axios.post(`${SERVER_URL}api/auth/forget/verify`, { ...body }, {
-        headers: {
-          'Content-Type': "application/json"
+      const res = await axios.post(
+        `${SERVER_URL}api/auth/forget/verify`,
+        { ...body },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      })
-      console.log(res.data)
-      if(res.data){
-        toast.success(res.data?.message)
+      );
+      console.log(res.data);
+      if (res.data) {
+        toast.success(res.data?.message);
         setTimeout(() => {
-          navigate("/login")
-        }, 1000)
+          navigate("/login");
+        }, 1000);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       } else if (error?.message) {
@@ -50,30 +58,69 @@ const ChangePassword = () => {
         toast.error("something went wrong");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
     },
     validationSchema: formSchema,
-    onSubmit: handleChangePassword
-  })
+    onSubmit: handleChangePassword,
+    validateOnChange: false,
+  });
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      const res = await axios.get(
-        `${SERVER_URL}api/otp/verify/${otp}`);
+      const res = await axios.get(`${SERVER_URL}api/otp/verify/${otp}`);
 
       if (res.data) {
-        toast.success(res.data?.message)
+        toast.success(res.data?.message);
         setIsOtpVerified(true);
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleWarn = () => {
+    toast.warning("otp is already verified");
+  };
+
+  const handleSendAgain = async () => {
+    setIsLoading(true);
+
+    let body = {
+      email: email,
+    };
+
+    try {
+      const res = await axios.post(
+        `${SERVER_URL}api/otp/forget/resend`,
+        { ...body },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.data) {
+        toast.success(res.data?.message);
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +146,11 @@ const ChangePassword = () => {
             <p className="modal-para">
               A 6 digit verification code has been sent to your email
             </p>
-            <form method="POST" className="modal-form" onSubmit={handleVerifyOtp}>
+            <form
+              method="POST"
+              className="modal-form"
+              onSubmit={handleVerifyOtp}
+            >
               <div className="form-item form-item-flex">
                 <input
                   type="text"
@@ -115,22 +166,32 @@ const ChangePassword = () => {
                 <button
                   type="submit"
                   disabled={isOtpVerified}
-                  className={`auth-form-cta-flex btn-primary ${isOtpVerified ? "btn-disabled" : ""
-                    }`}
+                  className={`auth-form-cta-flex btn-primary ${
+                    isOtpVerified ? "btn-disabled" : ""
+                  }`}
                 >
                   Verify
                 </button>
               </div>
               <p className="auth-footer-text">
                 Didn't receive otp ?{" "}
-                <Link className="auth-forget">Send Again</Link>
+                <Link
+                  className="auth-forget"
+                  onClick={isOtpVerified ? handleWarn : handleSendAgain}
+                >
+                  Send Again
+                </Link>
               </p>
             </form>
 
-            <form method="POST" className="modal-form change-password-form" onSubmit={formik.handleSubmit}>
+            <form
+              method="POST"
+              className="modal-form change-password-form"
+              onSubmit={formik.handleSubmit}
+            >
               <div className="form-item">
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   id="password"
                   placeholder="Enter password"
@@ -140,10 +201,13 @@ const ChangePassword = () => {
                   disabled={!isOtpVerified}
                   required
                 />
+                {formik.errors.password && (
+                  <p className="auth-error">{formik.errors.password}</p>
+                )}
               </div>
               <div className="form-item">
                 <input
-                  type="text"
+                  type="password"
                   name="confirmPassword"
                   id="confirm Password"
                   placeholder="Enter password again"
@@ -153,12 +217,16 @@ const ChangePassword = () => {
                   disabled={!isOtpVerified}
                   required
                 />
+                {formik.errors.confirmPassword && (
+                  <p className="auth-error">{formik.errors.confirmPassword}</p>
+                )}
               </div>
               <button
                 type="submit"
                 disabled={!isOtpVerified}
-                className={`auth-form-cta btn-primary ${!isOtpVerified ? "btn-disabled" : ""
-                  }`}
+                className={`auth-form-cta btn-primary ${
+                  !isOtpVerified ? "btn-disabled" : ""
+                }`}
               >
                 Submit
               </button>
