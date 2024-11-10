@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { countries } from "../utils/utils";
+import * as yup from "yup";
 
 const Profile = () => {
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  const Schema = yup.object().shape({
+    name: yup.string().required("name is required"),
+    accountType: yup.string().required("account type is required"),
+
+  })
 
   return (
     <div className="dashboard">
@@ -27,18 +37,6 @@ const Profile = () => {
               />
             </div>
             <div className="profile-form-item">
-              <label htmlFor="email" className="profile-form-label">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="profile-form-input"
-                placeholder="email address..."
-              />
-            </div>
-            <div className="profile-form-item">
               <label htmlFor="account-type" className="profile-form-label">
                 Account Type
               </label>
@@ -60,8 +58,11 @@ const Profile = () => {
                 id="country"
                 className="profile-form-input"
               >
-                <option value={"india"}>India</option>
-                <option value={"brazil"}>Brazil</option>
+                {countries?.map((item, index) => {
+                  return (
+                    <option key={index + 1} value={item}>{item}</option>
+                  )
+                })}
               </select>
             </div>
             <div className="profile-form-item">
@@ -88,6 +89,18 @@ const Profile = () => {
                 <option value={"education"}>Education</option>
                 <option value={"marketing"}>Marketing</option>
               </select>
+            </div>
+            <div className="profile-form-item">
+              <label htmlFor="sector" className="profile-form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className="profile-form-input"
+                placeholder="password..."
+              />
             </div>
             <div className="profile-form-item">
               <button type="button" className="btn-secondary profile-cta-edit">Edit Profile</button>

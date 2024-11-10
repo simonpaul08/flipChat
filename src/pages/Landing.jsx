@@ -17,11 +17,11 @@ import * as yup from "yup";
 import LandingModal from "../components/landingModal/landingModal";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
+import { phoneRegExp } from "../utils/utils";
 
 const COUNTRYLIST = CountryList.getAll();
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -32,6 +32,7 @@ const Landing = () => {
   const [brandName, setBrandName] = useState("");
 
   const formSchema = yup.object().shape({
+    // to be changed as per the schema 
     countryCode: yup.string().required("country code is required!"),
     number: yup
       .string()

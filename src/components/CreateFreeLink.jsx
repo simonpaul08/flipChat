@@ -1,99 +1,138 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
+import Loader from "./loader/loader";
+import { toast, Toaster } from "sonner";
+import axios from "axios";
+import { phoneRegExp } from "../utils/utils";
+import { useAuthContext } from "../context/AuthContext";
+
+const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const CreateFreeLink = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { userDetails } = useAuthContext()
   const Schema = yup.object().shape({
-    username: yup.string().required("username is required"),
     agent: yup.object().shape({
       countryCode: yup.string().required("country code is required"),
-      agentNumber: yup.string().required("agent number is required"),
+      number: yup.string()
+        .matches(phoneRegExp, "phone number is not valid")
+        .required("number is required!"),
     }),
-    message: yup.string().required("message is required"),
+    message: yup.string()
+      .min(1, "message is required!")
+      .required("message is required!"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    if (formik.errors) {
+      formik.validateForm();
+    }
+    setIsLoading(true);
+
+    let body = {
+      userId: userDetails?.id,
+      agents: [values?.agent],
+      message: values?.message
+    }
+
+    try {
+      const res = await axios.post(`${SERVER_URL}api/link/create/free`, { ...body });
+      if (res.data) {
+        toast.success(res.data?.message)
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
+      setIsLoading(false)
+    }
   };
 
   const formik = useFormik({
     initialValues: {
-      username: "",
       agent: {
         countryCode: "+91",
-        agentNumber: "",
+        number: "",
       },
       message: "",
     },
     validationSchema: Schema,
     onSubmit: handleSubmit,
+    validateOnChange: false
   });
   return (
-    <div className="create-form-container">
-      <form method="POST" className="create-form profile-form">
-        <div className="profile-form-item">
-          <label htmlFor="username" className="profile-form-label">
-            Username
-          </label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            className="profile-form-input"
-            placeholder="username..."
-            value={formik.values.username}
-            onChange={formik.handleChange}
-          />
-        </div>
-        <div className="profile-form-item">
-          <label htmlFor="agent-1" className="profile-form-label">
-            Agent Number
-          </label>
-          <div className="create-form-number-block">
-            <select
-              id="countryCode"
-              name={`agent.countryCode`}
-              className="profile-form-select"
-              value={formik.values.agent.countryCode}
-              onChange={formik.handleChange}
-            >
-              <option value="+91">+91</option>
-              <option value="+92">+92</option>
-              <option value="+1">+1</option>
-            </select>
-            <input
-              type="text"
-              id="agentNumber"
-              name={`agent.agentNumber`}
-              className="profile-form-input"
-              placeholder="agent number..."
-              value={formik.values.agent.agentNumber}
-              onChange={formik.handleChange}
-            />
+    <>
+      {isLoading && <Loader />}
+      <Toaster richColors position="top-center" duration={2000} />
+      <div className="create-form-container">
+        <form method="POST" className="create-form profile-form" onSubmit={formik.handleSubmit}>
+          <div className="profile-form-item">
+            <label htmlFor="agent-1" className="profile-form-label">
+              Agent Number
+            </label>
+            <div className="create-form-number-block">
+              <select
+                id="countryCode"
+                name={`agent.countryCode`}
+                className="profile-form-select"
+                value={formik.values.agent.countryCode}
+                onChange={formik.handleChange}
+              >
+                <option value="+91">+91</option>
+                <option value="+92">+92</option>
+                <option value="+1">+1</option>
+              </select>
+              <div className="input-container">
+                <input
+                  type="text"
+                  id="number"
+                  name={`agent.number`}
+                  className="profile-form-input"
+                  placeholder="agent number..."
+                  value={formik.values.agent.number}
+                  onChange={formik.handleChange}
+                />
+                {formik.errors.agent && (
+                  <p className="auth-error">{formik.errors.agent.number}</p>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="profile-form-item">
-          <label htmlFor="message" className="profile-form-label">
-            Message
-          </label>
-          <textarea
-            type="text"
-            id="message"
-            name="message"
-            value={formik.values.message}
-            onChange={formik.handleChange}
-            className="profile-form-input"
-            placeholder="message here..."
-            rows={3}
-          />
-        </div>
-        <div className="profile-form-item">
-          <button type="submit" className="btn-primary create-cta">
-            Create Link
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="profile-form-item">
+            <label htmlFor="message" className="profile-form-label">
+              Message
+            </label>
+            <div className="input-container">
+              <textarea
+                type="text"
+                id="message"
+                name="message"
+                value={formik.values.message}
+                onChange={formik.handleChange}
+                className="profile-form-input"
+                placeholder="message here..."
+                rows={3}
+              />
+              {formik.errors.message && (
+                <p className="auth-error">{formik.errors.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="profile-form-item">
+            <button type="submit" className="btn-primary create-cta">
+              Create Link
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

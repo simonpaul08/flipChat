@@ -37,3 +37,13 @@
     color: var(--color-gray-secondary);
     margin-bottom: 2.5rem;
 }
+.modal-btns {
+    width: 100%;
+    display: grid;
+    column-gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 2rem;
+}
+.modal-btn {
+    width: 100%;
+}

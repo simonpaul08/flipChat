@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { getUserByid } from "../utils/apis";
 
 const STORAGE_NAME = "flipchat_user"
 
@@ -11,6 +12,7 @@ export const useAuthContext = () => {
 const AuthProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(null);
+    const [userDetails, setUserDetails] = useState(null);
 
     // handle set user
     const handleSetUser = (values) => {
@@ -24,26 +26,42 @@ const AuthProvider = ({ children }) => {
         setCurrentUser(null)
     }
 
-    // presist user
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem(STORAGE_NAME))
-        if(user){
-            setCurrentUser(user)
-        }
-    }, [])
+    const fetchUserDetails = async (id) => {
+        try {
+            const res = await getUserByid(id);
+            if (res.data) {
+                setUserDetails(res.data?.user)
+            }
+            return true
 
-    let values = {
-        currentUser,
-        handleSetUser,
-        handleLogout
+        } catch (error) {
+            return error
+        }
     }
 
+        // presist user
+        useEffect(() => {
+            const user = JSON.parse(localStorage.getItem(STORAGE_NAME))
+            if (user) {
+                setCurrentUser(user)
+            }
+        }, [])
 
-    return (
-        <AuthContext.Provider value={values}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+        let values = {
+            currentUser,
+            handleSetUser,
+            userDetails,
+            setUserDetails,
+            fetchUserDetails,
+            handleLogout
+        }
 
-export default AuthProvider;
+
+        return (
+            <AuthContext.Provider value={values}>
+                {children}
+            </AuthContext.Provider>
+        )
+    }
+
+    export default AuthProvider;

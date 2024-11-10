@@ -644,7 +644,7 @@ textarea {
   align-items: center;
   justify-content: center;
   padding: 1rem 1rem;
-  border-radius: 8px;
+  border-radius: 2rem;
   margin-bottom: 2.75rem;
   cursor: pointer;
 }
@@ -680,6 +680,7 @@ textarea {
 .dashboard {
   flex: 1;
   height: 100%;
+  background-color: var(--color-bg-primary);
   overflow-y: auto;
 }
 .dashboard-header {
@@ -687,6 +688,7 @@ textarea {
   height: 78px;
   display: flex;
   align-items: center;
+  background-color: var(--color-white);
 }
 .dashboard-header-title {
   width: 100%;
@@ -710,9 +712,10 @@ textarea {
 }
 .dashboard-main {
   width: 100%;
-  height: calc(100% - 78px);
-  background-color: var(--color-bg-primary);
   padding: 3rem 4rem;
+}
+.dashboard-main-warning {
+  margin-bottom: 2rem;
 }
 .dashboard-main-header {
   width: 100%;
@@ -727,7 +730,7 @@ textarea {
   padding: 1rem 2rem;
   align-items: center;
   background-color: var(--color-gray-primary);
-  border-radius: 8px;
+  border-radius: 2rem;
 }
 .dashboard-search-input {
   padding: 0.5rem 1rem;
@@ -751,13 +754,13 @@ textarea {
 .dashboard-grid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 30rem));
   gap: 1.5rem;
 }
 .dashboard-grid-item {
   padding: 2rem;
   background-color: var(--color-white);
-  border-radius: 8px;
+  border-radius: 2rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   cursor: pointer;
 }
@@ -817,7 +820,7 @@ textarea {
   width: 100%;
   padding: 2rem;
   background-color: var(--color-white);
-  border-radius: 8px;
+  border-radius: 2rem;
   margin-bottom: 3rem;
 }
 .plan-main-para {
@@ -839,7 +842,7 @@ textarea {
   max-width: 38rem;
   padding: 3rem 2rem;
   background-color: var(--color-white);
-  border-radius: 8px;
+  border-radius: 2rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .plan-card-item-header {
@@ -909,6 +912,13 @@ textarea {
   font-size: 1.8rem;
   font-weight: 400;
   margin-right: 3rem;
+}
+.input-container {
+  flex: 1;
+}
+.create-form-number-block {
+  display: flex;
+  align-items: center;
 }
 .profile-form-input {
   width: 32rem;
@@ -1029,25 +1039,22 @@ textarea {
 .faq-item-content {
   background-color: var(--color-gray-light);
   border-radius: 0 0 8px 8px;
-  max-height: 0;
-  transition: max-height 0.6s ease;
+  height: 0;
+  transition: all 0.3s ease;
   overflow: hidden;
+  padding: 0 1.5rem;
 }
 .faq-item-content-text {
   font-size: 1.35rem;
   font-weight: 400;
   color: var(--color-gray-secondary);
   line-height: 1.75;
-  display: none;
 }
 .open-accordion .faq-item-content {
-  max-height: 500px;
-  transition: max-height 0.6s ease;
-  padding: 2rem 1.5rem;
+  height: 120px;
+  padding-top: 0.75rem;
 }
-.open-accordion .faq-item-content-text  {
-  display: block;
-}
+
 
 
 /* Create Link */
@@ -1098,7 +1105,7 @@ textarea {
   align-items: center;
   padding: 1rem 3rem;
   background-color: var(--color-gold-light);
-  border-radius: 8px;
+  border-radius: 2rem;
 }
 .warning-text {
   font-size: 1.35rem;
