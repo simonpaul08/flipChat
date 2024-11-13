@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "../commonModal.css";
 import { Link } from "react-router-dom";
 
 const VerifyOTP = ({ handleVerifyOtp, handleSendAgain }) => {
 
   const [otp, setotp] = useState('')
+  const [timer, setTimer] = useState(0);
+  const [isTimer, setIsTimer] = useState(false);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
     handleVerifyOtp(otp)
   }
+
 
   return (
 
@@ -29,7 +32,7 @@ const VerifyOTP = ({ handleVerifyOtp, handleSendAgain }) => {
               <div className="form-item">
                 <p className="auth-footer-text">
                   Didn't receive otp ?{" "}
-                  {<Link
+                  {isTimer ? <p className="auth-forget">Resend after {}s</p> : <Link
                     className="auth-forget"
                     onClick={handleSendAgain}
                   >

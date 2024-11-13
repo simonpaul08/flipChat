@@ -171,7 +171,7 @@ const Register = () => {
     flow: "auth-code",
   });
 
-
+  // handle otp send again 
   const handleSendAgain = async () => {
     setIsLoading(true);
 
@@ -209,7 +209,7 @@ const Register = () => {
   return (
     <>
       {isLoading && <Loader />}
-      {isVerify && <VerifyOTP handleVerifyOtp={handleVerifyOtp} handleSendAgain={handleSendAgain} />}
+      {!isVerify && <VerifyOTP handleVerifyOtp={handleVerifyOtp} handleSendAgain={handleSendAgain} />}
       <Toaster richColors position="top-center" duration={2000} />
       <div className="auth">
         <div className="auth-container">
