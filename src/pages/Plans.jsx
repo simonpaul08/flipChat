@@ -11,7 +11,6 @@ import axios from "axios";
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const Plans = () => {
-
   const [isModal, setIsModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,21 +19,23 @@ const Plans = () => {
   const handleCloseModal = () => setIsModal(false);
 
   const handleSubmit = async (planType) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     let body = {
       userId: userDetails?.id,
       planType: planType,
-      transactionId: "jsgjagfsd8fsdbfsbdf8"
-    }
+      transactionId: "jsgjagfsd8fsdbfsbdf8",
+    };
 
     try {
-      const res = await axios.post(`${SERVER_URL}api/subscription/subscribe`, { ...body })
-      if(res.data) {
-        toast.success(res.data?.message)
+      const res = await axios.post(`${SERVER_URL}api/subscription/subscribe`, {
+        ...body,
+      });
+      if (res.data) {
+        toast.success(res.data?.message);
       }
-      await fetchUserDetails(userDetails?.id)
-    }catch (error) {
+      await fetchUserDetails(userDetails?.id);
+    } catch (error) {
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       } else if (error?.message) {
@@ -43,19 +44,23 @@ const Plans = () => {
         toast.error("something went wrong");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <>
       {isLoading && <Loader />}
-      {isModal && <CommonModal
-        header={"Do you want to proceed"}
-        para={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore dignissimos quibusdam nihil ducimus rem."}
-        handleCancel={handleCloseModal}
-        handleSubmit={handleSubmit}
-      />}
+      {isModal && (
+        <CommonModal
+          header={"Do you want to proceed"}
+          para={
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore dignissimos quibusdam nihil ducimus rem."
+          }
+          handleCancel={handleCloseModal}
+          handleSubmit={handleSubmit}
+        />
+      )}
       <div className="dashboard">
         <div className="dashboard-header">
           <div className="dashboard-header-title">
@@ -70,15 +75,20 @@ const Plans = () => {
               At <span className="plan-main-para-span">Flipchat.link</span>, we
               offer a range of plans tailored to meet the diverse needs of our
               users. Whether you're just starting out, looking to grow, or
-              managing a large business, we have a plan that will help you connect
-              with your customers more effectively.
+              managing a large business, we have a plan that will help you
+              connect with your customers more effectively.
             </p>
           </div>
 
-          {userDetails?.planType === PLANS.FREE && <div className="dashboard-main-warning">
-            <Warning text={"You don't have an active plan. Upgrade Now"} />
-          </div>}
-
+          {userDetails?.planType === PLANS.FREE && (
+            <div className="dashboard-main-warning">
+              <Warning
+                text={"You don't have an active plan."}
+                linkText={"Upgrade Now"}
+                link={"/dashboard/plans"}
+              />
+            </div>
+          )}
 
           <div className="plan-card-grid">
             <div className="plan-card-item">
@@ -125,10 +135,18 @@ const Plans = () => {
                   </p>
                 </div>
               </div>
-              {userDetails?.planType === PLANS.ESSENTIAL ?
-                <button className="btn-secondary cta-upgrade">Currently Active</button>
-                :
-                <button className="btn-primary cta-upgrade" onClick={() => handleSubmit(PLANS.ESSENTIAL)}>Upgrade Now</button>}
+              {userDetails?.planType === PLANS.ESSENTIAL ? (
+                <button className="btn-secondary cta-upgrade">
+                  Currently Active
+                </button>
+              ) : (
+                <button
+                  className="btn-primary cta-upgrade"
+                  onClick={() => handleSubmit(PLANS.ESSENTIAL)}
+                >
+                  Upgrade Now
+                </button>
+              )}
             </div>
             <div className="plan-card-item">
               <div className="plan-card-item-header">
@@ -174,11 +192,18 @@ const Plans = () => {
                   </p>
                 </div>
               </div>
-              {userDetails?.planType === PLANS.EXPAND ?
-                <button className="btn-secondary cta-upgrade">Currently Active</button>
-                :
-                <button className="btn-primary cta-upgrade" onClick={() => handleSubmit(PLANS.EXPAND)}>Upgrade Now</button>
-              }
+              {userDetails?.planType === PLANS.EXPAND ? (
+                <button className="btn-secondary cta-upgrade">
+                  Currently Active
+                </button>
+              ) : (
+                <button
+                  className="btn-primary cta-upgrade"
+                  onClick={() => handleSubmit(PLANS.EXPAND)}
+                >
+                  Upgrade Now
+                </button>
+              )}
             </div>
             <div className="plan-card-item">
               <div className="plan-card-item-header">
@@ -224,16 +249,28 @@ const Plans = () => {
                   </p>
                 </div>
               </div>
-              {userDetails?.planType === PLANS.ELITE ? <button className="btn-secondary cta-upgrade">Currently Active</button>
-                :
-                <button className="btn-primary cta-upgrade" onClick={() => handleSubmit(PLANS.ELITE)}>Upgrade Now</button>
-              }
+              {userDetails?.planType === PLANS.ELITE ? (
+                <button className="btn-secondary cta-upgrade">
+                  Currently Active
+                </button>
+              ) : (
+                <button
+                  className="btn-primary cta-upgrade"
+                  onClick={() => handleSubmit(PLANS.ELITE)}
+                >
+                  Upgrade Now
+                </button>
+              )}
             </div>
           </div>
 
           <div className="plan-main-text">
             <p className="plan-main-para">
-              <span className="plan-main-para-blue">Still Not Sure?</span> Our flexible plans allow you to choose exactly what you need. Start small and upgrade anytime as your business grows. If you’re ready to enhance your WhatsApp communication, choose a plan that suits your business and start experiencing the benefits today!
+              <span className="plan-main-para-blue">Still Not Sure?</span> Our
+              flexible plans allow you to choose exactly what you need. Start
+              small and upgrade anytime as your business grows. If you’re ready
+              to enhance your WhatsApp communication, choose a plan that suits
+              your business and start experiencing the benefits today!
             </p>
           </div>
         </div>

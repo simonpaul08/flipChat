@@ -171,45 +171,17 @@ const Register = () => {
     flow: "auth-code",
   });
 
-  // handle otp send again 
-  const handleSendAgain = async () => {
-    setIsLoading(true);
 
-    let body = {
-      email: formik.values.email,
-    };
-
-    try {
-      const res = await axios.post(
-        `${SERVER_URL}api/otp/register/resend`,
-        { ...body },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (res.data) {
-        toast.success(res.data?.message);
-      }
-    } catch (error) {
-      console.log(error);
-      if (error?.response?.data?.message) {
-        toast.error(error?.response?.data?.message);
-      } else if (error?.message) {
-        toast.error(error?.message);
-      } else {
-        toast.error("something went wrong");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <>
       {isLoading && <Loader />}
-      {!isVerify && <VerifyOTP handleVerifyOtp={handleVerifyOtp} handleSendAgain={handleSendAgain} />}
+      {isVerify && (
+        <VerifyOTP
+          handleVerifyOtp={handleVerifyOtp}
+          email={formik.values.email}
+          setIsLoading={setIsLoading}
+        />
+      )}
       <Toaster richColors position="top-center" duration={2000} />
       <div className="auth">
         <div className="auth-container">

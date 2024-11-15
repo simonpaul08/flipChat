@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../loader/loader";
 import axios from "axios";
@@ -12,6 +12,8 @@ const ChangePassword = ({ email }) => {
   const [otp, setotp] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const navigate = useNavigate();
 
   const formSchema = yup.object().shape({
@@ -82,6 +84,7 @@ const ChangePassword = ({ email }) => {
       if (res.data) {
         toast.success(res.data?.message);
         setIsOtpVerified(true);
+        setTimer(0)
       }
     } catch (error) {
       console.log(error);
@@ -121,6 +124,8 @@ const ChangePassword = ({ email }) => {
 
       if (res.data) {
         toast.success(res.data?.message);
+        setTimer(30); // Set the OTP timer to 30 seconds
+        setIsButtonDisabled(true); // Disable the button until the timer is done
       }
     } catch (error) {
       console.log(error);
@@ -135,6 +140,23 @@ const ChangePassword = ({ email }) => {
       setIsLoading(false);
     }
   };
+
+  // Timer logic - count down every second
+  useEffect(() => {
+    let interval;
+
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTime) => prevTime - 1); // Decrease the timer by 1 each second
+      }, 1000);
+    } else {
+      // When the timer reaches 0, re-enable the button
+      setIsButtonDisabled(false);
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval); // Clean up the interval on component unmount
+  }, [timer]);
   return (
     <>
       {isLoading && <Loader />}
@@ -175,12 +197,16 @@ const ChangePassword = ({ email }) => {
               </div>
               <p className="auth-footer-text">
                 Didn't receive otp ?{" "}
-                <Link
-                  className="auth-forget"
-                  onClick={isOtpVerified ? handleWarn : handleSendAgain}
-                >
-                  Send Again
-                </Link>
+                {isButtonDisabled ? (
+                  <Link className="auth-forget">Resend after {timer}s</Link>
+                ) : (
+                  <Link
+                    className="auth-forget"
+                    onClick={isOtpVerified ? handleWarn : handleSendAgain}
+                  >
+                    Send Again
+                  </Link>
+                )}
               </p>
             </form>
 

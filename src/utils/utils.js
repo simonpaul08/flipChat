@@ -230,3 +230,6 @@ export const countries = [
   "Zambia",
   "Zimbabwe",
 ];
+
+// Server URL
+export const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;

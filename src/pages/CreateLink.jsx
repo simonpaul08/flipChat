@@ -32,15 +32,17 @@ const CreateLink = () => {
           <div className="create-main">
             <div className="create-switch-tabs">
               <div
-                className={`switch-tab ${currentTab === TABS.PREMIUM ? "switch-tab-active" : ""
-                  }`}
+                className={`switch-tab ${
+                  currentTab === TABS.PREMIUM ? "switch-tab-active" : ""
+                }`}
                 onClick={() => handleSwitchTab(TABS.PREMIUM)}
               >
                 <p className="switch-tab-text">Premium Link</p>
               </div>
               <div
-                className={`switch-tab ${currentTab === TABS.FREE ? "switch-tab-active" : ""
-                  }`}
+                className={`switch-tab ${
+                  currentTab === TABS.FREE ? "switch-tab-active" : ""
+                }`}
                 onClick={() => handleSwitchTab(TABS.FREE)}
               >
                 <p className="switch-tab-text">Free Link</p>
@@ -51,14 +53,26 @@ const CreateLink = () => {
               <Warning text={"There are links available in your plan. Upgrade Now"} />
             </div> */}
 
-            {currentTab === TABS.PREMIUM && userDetails?.planType === PLANS.FREE &&
-              <div className="create-warning-container">
-                <Warning text={"You don't have an active plan. Upgrade Now"} />
-              </div>}
+            {currentTab === TABS.PREMIUM &&
+              userDetails?.planType === PLANS.FREE && (
+                <div className="create-warning-container">
+                  <Warning
+                    text={"You don't have an active plan."}
+                    linkText={"Upgrade Now"}
+                    link={"/dashboard/plans"}
+                  />
+                </div>
+              )}
 
-              {currentTab === TABS.FREE && <div className="create-warning-container">
-              <Warning text={"Free links are valid for 30 days only"} />
-            </div>}
+            {currentTab === TABS.FREE && (
+              <div className="create-warning-container">
+                <Warning
+                  text={"Free links are valid for 30 days only"}
+                  linkText={"Get Premium"}
+                  link={"/dashboard/plans"}
+                />
+              </div>
+            )}
 
             {currentTab === TABS.PREMIUM && <CreatePremiumLink />}
             {currentTab === TABS.FREE && <CreateFreeLink />}

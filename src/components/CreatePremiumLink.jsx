@@ -154,7 +154,7 @@ const CreatePremiumLink = () => {
             </div>
           );
         })}
-        <div className="profile-form-item">
+        {!isFree && <div className="profile-form-item">
           <button
             type="button"
             className="btn-black add-more-cta"
@@ -163,7 +163,7 @@ const CreatePremiumLink = () => {
           >
             Add More {formik.values.agents.length}/{AGENT_PER_PLAN[userDetails?.planType]}
           </button>
-        </div>
+        </div>}
         <div className="profile-form-item">
           <label htmlFor="message" className="profile-form-label">
             Message

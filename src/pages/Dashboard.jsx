@@ -9,70 +9,69 @@ import Warning from "../components/common/Warning";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const Dashboard = () => {
-
   const [links, setLinks] = useState([
     {
       id: 1,
       link: "flipchat.link/demo1",
       message: "Hey, What's Up ?",
-      type: "elite"
+      type: "elite",
     },
     {
       id: 2,
       link: "flipchat.link/demo2",
       message: "This is a demo 2 link",
-      type: "essential"
+      type: "essential",
     },
     {
       id: 3,
       link: "flipchat.link/demo3",
-      message: "demo of expand plan Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis, dolor.",
-      type: "expand"
+      message:
+        "demo of expand plan Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis, dolor.",
+      type: "expand",
     },
     {
       id: 4,
       link: "flipchat.link/demo4",
       message: "This is a demo 4 link",
-      type: "elite"
+      type: "elite",
     },
     {
       id: 5,
       link: "flipchat.link/demo5",
       message: "This is a free demo 5 link",
-      type: "free"
+      type: "free",
     },
-  ])
+  ]);
   const [isLoading, setIsLoading] = useState(false);
   const [freeLinks, setFreeLinks] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { userDetails } = useAuthContext();
 
-  // get free links 
+  // get free links
   const getFreeLinks = async (id) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const res = await axios.get(`${SERVER_URL}api/link/${userDetails?.id}`);
       if (res.data) {
-        setFreeLinks(res.data?.links)
+        setFreeLinks(res.data?.links);
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
+    } finally {
+      setIsLoading(false);
     }
-    finally {
-      setIsLoading(false)
-    }
-  }
+  };
 
   const handleCreate = () => {
-    navigate("create")
-  }
+    navigate("create");
+  };
 
   useEffect(() => {
     if (userDetails?.id) {
-      getFreeLinks(userDetails?.id)
+      getFreeLinks(userDetails?.id);
     }
-  }, [userDetails])
+  }, [userDetails]);
   return (
     <>
       {isLoading && <Loader />}
@@ -96,21 +95,40 @@ const Dashboard = () => {
               />
               <img src={SearchIcon} alt="search icon" className="search-icon" />
             </div>
-            <button className="dashboard-main-header-cta btn-primary" onClick={handleCreate}>Create New</button>
+            <button
+              className="dashboard-main-header-cta btn-primary"
+              onClick={handleCreate}
+            >
+              Create New
+            </button>
           </div>
           <div className="dashboard-main-content">
-            {!freeLinks?.length && <Warning text={"You don't have any links present. Create One Now"}/>}
+            {!freeLinks?.length && (
+              <Warning
+                text={"You don't have any links present."}
+                linkText={"Create One Now"}
+                link={"/dashboard/create"}
+              />
+            )}
             <div className="dashboard-grid">
-              {freeLinks?.map(item => {
+              {freeLinks?.map((item) => {
                 return (
                   <div key={item?._id} className="dashboard-grid-item">
-                    <h3 className="dashboard-grid-item-link">flipchat.link/{item?.username}</h3>
-                    <p className="dashboard-grid-item-message">"{item?.message}"</p>
-                    <div className={`dashboard-grid-item-tag plan-${item?.linkType ?? ""}`}>
+                    <h3 className="dashboard-grid-item-link">
+                      flipchat.link/{item?.username}
+                    </h3>
+                    <p className="dashboard-grid-item-message">
+                      "{item?.message}"
+                    </p>
+                    <div
+                      className={`dashboard-grid-item-tag plan-${
+                        item?.linkType ?? ""
+                      }`}
+                    >
                       <p className="plan-tag">{item?.linkType}</p>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>

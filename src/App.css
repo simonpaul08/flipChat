@@ -1107,9 +1107,20 @@ textarea {
   background-color: var(--color-gold-light);
   border-radius: 2rem;
 }
+.warning-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .warning-text {
   font-size: 1.35rem;
   font-weight: 300;
+}
+.warning-link {
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin: 0 0.45rem;
+  cursor: pointer;
 }
 .warning-icon {
   width: 16px;
