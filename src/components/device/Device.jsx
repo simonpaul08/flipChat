@@ -16,7 +16,7 @@ const Device = ({ countryCode, number, message }) => {
 
         </div>
         <div className="device-container-bottom">
-          <input type="text" name='device-text' className='device-text-field' value={message}/>
+          <input type="text" name='device-text' className='device-text-field' value={message} disabled/>
           <img src={PlaneIcon} alt="plane icon" className='device-plane-icon'/>
         </div>
       </div>

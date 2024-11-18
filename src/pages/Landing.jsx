@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LOGO from "../assets/Flipchat-Transperent.png";
 import { Link, useNavigate } from "react-router-dom";
 import ShowcaseBG from "../assets/showcase-bg.png";
@@ -11,33 +11,30 @@ import linkedin from "../assets/linkedin.svg";
 import CrossIcon from "../assets/cross.svg";
 import AgentAnimation from "../components/animation/Animation";
 import Device from "../components/device/Device";
-import CountryList from "country-list-with-dial-code-and-flag";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import LandingModal from "../components/landingModal/landingModal";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
-import { phoneRegExp } from "../utils/utils";
+import { countries, phoneRegExp } from "../utils/utils";
 
-const COUNTRYLIST = CountryList.getAll();
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
-
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [countries, setCountries] = useState([]);
   const [isModal, setIsModal] = useState(false);
   const [unknownLink, setUnknownLink] = useState("");
   const [isBrand, setIsBrand] = useState(false);
   const [brandName, setBrandName] = useState("");
 
-  const formSchema = yup.object().shape({
-    // to be changed as per the schema 
-    countryCode: yup.string().required("country code is required!"),
-    number: yup
-      .string()
-      .matches(phoneRegExp, "phone number is not valid")
-      .required("number is required!"),
+  const Schema = yup.object().shape({
+    agent: yup.object().shape({
+      countryCode: yup.string().required("country code is required"),
+      number: yup
+        .string()
+        .matches(phoneRegExp, "phone number is not valid")
+        .required("number is required!"),
+    }),
     message: yup
       .string()
       .min(1, "message is required!")
@@ -115,11 +112,13 @@ const Landing = () => {
 
   const formik = useFormik({
     initialValues: {
-      countryCode: "+91",
-      number: "",
+      agent: {
+        countryCode: "+91",
+        number: "",
+      },
       message: "",
     },
-    validationSchema: formSchema,
+    validationSchema: Schema,
     onSubmit: handleSubmit,
     validateOnChange: false,
   });
@@ -133,20 +132,6 @@ const Landing = () => {
     setIsBrand(false);
     setBrandName("");
   };
-
-  useEffect(() => {
-    if (COUNTRYLIST.length) {
-      let filtered = COUNTRYLIST.map((item) => {
-        return {
-          country: item.name,
-          countryCode: item.countryCode,
-          flag: item.flag,
-        };
-      });
-
-      setCountries(filtered);
-    }
-  }, []);
 
   const handleAuth = () => {
     navigate("/register");
@@ -253,13 +238,13 @@ const Landing = () => {
                         name="countryCode"
                         id="countryCode"
                         className="landing-form-select"
-                        value={formik.values.countryCode}
+                        value={formik.values.agent.countryCode}
                         onChange={formik.handleChange}
                       >
-                        {countries.map((item) => {
+                        {countries.map((item, index) => {
                           return (
-                            <option value={item?.countryCode}>
-                              {item?.countryCode}
+                            <option key={index} value={item?.code}>
+                              {item?.code}
                             </option>
                           );
                         })}
@@ -270,15 +255,15 @@ const Landing = () => {
                         id="number"
                         className="landing-form-input"
                         placeholder="Your phone number here...."
-                        value={formik.values.number}
+                        value={formik.values.agent.number}
                         onChange={formik.handleChange}
                         minLength={6}
                         maxLength={12}
                         required
                       />
                     </div>
-                    {formik.errors.number && (
-                      <p className="error">{formik.errors.number}</p>
+                    {formik.errors.agent && (
+                      <p className="error">{formik.errors.agent.number}</p>
                     )}
                   </div>
                   <div className="form-item">
@@ -308,8 +293,8 @@ const Landing = () => {
                 </form>
                 <div className="landing-form-divider">{">"}</div>
                 <Device
-                  countryCode={formik.values.countryCode}
-                  number={formik.values.number}
+                  countryCode={formik.values.agent.countryCode}
+                  number={formik.values.agent.number}
                   message={formik.values.message}
                 />
               </div>

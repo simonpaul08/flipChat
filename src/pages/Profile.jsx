@@ -60,7 +60,7 @@ const Profile = () => {
               >
                 {countries?.map((item, index) => {
                   return (
-                    <option key={index + 1} value={item}>{item}</option>
+                    <option key={index + 1} value={item.country}>{item.country}</option>
                   )
                 })}
               </select>
