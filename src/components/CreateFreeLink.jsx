@@ -6,12 +6,18 @@ import { toast, Toaster } from "sonner";
 import axios from "axios";
 import { phoneRegExp } from "../utils/utils";
 import { useAuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import LandingModal from "./landingModal/landingModal";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
 const CreateFreeLink = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails } = useAuthContext()
+  const [isModal, setIsModal] = useState(false)
+  const [currentLink, setCurrentLink] = useState("");
+  const navigate = useNavigate()
+
   const Schema = yup.object().shape({
     agent: yup.object().shape({
       countryCode: yup.string().required("country code is required"),
@@ -40,6 +46,8 @@ const CreateFreeLink = () => {
       const res = await axios.post(`${SERVER_URL}api/link/create/free`, { ...body });
       if (res.data) {
         toast.success(res.data?.message)
+        setCurrentLink(res.data?.shortLink?.username)
+        setIsModal(true)
       }
     } catch (error) {
       if (error?.response?.data?.message) {
@@ -66,8 +74,24 @@ const CreateFreeLink = () => {
     onSubmit: handleSubmit,
     validateOnChange: false
   });
+
+  const handleCloseModal = () => {
+    setIsModal(false);
+    navigate("/dashboard")
+  }
+
+  const handleGetPremium = () => {
+    navigate("/dashboard/plans")
+  }
   return (
     <>
+      {isModal && (
+        <LandingModal
+          handleCloseModal={handleCloseModal}
+          handleAuth={handleGetPremium}
+          unknownLink={currentLink}
+        />
+      )}
       {isLoading && <Loader />}
       <Toaster richColors position="top-center" duration={2000} />
       <div className="create-form-container">
@@ -97,6 +121,8 @@ const CreateFreeLink = () => {
                   placeholder="agent number..."
                   value={formik.values.agent.number}
                   onChange={formik.handleChange}
+                  maxLength={12}
+                  minLength={6}
                 />
                 {formik.errors.agent && (
                   <p className="auth-error">{formik.errors.agent.number}</p>

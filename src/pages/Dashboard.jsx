@@ -122,7 +122,7 @@ const Dashboard = () => {
                     </p>
                     <div
                       className={`dashboard-grid-item-tag plan-${
-                        item?.linkType ?? ""
+                        item?.linkType?.toLowerCase() ?? ""
                       }`}
                     >
                       <p className="plan-tag">{item?.linkType}</p>

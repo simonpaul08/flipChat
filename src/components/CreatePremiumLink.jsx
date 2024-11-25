@@ -6,6 +6,8 @@ import { AGENT_PER_PLAN, phoneRegExp, PLANS } from "../utils/utils";
 import { toast, Toaster } from "sonner";
 import Loader from "./loader/loader";
 import axios from "axios";
+import Warning from "./common/Warning";
+import DeleteIcon from "../assets/icon_delete.svg";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const CreatePremiumLink = () => {
@@ -31,15 +33,17 @@ const CreatePremiumLink = () => {
     message: yup.string().required("message is required"),
   });
 
+
+  // handle submit
   const handleSubmit = async (values) => {
-    if(formik.errors){
+    if (formik.errors) {
       formik.validateForm()
     }
 
     setIsLoading(true)
 
     let body = {
-      agents: values?.agents, 
+      agents: values?.agents,
       message: values?.message,
       username: values?.username,
       userId: userDetails?.id,
@@ -47,10 +51,10 @@ const CreatePremiumLink = () => {
 
     try {
       const res = await axios.post(`${SERVER_URL}api/link/create/premium`, { ...body })
-      if(res.data){
+      if (res.data) {
         toast.success(res.data?.message)
       }
-    }catch(error) {
+    } catch (error) {
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       } else if (error?.message) {
@@ -58,7 +62,7 @@ const CreatePremiumLink = () => {
       } else {
         toast.error("something went wrong");
       }
-    }finally {
+    } finally {
       setIsLoading(false)
     }
   };
@@ -89,107 +93,125 @@ const CreatePremiumLink = () => {
     }
   };
 
+  // handle delete agent
+  const handleDeleteAgent = (index) => {
+    const updatedAgents = [...formik.values.agents];
+    updatedAgents.splice(index, 1)
+    formik.setFieldValue("agents", updatedAgents)
+  }
+
   return (
     <>
-    {isLoading && <Loader />}
-    <Toaster richColors position="top-center" duration={2000} />
-    <div className="create-form-container">
-      <form method="POST" className="create-form profile-form" onSubmit={formik.handleSubmit}>
-        <div className="profile-form-item">
-          <label htmlFor="username" className="profile-form-label">
-            Username
-          </label>
-          <div className="input-conatiner">
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formik.values.username}
-              onChange={formik.handleChange}
-              className="profile-form-input"
-              placeholder="username..."
-              disabled={isFree}
-            />
-            {formik.errors.username && (
-              <p className="auth-error">{formik.errors.username}</p>
-            )}
-          </div>
-
+      {isLoading && <Loader />}
+      <Toaster richColors position="top-center" duration={2000} />
+      <div className="create-form-container">
+        <div className="create-warning-container">
+          {formik.values.agents.length >= AGENT_PER_PLAN[userDetails?.planType] && <Warning
+            text={"You’ve exceeded the allowed number of agents for your plan."}
+            linkText={"Upgrade Now"}
+            link={"/dashboard/plans"}
+          />}
         </div>
-        {formik.values.agents.map((field, index) => {
-          return (
-            <div key={index} className="profile-form-item">
-              <label htmlFor={`agents-${index}`} className="profile-form-label">
-                Agent Number
-              </label>
-              <div className="create-form-number-block">
-                <select
-                  id={`agents-${index}`}
-                  name={`agents.${index}.countryCode`}
-                  className="profile-form-select"
-                  value={field.countryCode}
-                  onChange={formik.handleChange}
-                  disabled={isFree}
-                >
-                  <option value="+91">+91</option>
-                  <option value="+92">+92</option>
-                  <option value="+1">+1</option>
-                </select>
-                <div className="input-container">
-                  <input
-                    type="text"
+        <form method="POST" className="create-form profile-form" onSubmit={formik.handleSubmit}>
+          <div className="profile-form-item">
+            <label htmlFor="username" className="profile-form-label">
+              Username
+            </label>
+            <div className="input-conatiner">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                className="profile-form-input"
+                placeholder="username..."
+                disabled={isFree}
+              />
+              {formik.errors.username && (
+                <p className="auth-error">{formik.errors.username}</p>
+              )}
+            </div>
+
+          </div>
+          {formik.values.agents.map((field, index) => {
+            return (
+              <div key={index} className="profile-form-item">
+                <label htmlFor={`agents-${index}`} className="profile-form-label">
+                  Agent Number
+                </label>
+                <div className="create-form-number-block">
+                  <select
                     id={`agents-${index}`}
-                    name={`agents.${index}.number`}
-                    value={field.number}
+                    name={`agents.${index}.countryCode`}
+                    className="profile-form-select"
+                    value={field.countryCode}
                     onChange={formik.handleChange}
-                    className="profile-form-input"
-                    placeholder="agent number..."
                     disabled={isFree}
-                  />
-                  {formik.errors.agents && (
-                    <p className="auth-error">{formik.errors.agents[index]?.number}</p>
-                  )}
+                  >
+                    <option value="+91">+91</option>
+                    <option value="+92">+92</option>
+                    <option value="+1">+1</option>
+                  </select>
+                  <div className="input-container">
+                    <input
+                      type="text"
+                      id={`agents-${index}`}
+                      name={`agents.${index}.number`}
+                      value={field.number}
+                      onChange={formik.handleChange}
+                      className="profile-form-input"
+                      placeholder="agent number..."
+                      disabled={isFree}
+                    />
+                    {formik.errors.agents && (
+                      <p className="auth-error">{formik.errors.agents[index]?.number}</p>
+                    )}
+                  </div>
+
+                  {index !== 0 && <div className="form-delete-agent" onClick={() => handleDeleteAgent(index)}>
+                    <img src={DeleteIcon} className="delete-icon"/>
+                  </div>}
                 </div>
               </div>
-            </div>
-          );
-        })}
-        {!isFree && <div className="profile-form-item">
-          <button
-            type="button"
-            className="btn-black add-more-cta"
-            onClick={handleAddMore}
-            disabled={isFree}
-          >
-            Add More {formik.values.agents.length}/{AGENT_PER_PLAN[userDetails?.planType]}
-          </button>
-        </div>}
-        <div className="profile-form-item">
-          <label htmlFor="message" className="profile-form-label">
-            Message
-          </label>
-          <div className="input-container">
-            <textarea
-              type="text"
-              id="message"
-              name="message"
-              value={formik.values.message}
-              onChange={formik.handleChange}
-              className="profile-form-input"
-              placeholder="message here..."
-              rows={3}
+            );
+          })}
+          {!isFree && <div className="profile-form-item">
+            <button
+              type="button"
+              className="btn-black add-more-cta"
+              onClick={handleAddMore}
               disabled={isFree}
-            />
-            {formik.errors.message && (
-              <p className="auth-error">{formik.errors.message}</p>
-            )}
+            >
+              Add More {formik.values.agents.length}/{AGENT_PER_PLAN[userDetails?.planType]}
+            </button>
+          </div>}
+          <div className="profile-form-item">
+            <label htmlFor="message" className="profile-form-label">
+              Message
+            </label>
+            <div className="input-container">
+              <textarea
+                type="text"
+                id="message"
+                name="message"
+                value={formik.values.message}
+                onChange={formik.handleChange}
+                className="profile-form-input"
+                placeholder="message here..."
+                rows={3}
+                disabled={isFree}
+              />
+              {formik.errors.message && (
+                <p className="auth-error">{formik.errors.message}</p>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="profile-form-item">
-          <button type="submit" className="btn-primary create-cta" disabled={isFree}>Create Link</button>
-        </div>
-      </form>
-    </div>
+          <div className="profile-form-item">
+            <button type="submit" className="btn-primary create-cta" disabled={isFree}>Create Link</button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

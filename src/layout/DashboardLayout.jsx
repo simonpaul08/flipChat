@@ -41,12 +41,11 @@ const DashboardLayout = () => {
   useEffect(() => {
     if (currentUser) {
       fetchUserDetails(currentUser?.id)
+    } else {
+      navigate("/")
     }
   }, [currentUser])
 
-  if (!currentUser) {
-    return navigate("/")
-  }
 
   return (
     <div className="dashboard-layout">

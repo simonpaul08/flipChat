@@ -1141,6 +1141,10 @@ textarea {
 .create-cta {
   padding: 0.75rem 3rem;
 }
+.form-delete-agent {
+  margin-left: 1.5rem;
+  cursor: pointer;
+}
 
 /* Forget Password */
 .change-password-form {

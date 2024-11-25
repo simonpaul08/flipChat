@@ -30,8 +30,7 @@ const Landing = () => {
   const Schema = yup.object().shape({
     agent: yup.object().shape({
       countryCode: yup.string().required("country code is required"),
-      number: yup
-        .string()
+      number: yup.string()
         .matches(phoneRegExp, "phone number is not valid")
         .required("number is required!"),
     }),
@@ -47,8 +46,9 @@ const Landing = () => {
       formik.validateForm();
     }
     let body = {
-      ...values,
-    };
+      agents: [values?.agent],
+      message: values?.message
+    }
 
     try {
       const res = await axios.post(
@@ -136,6 +136,7 @@ const Landing = () => {
   const handleAuth = () => {
     navigate("/register");
   };
+
   return (
     <>
       {isModal && (
@@ -235,7 +236,7 @@ const Landing = () => {
                     </label>
                     <div className="form-input-flex">
                       <select
-                        name="countryCode"
+                        name={`agent.countryCode`}
                         id="countryCode"
                         className="landing-form-select"
                         value={formik.values.agent.countryCode}
@@ -251,7 +252,7 @@ const Landing = () => {
                       </select>
                       <input
                         type="text"
-                        name="number"
+                        name={`agent.number`}
                         id="number"
                         className="landing-form-input"
                         placeholder="Your phone number here...."
