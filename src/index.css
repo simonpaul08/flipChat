@@ -20,6 +20,7 @@
   --color-gold-light: #FFFAF0;
   --color-purple-primary: #6256CA;
   --color-danger: #C7253E;
+  --color-danger-light: #f8d7da;
 }
 html {
   font-size: 62.5%;

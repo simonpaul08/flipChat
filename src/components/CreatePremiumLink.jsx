@@ -8,13 +8,19 @@ import Loader from "./loader/loader";
 import axios from "axios";
 import Warning from "./common/Warning";
 import DeleteIcon from "../assets/icon_delete.svg";
+import LandingModal from "./landingModal/landingModal";
+import { useNavigate } from "react-router-dom";
+import Error from "./common/Error";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const CreatePremiumLink = () => {
 
   const { userDetails } = useAuthContext();
+  const navigate = useNavigate();
   const isFree = userDetails?.planType === PLANS.FREE;
   const [isLoading, setIsLoading] = useState(false);
+  const [isModal, setIsModal] = useState(false)
+  const [currentLink, setCurrentLink] = useState("");
 
   const Schema = yup.object().shape({
     username: yup.string().required("username is required"),
@@ -53,6 +59,8 @@ const CreatePremiumLink = () => {
       const res = await axios.post(`${SERVER_URL}api/link/create/premium`, { ...body })
       if (res.data) {
         toast.success(res.data?.message)
+        setCurrentLink(res.data?.shortLink?.username)
+        setIsModal(true)
       }
     } catch (error) {
       if (error?.response?.data?.message) {
@@ -78,7 +86,6 @@ const CreatePremiumLink = () => {
     validateOnChange: false
   });
 
-
   // handle add more
   const handleAddMore = () => {
     console.log("add more");
@@ -100,8 +107,25 @@ const CreatePremiumLink = () => {
     formik.setFieldValue("agents", updatedAgents)
   }
 
+  const handleCloseModal = () => {
+    setIsModal(false);
+    navigate("/dashboard")
+  }
+
+  const handleGetPremium = () => {
+    navigate("/dashboard/plans")
+  }
+
   return (
     <>
+      {isModal && (
+        <LandingModal
+          handleCloseModal={handleCloseModal}
+          handleAuth={handleGetPremium}
+          unknownLink={currentLink}
+          isPremium={true}
+        />
+      )}
       {isLoading && <Loader />}
       <Toaster richColors position="top-center" duration={2000} />
       <div className="create-form-container">
@@ -111,7 +135,10 @@ const CreatePremiumLink = () => {
             linkText={"Upgrade Now"}
             link={"/dashboard/plans"}
           />}
+          <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />
+          
         </div>
+
         <form method="POST" className="create-form profile-form" onSubmit={formik.handleSubmit}>
           <div className="profile-form-item">
             <label htmlFor="username" className="profile-form-label">
@@ -163,6 +190,8 @@ const CreatePremiumLink = () => {
                       className="profile-form-input"
                       placeholder="agent number..."
                       disabled={isFree}
+                      maxLength={12}
+                      minLength={6}
                     />
                     {formik.errors.agents && (
                       <p className="auth-error">{formik.errors.agents[index]?.number}</p>
@@ -170,7 +199,7 @@ const CreatePremiumLink = () => {
                   </div>
 
                   {index !== 0 && <div className="form-delete-agent" onClick={() => handleDeleteAgent(index)}>
-                    <img src={DeleteIcon} className="delete-icon"/>
+                    <img src={DeleteIcon} className="delete-icon" />
                   </div>}
                 </div>
               </div>

@@ -90,6 +90,7 @@ const CreateFreeLink = () => {
           handleCloseModal={handleCloseModal}
           handleAuth={handleGetPremium}
           unknownLink={currentLink}
+          isPremium={false}
         />
       )}
       {isLoading && <Loader />}

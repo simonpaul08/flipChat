@@ -6,7 +6,7 @@ import CrossIcon from "../../assets/cross.svg";
 import CopyIcon from "../../assets/icon_copy.svg";
 import { Tooltip } from "react-tooltip";
 
-const LandingModal = ({ handleCloseModal, handleAuth, unknownLink }) => {
+const LandingModal = ({ handleCloseModal, handleAuth, unknownLink, isPremium = false }) => {
   const copyToClpboard = () => {
     navigator.clipboard.writeText(`flipchat.link/${unknownLink}`);
   };
@@ -46,7 +46,7 @@ const LandingModal = ({ handleCloseModal, handleAuth, unknownLink }) => {
           />
           <Tooltip id="copy-unknown-link" />
         </div>
-        <div className="landingModal-premium">
+        {!isPremium && <div className="landingModal-premium">
           <p className="landingModal-premium-para">
             Get a premium plan from flipchat with:{" "}
           </p>
@@ -107,7 +107,53 @@ const LandingModal = ({ handleCloseModal, handleAuth, unknownLink }) => {
               Get Premium Now
             </button>
           </div>
-        </div>
+        </div>}
+
+        {isPremium && <div className="landingModal-premium">
+          <p className="landingModal-premium-para">
+            Enjoy premium benefits with your premium link:
+          </p>
+          <div className="landingModal-features">
+            <div className="landingModal-features-item">
+              <img
+                src={CheckIcon}
+                alt="check icon"
+                className="landingModal-features-item-icon"
+              />
+              <p className="landingModal-features-item-para">
+                Clicks analytics by hour, day and month
+              </p>
+            </div>
+            <div className="landingModal-features-item">
+              <img
+                src={CheckIcon}
+                alt="check icon"
+                className="landingModal-features-item-icon"
+              />
+              <p className="landingModal-features-item-para">
+                Edit phone, user message and URL anytime
+              </p>
+            </div>
+            <div className="landingModal-features-item">
+              <img
+                src={CheckIcon}
+                alt="check icon"
+                className="landingModal-features-item-icon"
+              />
+              <p className="landingModal-features-item-para">
+                Appear as a result in our search engine
+              </p>
+            </div>
+            <div className="landingModal-features-item">
+              <img
+                src={CheckIcon}
+                alt="check icon"
+                className="landingModal-features-item-icon"
+              />
+              <p className="landingModal-features-item-para">Email support</p>
+            </div>
+          </div>
+        </div>}
       </div>
     </div>
   );

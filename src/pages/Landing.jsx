@@ -144,6 +144,7 @@ const Landing = () => {
           handleCloseModal={handleCloseModal}
           handleAuth={handleAuth}
           unknownLink={unknownLink}
+          isPremium={false}
         />
       )}
       <Toaster richColors duration={1000} position="text-center" />
