@@ -26,7 +26,7 @@ const Register = () => {
       .min(3, "minimum 3 characters")
       .required("name is required"),
     email: yup.string().required("email is required"),
-    password: yup.string().required("password is required"),
+    password: yup.string().min(6, "password must be of atleast 6 digits").required("password is required"),
     confirmPassword: yup
       .string()
       .oneOf([yup.ref("password")], "passwords must match")

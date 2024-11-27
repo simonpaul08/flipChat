@@ -1,115 +1,231 @@
 import React, { useState } from "react";
-import { countries } from "../utils/utils";
+import { countries, phoneRegExp } from "../utils/utils";
 import * as yup from "yup";
+import { useFormik } from "formik";
+import Warning from "../components/common/Warning";
+import UpdatePasswordModal from "../components/modal/updatePassword";
 
 const Profile = () => {
-
   const [isEdit, setIsEdit] = useState(false);
 
-  const Schema = yup.object().shape({
-    name: yup.string().required("name is required"),
-    accountType: yup.string().required("account type is required"),
+  // handle submit
+  const handleSubmit = (values) => {
+    if (formik.errors) {
+      formik.validateForm();
+    }
+  };
 
-  })
+  const Schema = yup.object().shape({
+    name: yup.string().max(12).required("name is required"),
+    phone: yup.object().shape({
+      countryCode: yup.string().required("country code is required"),
+      number: yup
+        .string()
+        .matches(phoneRegExp, "phone number is not valid")
+        .required("number is required!"),
+    }),
+    country: yup.string().required("country is required"),
+    accountType: yup.string().required("accountType is required"),
+    industry: yup.string().required("industry is required"),
+  });
+
+  const formik = useFormik({
+    validationSchema: Schema,
+    initialValues: {
+      name: "",
+      phone: {
+        countryCode: "+91",
+        number: "",
+      },
+      country: "India",
+      accountType: "",
+      industry: "",
+    },
+    onSubmit: handleSubmit,
+    validateOnChange: false,
+  });
+
+  // handle edit
+  const handleEdit = () => {
+    setIsEdit(true);
+  };
+
+  // handle close edit
+  const handleCancelEdit = () => {
+    setIsEdit(false);
+    // fetch user details and set the state here
+  };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
-        <div className="dashboard-header-title">
-          <h3 className="dashboard-header-title-normal">Dashboard</h3>
-          <div className="dashboard-header-title-divider"></div>
-          <h3 className="dashboard-header-title-main">My Profile</h3>
+    <>
+    <UpdatePasswordModal />
+      <div className="dashboard">
+        <div className="dashboard-header">
+          <div className="dashboard-header-title">
+            <h3 className="dashboard-header-title-normal">Dashboard</h3>
+            <div className="dashboard-header-title-divider"></div>
+            <h3 className="dashboard-header-title-main">My Profile</h3>
+          </div>
+        </div>
+        <div className="dashboard-main">
+          <div className="profile-container">
+            {!isEdit && (
+              <div className="profile-warning-container">
+                <Warning
+                  text={
+                    "Fields are read only. Click on 'Edit Details' to update the fields."
+                  }
+                />
+              </div>
+            )}
+            <form
+              method="POST"
+              className="profile-form"
+              onSubmit={formik.handleSubmit}
+            >
+              <div className="profile-form-item">
+                <label htmlFor="name" className="profile-form-label">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="profile-form-input"
+                  placeholder="fullname..."
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  disabled={!isEdit}
+                />
+              </div>
+              <div className="profile-form-item">
+                <label htmlFor="agent-1" className="profile-form-label">
+                  Number
+                </label>
+                <div className="create-form-number-block">
+                  <select
+                    id="countryCode"
+                    name={`phone.countryCode`}
+                    className="profile-form-select"
+                    value={formik.values.phone.countryCode}
+                    onChange={formik.handleChange}
+                    disabled={!isEdit}
+                  >
+                    <option value="+91">+91</option>
+                    <option value="+92">+92</option>
+                    <option value="+1">+1</option>
+                  </select>
+                  <div className="input-container">
+                    <input
+                      type="text"
+                      id="number"
+                      name={`phone.number`}
+                      className="profile-form-input"
+                      placeholder="agent number..."
+                      value={formik.values.phone.number}
+                      onChange={formik.handleChange}
+                      maxLength={12}
+                      minLength={6}
+                      disabled={!isEdit}
+                    />
+                    {formik.errors.agent && (
+                      <p className="auth-error">{formik.errors.agent.number}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="profile-form-item">
+                <label htmlFor="account-type" className="profile-form-label">
+                  Account Type
+                </label>
+                <select
+                  name="accountType"
+                  id="account-type"
+                  className="profile-form-input"
+                  value={formik.values.accountType}
+                  onChange={formik.handleChange}
+                  disabled={!isEdit}
+                >
+                  <option value={"individual"}>Individual</option>
+                  <option value={"business"}>Business</option>
+                </select>
+              </div>
+              <div className="profile-form-item">
+                <label htmlFor="country" className="profile-form-label">
+                  Country
+                </label>
+                <select
+                  name="country"
+                  id="country"
+                  className="profile-form-input"
+                  value={formik.values.country}
+                  onChange={formik.handleChange}
+                  disabled={!isEdit}
+                >
+                  {countries?.map((item, index) => {
+                    return (
+                      <option key={index + 1} value={item.country}>
+                        {item.country}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="profile-form-item">
+                <label htmlFor="industry" className="profile-form-label">
+                  Sector/Industry
+                </label>
+                <select
+                  name="industry"
+                  id="industry"
+                  className="profile-form-input"
+                  value={formik.values.industry}
+                  onChange={formik.handleChange}
+                  disabled={!isEdit}
+                >
+                  <option value={"education"}>Education</option>
+                  <option value={"marketing"}>Marketing</option>
+                </select>
+              </div>
+
+              {isEdit ? (
+                <div className="profile-form-item">
+                  <button
+                    type="button"
+                    className="btn-secondary profile-cta-edit"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn-primary profile-cta-edit"
+                  >
+                    Save Details
+                  </button>
+                </div>
+              ) : (
+                <div className="profile-form-item">
+                  <button
+                    type="button"
+                    className="btn-secondary profile-cta-edit"
+                    onClick={handleEdit}
+                  >
+                    Edit Profile
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn-primary profile-cta-edit"
+                  >
+                    Change Password
+                  </button>
+                </div>
+              )}
+            </form>
+          </div>
         </div>
       </div>
-      <div className="dashboard-main">
-        <div className="profile-container">
-          <form method="POST" className="profile-form">
-            <div className="profile-form-item">
-              <label htmlFor="name" className="profile-form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="profile-form-input"
-                placeholder="fullname..."
-              />
-            </div>
-            <div className="profile-form-item">
-              <label htmlFor="account-type" className="profile-form-label">
-                Account Type
-              </label>
-              <select
-                name="account-type"
-                id="account-type"
-                className="profile-form-input"
-              >
-                <option value={"individual"}>Individual</option>
-                <option value={"business"}>Business</option>
-              </select>
-            </div>
-            <div className="profile-form-item">
-              <label htmlFor="country" className="profile-form-label">
-                Country
-              </label>
-              <select
-                name="country"
-                id="country"
-                className="profile-form-input"
-              >
-                {countries?.map((item, index) => {
-                  return (
-                    <option key={index + 1} value={item.country}>{item.country}</option>
-                  )
-                })}
-              </select>
-            </div>
-            <div className="profile-form-item">
-              <label htmlFor="number" className="profile-form-label">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                id="phone"
-                name="phone"
-                className="profile-form-input"
-                placeholder="phone number..."
-              />
-            </div>
-            <div className="profile-form-item">
-              <label htmlFor="sector" className="profile-form-label">
-                Sector/Industry
-              </label>
-              <select
-                name="sector"
-                id="sector"
-                className="profile-form-input"
-              >
-                <option value={"education"}>Education</option>
-                <option value={"marketing"}>Marketing</option>
-              </select>
-            </div>
-            <div className="profile-form-item">
-              <label htmlFor="sector" className="profile-form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="profile-form-input"
-                placeholder="password..."
-              />
-            </div>
-            <div className="profile-form-item">
-              <button type="button" className="btn-secondary profile-cta-edit">Edit Profile</button>
-              <button type="submit" className="btn-primary profile-cta-edit">Save Details</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

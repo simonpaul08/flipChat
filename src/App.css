@@ -134,6 +134,14 @@ textarea {
   fill: var(--color-danger);
 }
 
+/* Utils - Divider */
+.divider {
+  width: 98%;
+  height: 1px;
+  margin: 1rem auto;
+  background: var(--color-gray-secondary);
+  border: none;
+}
 
 /* Landing */
 .landing {
@@ -977,6 +985,9 @@ textarea {
 .create-form-number-block {
   display: flex;
   align-items: center;
+}
+.profile-warning-container {
+  margin-bottom: 2rem;
 }
 .profile-form-input {
   width: 32rem;
