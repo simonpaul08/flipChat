@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
             if (res.data) {
                 setUserDetails(res.data?.user)
             }
-            return true
+            return res.data?.user ?? null
 
         } catch (error) {
             return error

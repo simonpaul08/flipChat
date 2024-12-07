@@ -3,7 +3,7 @@ import React from "react";
 import * as yup from "yup";
 import Divider from "../../common/Divider";
 
-const UpdatePasswordModal = () => {
+const UpdatePasswordModal = ({ handleClosePassModal }) => {
   const Schema = yup.object().shape({
     currentPassword: yup
       .string()
@@ -41,8 +41,8 @@ const UpdatePasswordModal = () => {
       <div className="modal-container">
         <div className="modal-body">
           <h3 className="modal-title">Update Password</h3>
-          <p className="modal-para"></p>
-          <form method="POST" className="modal-form" onSubmit={formik.onSubmit}>
+          <p className="modal-para">Your password should have atleast 6 characters</p>
+          <form method="POST" className="modal-form" onSubmit={formik.handleSubmit}>
             <div className="form-item">
               <input
                 type="password"
@@ -59,8 +59,41 @@ const UpdatePasswordModal = () => {
               )}
             </div>
             <Divider />
+            <div className="form-item">
+              <input
+                type="password"
+                name="confirmNewPassword"
+                id="confirmNewPassword"
+                placeholder="Enter confirm password"
+                className="form-input form-item-input-flex"
+                value={formik.values.confirmNewPassword}
+                onChange={formik.handleChange}
+                required
+              />
+              {formik.errors.confirmNewPassword && (
+                <p className="auth-error">{formik.errors.confirmNewPassword}</p>
+              )}
+            </div>
+            <div className="form-item">
+              <input
+                type="password"
+                name="newPassword"
+                id="newPassword"
+                placeholder="Enter new password"
+                className="form-input form-item-input-flex"
+                value={formik.values.newPassword}
+                onChange={formik.handleChange}
+                required
+              />
+              {formik.errors.currentPassword && (
+                <p className="auth-error">{formik.errors.newPassword}</p>
+              )}
+            </div>
             <button type="submit" className="auth-form-cta btn-primary">
               Update Password
+            </button>
+            <button type="submit" className="auth-form-cta btn-secondary" onClick={handleClosePassModal}>
+              Cancel
             </button>
           </form>
         </div>

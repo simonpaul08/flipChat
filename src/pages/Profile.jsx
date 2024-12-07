@@ -1,17 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { countries, phoneRegExp } from "../utils/utils";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import Warning from "../components/common/Warning";
 import UpdatePasswordModal from "../components/modal/updatePassword";
+import Loader from "../components/loader/loader";
+import { toast, Toaster } from "sonner";
+import axios from "axios";
+import { useAuthContext } from "../context/AuthContext";
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const [passwordModal, setPasswordModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { userDetails, fetchUserDetails, currentUser } = useAuthContext();
 
   // handle submit
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     if (formik.errors) {
       formik.validateForm();
+    }
+
+    setIsLoading(true)
+
+    try {
+      const res = await axios.post(`${SERVER_URL}api/link/create/premium`, { ...values })
+      if (res.data) {
+        toast.success(res.data?.message)
+        handleRefetchUser(userDetails?.id)
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -45,6 +72,8 @@ const Profile = () => {
     validateOnChange: false,
   });
 
+
+
   // handle edit
   const handleEdit = () => {
     setIsEdit(true);
@@ -56,10 +85,63 @@ const Profile = () => {
     // fetch user details and set the state here
   };
 
+  // handle open password modal 
+  const handleOpenPassModal = () => {
+    setPasswordModal(true);
+  }
+
+  // handle close password modal 
+  const handleClosePassModal = () => {
+    setPasswordModal(false)
+  }
+
+  // handle set user details 
+  const handleSetUserDetails = (userDetails) => {
+    formik.setFieldValue('name', userDetails?.name ?? "")
+    formik.setFieldValue('phone', userDetails?.phone ?? {
+      countryCode: "+91",
+      number: "",
+    })
+    formik.setFieldValue('country', userDetails?.country ?? "")
+    formik.setFieldValue('accountType', userDetails?.accountType ?? "")
+    formik.setFieldValue('industry', userDetails?.industry ?? "")
+  }
+
+  // handle refetch user 
+  const handleRefetchUser = async (id) => {
+    setIsLoading(true)
+
+    try {
+      const user = await fetchUserDetails(id)
+      if (res) {
+        handleSetUserDetails(user)
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // load initial values 
+  useEffect(() => {
+    if (userDetails && currentUser) {
+      handleRefetchUser(userDetails?.id)
+    }
+  }, [currentUser])
+
   return (
     <>
-    <UpdatePasswordModal />
-      <div className="dashboard">
+      {isLoading && <Loader />}
+      {passwordModal && <UpdatePasswordModal handleClosePassModal={handleClosePassModal} />}
+      <Toaster richColors position="top-center" duration={2000} />
+      <div className="dashboard"> 
         <div className="dashboard-header">
           <div className="dashboard-header-title">
             <h3 className="dashboard-header-title-normal">Dashboard</h3>
@@ -69,11 +151,13 @@ const Profile = () => {
         </div>
         <div className="dashboard-main">
           <div className="profile-container">
-            {!isEdit && (
+            {(
               <div className="profile-warning-container">
                 <Warning
                   text={
-                    "Fields are read only. Click on 'Edit Details' to update the fields."
+                    isEdit ? "Fields are editable. You can now update the details."
+                      :
+                      "Fields are read only. Click on 'Edit Details' to update the fields."
                   }
                 />
               </div>
@@ -216,6 +300,7 @@ const Profile = () => {
                   <button
                     type="submit"
                     className="btn-primary profile-cta-edit"
+                    onClick={handleOpenPassModal}
                   >
                     Change Password
                   </button>
