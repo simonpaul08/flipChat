@@ -13,6 +13,7 @@ const AuthProvider = ({ children }) => {
 
     const [currentUser, setCurrentUser] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
+    const [isFetching, setIsFetching] = useState(false);
 
     // handle set user
     const handleSetUser = (values) => {
@@ -27,6 +28,7 @@ const AuthProvider = ({ children }) => {
     }
 
     const fetchUserDetails = async (id) => {
+        setIsFetching(true);
         try {
             const res = await getUserByid(id);
             if (res.data) {
@@ -36,6 +38,8 @@ const AuthProvider = ({ children }) => {
 
         } catch (error) {
             return error
+        } finally {
+            setIsFetching(false)
         }
     }
 
@@ -53,7 +57,8 @@ const AuthProvider = ({ children }) => {
             userDetails,
             setUserDetails,
             fetchUserDetails,
-            handleLogout
+            handleLogout,
+            isFetching
         }
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { countries, phoneRegExp } from "../utils/utils";
+import { countries, phoneRegExp, SERVER_URL } from "../utils/utils";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import Warning from "../components/common/Warning";
@@ -13,7 +13,7 @@ const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [passwordModal, setPasswordModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { userDetails, fetchUserDetails, currentUser } = useAuthContext();
+  const { userDetails, fetchUserDetails } = useAuthContext();
 
   // handle submit
   const handleSubmit = async (values) => {
@@ -23,8 +23,17 @@ const Profile = () => {
 
     setIsLoading(true)
 
+    let body = {
+      id: userDetails?.id, 
+      name: values?.name, 
+      phone: values?.phone, 
+      country: values?.country, 
+      accountType: values?.accountType, 
+      industry: values?.industry
+    }
+
     try {
-      const res = await axios.post(`${SERVER_URL}api/link/create/premium`, { ...values })
+      const res = await axios.patch(`${SERVER_URL}api/user/update`, { ...body })
       if (res.data) {
         toast.success(res.data?.message)
         handleRefetchUser(userDetails?.id)
@@ -113,7 +122,8 @@ const Profile = () => {
 
     try {
       const user = await fetchUserDetails(id)
-      if (res) {
+      if (user) {
+        console.log(user)
         handleSetUserDetails(user)
       }
     } catch (error) {
@@ -131,17 +141,18 @@ const Profile = () => {
 
   // load initial values 
   useEffect(() => {
-    if (userDetails && currentUser) {
-      handleRefetchUser(userDetails?.id)
+    const user = JSON.parse(localStorage.getItem("flipchat_user"));
+    if (user) {
+      handleRefetchUser(user?.id)
     }
-  }, [currentUser])
+  }, [])
 
   return (
     <>
       {isLoading && <Loader />}
       {passwordModal && <UpdatePasswordModal handleClosePassModal={handleClosePassModal} />}
       <Toaster richColors position="top-center" duration={2000} />
-      <div className="dashboard"> 
+      <div className="dashboard">
         <div className="dashboard-header">
           <div className="dashboard-header-title">
             <h3 className="dashboard-header-title-normal">Dashboard</h3>
