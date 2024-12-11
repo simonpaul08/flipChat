@@ -39,7 +39,6 @@ const CreatePremiumLink = () => {
     message: yup.string().required("message is required"),
   });
 
-
   // handle submit
   const handleSubmit = async (values) => {
     if (formik.errors) {

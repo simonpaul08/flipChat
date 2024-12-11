@@ -9,39 +9,6 @@ import Warning from "../components/common/Warning";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const Dashboard = () => {
-  const [links, setLinks] = useState([
-    {
-      id: 1,
-      link: "flipchat.link/demo1",
-      message: "Hey, What's Up ?",
-      type: "elite",
-    },
-    {
-      id: 2,
-      link: "flipchat.link/demo2",
-      message: "This is a demo 2 link",
-      type: "essential",
-    },
-    {
-      id: 3,
-      link: "flipchat.link/demo3",
-      message:
-        "demo of expand plan Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis, dolor.",
-      type: "expand",
-    },
-    {
-      id: 4,
-      link: "flipchat.link/demo4",
-      message: "This is a demo 4 link",
-      type: "elite",
-    },
-    {
-      id: 5,
-      link: "flipchat.link/demo5",
-      message: "This is a free demo 5 link",
-      type: "free",
-    },
-  ]);
   const [isLoading, setIsLoading] = useState(false);
   const [freeLinks, setFreeLinks] = useState([]);
   const navigate = useNavigate();

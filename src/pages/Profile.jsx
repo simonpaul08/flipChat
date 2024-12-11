@@ -24,11 +24,11 @@ const Profile = () => {
     setIsLoading(true)
 
     let body = {
-      id: userDetails?.id, 
-      name: values?.name, 
-      phone: values?.phone, 
-      country: values?.country, 
-      accountType: values?.accountType, 
+      id: userDetails?.id,
+      name: values?.name,
+      phone: values?.phone,
+      country: values?.country,
+      accountType: values?.accountType,
       industry: values?.industry
     }
 
@@ -123,7 +123,6 @@ const Profile = () => {
     try {
       const user = await fetchUserDetails(id)
       if (user) {
-        console.log(user)
         handleSetUserDetails(user)
       }
     } catch (error) {
@@ -192,6 +191,9 @@ const Profile = () => {
                   onChange={formik.handleChange}
                   disabled={!isEdit}
                 />
+                {formik.errors.name && (
+                  <p className="auth-error">{formik.errors.name}</p>
+                )}
               </div>
               <div className="profile-form-item">
                 <label htmlFor="agent-1" className="profile-form-label">
@@ -244,6 +246,9 @@ const Profile = () => {
                   <option value={"individual"}>Individual</option>
                   <option value={"business"}>Business</option>
                 </select>
+                {formik.errors.accountType && (
+                  <p className="auth-error">{formik.errors.accountType}</p>
+                )}
               </div>
               <div className="profile-form-item">
                 <label htmlFor="country" className="profile-form-label">
@@ -265,6 +270,9 @@ const Profile = () => {
                     );
                   })}
                 </select>
+                {formik.errors.country && (
+                  <p className="auth-error">{formik.errors.country}</p>
+                )}
               </div>
               <div className="profile-form-item">
                 <label htmlFor="industry" className="profile-form-label">
@@ -281,6 +289,9 @@ const Profile = () => {
                   <option value={"education"}>Education</option>
                   <option value={"marketing"}>Marketing</option>
                 </select>
+                {formik.errors.industry && (
+                  <p className="auth-error">{formik.errors.industry}</p>
+                )}
               </div>
 
               {isEdit ? (
@@ -309,7 +320,7 @@ const Profile = () => {
                     Edit Profile
                   </button>
                   <button
-                    type="submit"
+                    type="button"
                     className="btn-primary profile-cta-edit"
                     onClick={handleOpenPassModal}
                   >
