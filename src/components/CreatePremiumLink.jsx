@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useAuthContext } from "../context/AuthContext";
-import { AGENT_PER_PLAN, phoneRegExp, PLANS } from "../utils/utils";
+import { AGENT_PER_PLAN, LINKS_PER_PLAN, phoneRegExp, PLANS } from "../utils/utils";
 import { toast, Toaster } from "sonner";
 import Loader from "./loader/loader";
 import axios from "axios";
@@ -21,6 +21,7 @@ const CreatePremiumLink = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModal, setIsModal] = useState(false)
   const [currentLink, setCurrentLink] = useState("");
+  const [premiumLinkCount, setPremiumLinkCount] = useState(0);
 
   const Schema = yup.object().shape({
     username: yup.string().required("username is required"),
@@ -106,6 +107,21 @@ const CreatePremiumLink = () => {
     formik.setFieldValue("agents", updatedAgents)
   }
 
+  const getPremiumLinkCount = async (id) => {
+    setIsLoading(true);
+
+    try {
+      const res = await axios.get(`${SERVER_URL}api/link/premium/count/${id}`);
+      if (res.data) {
+        setPremiumLinkCount(res.data?.count);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleCloseModal = () => {
     setIsModal(false);
     navigate("/dashboard")
@@ -114,6 +130,12 @@ const CreatePremiumLink = () => {
   const handleGetPremium = () => {
     navigate("/dashboard/plans")
   }
+
+  useEffect(() => {
+    if (userDetails?.id) {
+      getPremiumLinkCount(userDetails?.id)
+    }
+  }, [userDetails])
 
   return (
     <>
@@ -134,8 +156,8 @@ const CreatePremiumLink = () => {
             linkText={"Upgrade Now"}
             link={"/dashboard/plans"}
           />}
-          <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />
-          
+          {premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType] && <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />}
+
         </div>
 
         <form method="POST" className="create-form profile-form" onSubmit={formik.handleSubmit}>
@@ -152,7 +174,7 @@ const CreatePremiumLink = () => {
                 onChange={formik.handleChange}
                 className="profile-form-input"
                 placeholder="username..."
-                disabled={isFree}
+                disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
               />
               {formik.errors.username && (
                 <p className="auth-error">{formik.errors.username}</p>
@@ -173,7 +195,7 @@ const CreatePremiumLink = () => {
                     className="profile-form-select"
                     value={field.countryCode}
                     onChange={formik.handleChange}
-                    disabled={isFree}
+                    disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
                   >
                     <option value="+91">+91</option>
                     <option value="+92">+92</option>
@@ -188,7 +210,7 @@ const CreatePremiumLink = () => {
                       onChange={formik.handleChange}
                       className="profile-form-input"
                       placeholder="agent number..."
-                      disabled={isFree}
+                      disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
                       maxLength={12}
                       minLength={6}
                     />
@@ -209,7 +231,7 @@ const CreatePremiumLink = () => {
               type="button"
               className="btn-black add-more-cta"
               onClick={handleAddMore}
-              disabled={isFree}
+              disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
             >
               Add More {formik.values.agents.length}/{AGENT_PER_PLAN[userDetails?.planType]}
             </button>
@@ -228,7 +250,7 @@ const CreatePremiumLink = () => {
                 className="profile-form-input"
                 placeholder="message here..."
                 rows={3}
-                disabled={isFree}
+                disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
               />
               {formik.errors.message && (
                 <p className="auth-error">{formik.errors.message}</p>
@@ -236,7 +258,7 @@ const CreatePremiumLink = () => {
             </div>
           </div>
           <div className="profile-form-item">
-            <button type="submit" className="btn-primary create-cta" disabled={isFree}>Create Link</button>
+            <button type="submit" className="btn-primary create-cta" disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}>Create Link</button>
           </div>
         </form>
       </div>

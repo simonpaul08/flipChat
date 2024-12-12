@@ -34,6 +34,11 @@ const Dashboard = () => {
     navigate("create");
   };
 
+  // handle navigate link
+  const handleNavigateLink = (id) => {
+    navigate(`link/${id}`)
+  }
+
   useEffect(() => {
     if (userDetails?.id) {
       getFreeLinks(userDetails?.id);
@@ -80,7 +85,9 @@ const Dashboard = () => {
             <div className="dashboard-grid">
               {freeLinks?.map((item) => {
                 return (
-                  <div key={item?._id} className="dashboard-grid-item">
+                  <div key={item?._id} className="dashboard-grid-item"
+                    onClick={() => handleNavigateLink(item?._id)}
+                  >
                     <h3 className="dashboard-grid-item-link">
                       flipchat.link/{item?.username}
                     </h3>
@@ -88,9 +95,8 @@ const Dashboard = () => {
                       "{item?.message}"
                     </p>
                     <div
-                      className={`dashboard-grid-item-tag plan-${
-                        item?.linkType?.toLowerCase() ?? ""
-                      }`}
+                      className={`dashboard-grid-item-tag plan-${item?.linkType?.toLowerCase() ?? ""
+                        }`}
                     >
                       <p className="plan-tag">{item?.linkType}</p>
                     </div>

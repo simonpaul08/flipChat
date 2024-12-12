@@ -29,6 +29,13 @@ export const AGENT_PER_PLAN = {
   ELITE: 5,
 };
 
+// links per plan
+export const LINKS_PER_PLAN = {
+  ESSENTIAL: 1,
+  EXPAND: 3,
+  ELITE: 8,
+};
+
 // phone regex
 export const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;

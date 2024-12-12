@@ -13,6 +13,7 @@ import CreateLink from "./pages/CreateLink";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useAuthContext } from "./context/AuthContext";
 import ForgetPassword from "./pages/ForgetPassword";
+import LinkAnalytics from "./pages/LinkAnalytics";
 
 const CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="create" element={<CreateLink />} />
+          <Route path="link/:id" element={<LinkAnalytics />} />
           <Route path="plans" element={<Plans />} />
           <Route path="profile" element={<Profile />} />
           <Route path="billing" element={<Billing />} />
