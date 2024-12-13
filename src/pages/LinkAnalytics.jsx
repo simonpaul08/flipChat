@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import BackButton from '../components/common/BackButton';
 
 const LinkAnalytics = () => {
 
@@ -15,7 +16,11 @@ const LinkAnalytics = () => {
                 </div>
             </div>
             <div className="dashboard-main">
-                <p>link - {id}</p>
+                <div className="analytics-container">
+                    <div className="create-head">
+                        <BackButton />
+                    </div>
+                </div>
             </div>
         </div>
     )

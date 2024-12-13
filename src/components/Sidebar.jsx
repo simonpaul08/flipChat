@@ -22,7 +22,7 @@ const NAV_LINKS = [
     image: PIE_ICON,
     imageWhite: PIE_ICON_WHITE,
     link: "/dashboard",
-    children: ["/dashboard/create"],
+    children: ["/dashboard/create", "/dashboard/link"],
   },
   {
     id: 2,
@@ -80,7 +80,7 @@ const Sidebar = () => {
       <div className="sidebar-body">
         <div className="sidebar-nav">
           {NAV_LINKS?.map((item) => {
-            const selected = item.link === currentTab || item.children.includes(currentTab)
+            const selected = item.link === currentTab || item.children.some(item => currentTab?.includes(item))
             return (
               <div
                 key={item.id}
