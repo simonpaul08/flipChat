@@ -20,6 +20,9 @@ const LinkAnalytics = () => {
                     <div className="create-head">
                         <BackButton />
                     </div>
+                    <div className="analytics-main">
+                        <h3 className='analytics-link'>Flipchat.com/</h3>
+                    </div>
                 </div>
             </div>
         </div>

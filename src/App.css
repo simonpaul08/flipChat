@@ -1395,6 +1395,9 @@ textarea {
   background-color: var(--color-white);
   border-radius: 8px;
 }
+.analytics-main {
+  padding: 2rem 0;
+}
 
 /* Forget Password */
 .change-password-form {
