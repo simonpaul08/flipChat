@@ -13,62 +13,56 @@ const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const Plans = () => {
   const [isModal, setIsModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState({
+    amount: 0,
+    planType: "",
+  });
 
   const { userDetails, fetchUserDetails } = useAuthContext();
 
-  const handleCloseModal = () => setIsModal(false);
-
-  const handleSubmit = async (planType) => {
-    setIsLoading(true);
-
-    let body = {
-      userId: userDetails?.id,
-      planType: planType,
-      transactionId: "jsgjagfsd8fsdbfsbdf8",
-    };
-
-    try {
-      const res = await axios.post(`${SERVER_URL}api/subscription/subscribe`, {
-        ...body,
-      });
-      if (res.data) {
-        toast.success(res.data?.message);
-      }
-      await fetchUserDetails(userDetails?.id);
-    } catch (error) {
-      if (error?.response?.data?.message) {
-        toast.error(error?.response?.data?.message);
-      } else if (error?.message) {
-        toast.error(error?.message);
-      } else {
-        toast.error("something went wrong");
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const handleCloseModal = () => {
+    setSelectedPlan({
+      amount: 0,
+      planType: "",
+    });
+    setIsModal(false);
   };
 
-  const checkoutHandler = async (amount) => {
-
+  const handleSubmit = async () => {
+    setIsModal(false)
+    setIsLoading(true)
     try {
-      const { data: { key } } = await axios.get(`${SERVER_URL}api/payment/key`)
+      const {
+        data: { key },
+      } = await axios.get(`${SERVER_URL}api/payment/key`);
 
       let body = {
         userId: userDetails?.id,
+        planType: selectedPlan?.planType,
+        amount: selectedPlan?.amount,
+      };
+
+      const {
+        data: { order },
+      } = await axios.post(`${SERVER_URL}api/payment/create/order`, {
+        ...body,
+      });
+
+      setIsLoading(false)
+
+      const options = createRazorpayOption({
+        key,
+        amount: order.amount,
+        orderId: order.id,
         name: userDetails?.name,
-        amount: amount
-      }
-
-      const { data: { order } } = await axios.post(`${SERVER_URL}api/payment/create/order`, {
-        ...body
-      })
-
-      const options = createRazorpayOption({ key, amount: order.amount, orderId: order.id, name: userDetails?.name, email: userDetails?.email, phone: userDetails?.phone })
+        email: userDetails?.email,
+        phone: userDetails?.phone?.number,
+      });
 
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       } else if (error?.message) {
@@ -77,12 +71,47 @@ const Plans = () => {
         toast.error("something went wrong");
       }
     }
+    // setIsLoading(true);
 
-  }
+    // let body = {
+    //   userId: userDetails?.id,
+    //   planType: planType,
+    //   transactionId: "jsgjagfsd8fsdbfsbdf8",
+    // };
+
+    // try {
+    //   const res = await axios.post(`${SERVER_URL}api/subscription/subscribe`, {
+    //     ...body,
+    //   });
+    //   if (res.data) {
+    //     toast.success(res.data?.message);
+    //   }
+    //   await fetchUserDetails(userDetails?.id);
+    // } catch (error) {
+    //   if (error?.response?.data?.message) {
+    //     toast.error(error?.response?.data?.message);
+    //   } else if (error?.message) {
+    //     toast.error(error?.message);
+    //   } else {
+    //     toast.error("something went wrong");
+    //   }
+    // } finally {
+    //   setIsLoading(false);
+    // }
+  };
+
+  const checkoutHandler = async (amount, planType) => {
+    setSelectedPlan((plan) => ({
+      ...plan,
+      amount: amount,
+      planType: planType,
+    }));
+    setIsModal(true);
+  };
 
   return (
     <>
-      {isLoading && <Loader />}
+    {isLoading && <Loader />}
       {isModal && (
         <CommonModal
           header={"Do you want to proceed"}
@@ -91,6 +120,7 @@ const Plans = () => {
           }
           handleCancel={handleCloseModal}
           handleSubmit={handleSubmit}
+          isLoading={isLoading}
         />
       )}
       <div className="dashboard">
@@ -174,7 +204,7 @@ const Plans = () => {
               ) : (
                 <button
                   className="btn-primary cta-upgrade"
-                  onClick={() => checkoutHandler(499)}
+                  onClick={() => checkoutHandler(499, PLANS.ESSENTIAL)}
                 >
                   Upgrade Now
                 </button>
@@ -231,7 +261,7 @@ const Plans = () => {
               ) : (
                 <button
                   className="btn-primary cta-upgrade"
-                  onClick={() => checkoutHandler(1999)}
+                  onClick={() => checkoutHandler(1999, PLANS.EXPAND)}
                 >
                   Upgrade Now
                 </button>

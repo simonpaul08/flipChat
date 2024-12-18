@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CommonModal = ({ header, para, handleCancel, handleSubmit }) => {
+const CommonModal = ({ header, para, handleCancel, handleSubmit, isLoading=false }) => {
     return (
         <div className="modal">
             <div className="modal-container">
@@ -9,6 +9,7 @@ const CommonModal = ({ header, para, handleCancel, handleSubmit }) => {
                     {para && <p className='modal-para'>{para}</p>}
                     <div className='modal-btns'>
                         <button className='btn-secondary' onClick={handleCancel}>Cancel</button>
+                        {/* Put a loader here */}
                         <button className='btn-primary' onClick={handleSubmit}>Submit</button>
                     </div>
                 </div>
