@@ -1398,7 +1398,21 @@ textarea {
 .analytics-main {
   padding: 2rem 0;
 }
-
+.analytics-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.analytics-link {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+.analytics-link-copy {
+  margin-left: 1rem;
+  cursor: pointer;
+}
 /* Forget Password */
 .change-password-form {
   margin-top: 2rem;

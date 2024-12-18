@@ -143,3 +143,25 @@ export const countries = [
 
 // Server URL
 export const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+
+// razorpay option 
+export const createRazorpayOption = ({ key, amount, orderId, name, email, phone }) => {
+  const options = {
+    key,
+    amount: amount,
+    currency: "INR",
+    name: "FlipChat",
+    description: "FlipChat Premium Subscription",
+    order_id: orderId,
+    callback_url: "http://localhost:4000/api/paymentverification",
+    prefill: {
+      name: name,
+      email: email,
+      contact: phone
+    },
+    theme: {
+      "color": "#109449"
+    }
+  };
+  return options;
+}

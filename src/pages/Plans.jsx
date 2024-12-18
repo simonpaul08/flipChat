@@ -4,7 +4,7 @@ import CommonModal from "../components/modal/commonModal";
 import Loader from "../components/loader/loader";
 import { useAuthContext } from "../context/AuthContext";
 import Warning from "../components/common/Warning";
-import { PLANS } from "../utils/utils";
+import { createRazorpayOption, PLANS } from "../utils/utils";
 import { toast } from "sonner";
 import axios from "axios";
 
@@ -47,6 +47,38 @@ const Plans = () => {
       setIsLoading(false);
     }
   };
+
+  const checkoutHandler = async (amount) => {
+
+    try {
+      const { data: { key } } = await axios.get(`${SERVER_URL}api/payment/key`)
+
+      let body = {
+        userId: userDetails?.id,
+        name: userDetails?.name,
+        amount: amount
+      }
+
+      const { data: { order } } = await axios.post(`${SERVER_URL}api/payment/create/order`, {
+        ...body
+      })
+
+      const options = createRazorpayOption({ key, amount: order.amount, orderId: order.id, name: userDetails?.name, email: userDetails?.email, phone: userDetails?.phone })
+
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (error) {
+      console.log(error)
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    }
+
+  }
 
   return (
     <>
@@ -142,7 +174,7 @@ const Plans = () => {
               ) : (
                 <button
                   className="btn-primary cta-upgrade"
-                  onClick={() => handleSubmit(PLANS.ESSENTIAL)}
+                  onClick={() => checkoutHandler(499)}
                 >
                   Upgrade Now
                 </button>
@@ -199,7 +231,7 @@ const Plans = () => {
               ) : (
                 <button
                   className="btn-primary cta-upgrade"
-                  onClick={() => handleSubmit(PLANS.EXPAND)}
+                  onClick={() => checkoutHandler(1999)}
                 >
                   Upgrade Now
                 </button>
@@ -256,7 +288,7 @@ const Plans = () => {
               ) : (
                 <button
                   className="btn-primary cta-upgrade"
-                  onClick={() => handleSubmit(PLANS.ELITE)}
+                  onClick={() => checkoutHandler(5999)}
                 >
                   Upgrade Now
                 </button>
