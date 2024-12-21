@@ -14,6 +14,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useAuthContext } from "./context/AuthContext";
 import ForgetPassword from "./pages/ForgetPassword";
 import LinkAnalytics from "./pages/LinkAnalytics";
+import 'react-responsive-pagination/themes/bootstrap.css';
 
 const CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
 

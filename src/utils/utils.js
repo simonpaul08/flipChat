@@ -153,11 +153,14 @@ export const createRazorpayOption = ({ key, amount, orderId, name, email, phone 
     name: "FlipChat",
     description: "FlipChat Premium Subscription",
     order_id: orderId,
-    callback_url: "http://localhost:4000/api/paymentverification",
+    callback_url: `${import.meta.env.VITE_APP_SERVER_URL}api/payment/process/payment`,
     prefill: {
       name: name,
       email: email,
       contact: phone
+    },
+    notes: {
+      "address": "Razorpay Corporate Office"
     },
     theme: {
       "color": "#109449"

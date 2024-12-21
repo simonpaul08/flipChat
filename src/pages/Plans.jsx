@@ -4,7 +4,7 @@ import CommonModal from "../components/modal/commonModal";
 import Loader from "../components/loader/loader";
 import { useAuthContext } from "../context/AuthContext";
 import Warning from "../components/common/Warning";
-import { createRazorpayOption, PLANS } from "../utils/utils";
+import { PLANS } from "../utils/utils";
 import { toast } from "sonner";
 import axios from "axios";
 
@@ -28,10 +28,49 @@ const Plans = () => {
     setIsModal(false);
   };
 
+  // handle process payment 
+  const handleProcessPayment = async (response) => {
+    console.log(response)
+
+    setIsLoading(true)
+
+    const newBody = {
+      razorpay_order_id: response?.razorpay_order_id,
+      razorpay_payment_id: response?.razorpay_payment_id,
+      razorpay_signature: response?.razorpay_signature
+    }
+
+    try {
+      const res = await axios.post(`${SERVER_URL}api/payment/process/payment`, { ...newBody })
+
+      if (res.data) {
+        toast.success(res.data?.message)
+        await fetchUserDetails(userDetails?.id)
+      }
+
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
+      setIsLoading(false)
+    }
+
+
+  }
+
+  // handle subscribe 
   const handleSubmit = async () => {
     setIsModal(false)
     setIsLoading(true)
     try {
+
+      // get razorpay key
       const {
         data: { key },
       } = await axios.get(`${SERVER_URL}api/payment/key`);
@@ -42,22 +81,32 @@ const Plans = () => {
         amount: selectedPlan?.amount,
       };
 
+      // create order
       const {
         data: { order },
       } = await axios.post(`${SERVER_URL}api/payment/create/order`, {
         ...body,
       });
 
-      setIsLoading(false)
-
-      const options = createRazorpayOption({
+      const options = {
         key,
-        amount: order.amount,
-        orderId: order.id,
-        name: userDetails?.name,
-        email: userDetails?.email,
-        phone: userDetails?.phone?.number,
-      });
+        amount: order?.amount,
+        currency: "INR",
+        name: "FlipChat",
+        description: "FlipChat Premium Subscription",
+        order_id: order?.id,
+        callback_url: `${SERVER_URL}api/payment/process/payment`,
+        prefill: {
+          name: userDetails?.name,
+          email: userDetails?.email,
+          contact: userDetails?.phone?.number
+        },
+        handler: handleProcessPayment,
+        notes: order?.notes,
+        theme: {
+          "color": "#109449"
+        }
+      };
 
       const razor = new window.Razorpay(options);
       razor.open();
@@ -70,36 +119,12 @@ const Plans = () => {
       } else {
         toast.error("something went wrong");
       }
+    } finally {
+      setIsLoading(false)
     }
-    // setIsLoading(true);
-
-    // let body = {
-    //   userId: userDetails?.id,
-    //   planType: planType,
-    //   transactionId: "jsgjagfsd8fsdbfsbdf8",
-    // };
-
-    // try {
-    //   const res = await axios.post(`${SERVER_URL}api/subscription/subscribe`, {
-    //     ...body,
-    //   });
-    //   if (res.data) {
-    //     toast.success(res.data?.message);
-    //   }
-    //   await fetchUserDetails(userDetails?.id);
-    // } catch (error) {
-    //   if (error?.response?.data?.message) {
-    //     toast.error(error?.response?.data?.message);
-    //   } else if (error?.message) {
-    //     toast.error(error?.message);
-    //   } else {
-    //     toast.error("something went wrong");
-    //   }
-    // } finally {
-    //   setIsLoading(false);
-    // }
   };
 
+  // handle checkout
   const checkoutHandler = async (amount, planType) => {
     setSelectedPlan((plan) => ({
       ...plan,
@@ -111,10 +136,10 @@ const Plans = () => {
 
   return (
     <>
-    {isLoading && <Loader />}
+      {isLoading && <Loader />}
       {isModal && (
         <CommonModal
-          header={"Do you want to proceed"}
+          header={"Do you want to proceed ?"}
           para={
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore dignissimos quibusdam nihil ducimus rem."
           }
