@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import BackButton from '../components/common/BackButton';
-import Divider from '../components/common/Divider';
 import CopyIcon from "../assets/icon_copy.svg";
 import { Tooltip } from 'react-tooltip';
 

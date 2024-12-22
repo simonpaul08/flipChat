@@ -24,7 +24,7 @@ const CreatePremiumLink = () => {
   const [premiumLinkCount, setPremiumLinkCount] = useState(0);
 
   const Schema = yup.object().shape({
-    username: yup.string().required("username is required"),
+    username: yup.string().matches(/^\S*$/, "username cannot contain spaces").required("username is required"),
     agents: yup
       .array()
       .of(

@@ -4,10 +4,10 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import Warning from "../components/common/Warning";
 import UpdatePasswordModal from "../components/modal/updatePassword";
-import Loader from "../components/loader/loader";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
+import Loader from "../components/loader/loader";
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);

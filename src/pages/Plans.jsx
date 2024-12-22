@@ -343,7 +343,7 @@ const Plans = () => {
               ) : (
                 <button
                   className="btn-primary cta-upgrade"
-                  onClick={() => checkoutHandler(5999)}
+                  onClick={() => checkoutHandler(5999, PLANS.ELITE)}
                 >
                   Upgrade Now
                 </button>

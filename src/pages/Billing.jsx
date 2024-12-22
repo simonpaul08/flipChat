@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { PLANS, PLANS_RATE, STATUS } from "../utils/utils";
 import { useAuthContext } from "../context/AuthContext";
 import Loader from "../components/loader/loader";
 import { toast } from "sonner";
