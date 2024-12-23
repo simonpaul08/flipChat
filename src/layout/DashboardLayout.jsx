@@ -3,8 +3,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { useAuthContext } from "../context/AuthContext";
 import { getUserByid } from "../utils/apis";
-import Loader from "../components/loader/loader";
 import { toast, Toaster } from "sonner";
+import Loader from "../components/loader";
 
 const DashboardLayout = () => {
 

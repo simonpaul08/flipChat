@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
-import Loader from "../components/loader/loader";
 import { useAuthContext } from "../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import { toast, Toaster } from "sonner";
+import Loader from "../components/loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 

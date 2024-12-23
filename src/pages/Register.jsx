@@ -5,11 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import Loader from "../components/loader/loader";
 import VerifyOTP from "../components/modal/verifyOTP";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuthContext } from "../context/AuthContext";
 import { toast, Toaster } from "sonner";
+import Loader from "../components/loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -26,7 +26,10 @@ const Register = () => {
       .min(3, "minimum 3 characters")
       .required("name is required"),
     email: yup.string().required("email is required"),
-    password: yup.string().min(6, "password must be of atleast 6 digits").required("password is required"),
+    password: yup
+      .string()
+      .min(6, "password must be of atleast 6 digits")
+      .required("password is required"),
     confirmPassword: yup
       .string()
       .oneOf([yup.ref("password")], "passwords must match")
@@ -170,7 +173,6 @@ const Register = () => {
     onError: () => toast.error("unable to sign up with google"),
     flow: "auth-code",
   });
-
 
   return (
     <>

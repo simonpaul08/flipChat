@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SearchIcon from "../assets/search-icon.svg";
 import { useNavigate } from "react-router-dom";
-import Loader from "../components/loader/loader";
 import { Toaster } from "sonner";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 import Warning from "../components/common/Warning";
+import Loader from "../components/loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const Dashboard = () => {

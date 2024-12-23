@@ -7,7 +7,7 @@ import UpdatePasswordModal from "../components/modal/updatePassword";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
-import Loader from "../components/loader/loader";
+import Loader from "../components/loader";
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);

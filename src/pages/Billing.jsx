@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import Loader from "../components/loader/loader";
 import { toast } from "sonner";
 import axios from "axios";
 import dayjs from "dayjs";
 import ResponsivePagination from 'react-responsive-pagination';
+import Loader from "../components/loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 

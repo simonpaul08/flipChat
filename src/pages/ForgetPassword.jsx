@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Loader from "../components/loader/loader";
 import Logo from "../assets/Flipchat-Transperent.png";
 import axios from "axios";
 import * as yup from "yup";
@@ -7,6 +6,7 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import ChangePassword from "../components/modal/changePassword"
 import { toast, Toaster } from "sonner";
+import Loader from "../components/loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
