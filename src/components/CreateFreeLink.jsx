@@ -1,13 +1,13 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as yup from "yup";
-import Loader from "./loader/loader";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 import { phoneRegExp } from "../utils/utils";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import LandingModal from "./landingModal/landingModal";
+import Loader from "./loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 

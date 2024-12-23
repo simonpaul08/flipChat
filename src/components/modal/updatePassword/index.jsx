@@ -5,8 +5,8 @@ import Divider from "../../common/Divider";
 import axios from "axios";
 import { useAuthContext } from "../../../context/AuthContext";
 import { toast, Toaster } from "sonner";
-import Loader from "../../loader/loader";
 import { SERVER_URL } from "../../../utils/utils";
+import Loader from "../../loader";
 
 const UpdatePasswordModal = ({ handleClosePassModal }) => {
 

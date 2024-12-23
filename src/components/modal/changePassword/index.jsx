@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../../loader/loader";
 import axios from "axios";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { toast, Toaster } from "sonner";
+import Loader from "../../loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
