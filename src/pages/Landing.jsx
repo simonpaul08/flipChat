@@ -13,10 +13,10 @@ import AgentAnimation from "../components/animation/Animation";
 import Device from "../components/device/Device";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import LandingModal from "../components/landingModal/landingModal";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { countries, phoneRegExp } from "../utils/utils";
+import LandingModal from "../components/landingModal/landingModal";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
