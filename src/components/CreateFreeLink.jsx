@@ -6,7 +6,7 @@ import axios from "axios";
 import { phoneRegExp } from "../utils/utils";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import LandingModal from "./landingModal/landingModal";
+import LandingModal from "./landingModal";
 import Loader from "./loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;

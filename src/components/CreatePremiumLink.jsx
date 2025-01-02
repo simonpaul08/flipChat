@@ -7,7 +7,7 @@ import { toast, Toaster } from "sonner";
 import axios from "axios";
 import Warning from "./common/Warning";
 import DeleteIcon from "../assets/icon_delete.svg";
-import LandingModal from "./landingModal/landingModal";
+import LandingModal from "./landingModal";
 import { useNavigate } from "react-router-dom";
 import Error from "./common/Error";
 import Loader from "./loader";
