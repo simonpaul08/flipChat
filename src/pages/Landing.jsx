@@ -16,7 +16,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { countries, phoneRegExp } from "../utils/utils";
-import LandingModal from "../components";
+import LandingModal from "../components/landingModal";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
