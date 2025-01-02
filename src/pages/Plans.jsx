@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Check from "../assets/check.svg";
-import CommonModal from "../components/modal/commonModal";
+import CommonModal from "../components/modal/CommonModal";
 import { useAuthContext } from "../context/AuthContext";
 import Warning from "../components/common/Warning";
 import { PLANS } from "../utils/utils";
