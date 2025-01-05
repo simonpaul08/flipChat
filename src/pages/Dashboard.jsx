@@ -6,22 +6,25 @@ import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 import Warning from "../components/common/Warning";
 import Loader from "../components/loader";
+import { PLANS } from "../utils/utils";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [freeLinks, setFreeLinks] = useState([]);
+  const [allLinks, setAllLinks] = useState([]);
+  const [sortedLinks, setSortedLinks] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
   const { userDetails } = useAuthContext();
 
-  // get free links
-  const getFreeLinks = async (id) => {
+  // get all links
+  const getAllLinks = async (id) => {
     setIsLoading(true);
 
     try {
-      const res = await axios.get(`${SERVER_URL}api/link/${userDetails?.id}`);
+      const res = await axios.get(`${SERVER_URL}api/link/${id}`);
       if (res.data) {
-        setFreeLinks(res.data?.links);
+        setAllLinks(res.data?.links);
       }
     } catch (e) {
       console.log(e);
@@ -39,9 +42,43 @@ const Dashboard = () => {
     navigate(`link/${id}`)
   }
 
+  // handle rearrange links 
+  const handleRearrangeLinks = () => {
+    const freeLinks = allLinks.filter(link => link?.linkType === PLANS.FREE);
+    const premiumlinks = allLinks.filter(link => link?.linkType !== PLANS.FREE);
+
+    const sortedLinks = [...premiumlinks, ...freeLinks]
+    setSortedLinks(sortedLinks)
+  }
+
+
+  // rearrange links 
+  useEffect(() => {
+    if (allLinks.length) {
+      handleRearrangeLinks()
+    }
+  }, [allLinks])
+
+
+  // search text 
+  useEffect(() => {
+
+    if (searchText !== "") {
+      const filtered = allLinks.filter(link => {
+        return link?.username?.includes(searchText)
+      })
+      setSortedLinks(filtered)
+    } else {
+      handleRearrangeLinks()
+    }
+
+
+  }, [searchText])
+
+
   useEffect(() => {
     if (userDetails?.id) {
-      getFreeLinks(userDetails?.id);
+      getAllLinks(userDetails?.id);
     }
   }, [userDetails]);
   return (
@@ -64,6 +101,8 @@ const Dashboard = () => {
                 className="dashboard-search-input"
                 name="search"
                 placeholder="Search Here"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
               <img src={SearchIcon} alt="search icon" className="search-icon" />
             </div>
@@ -75,7 +114,7 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="dashboard-main-content">
-            {!freeLinks?.length && (
+            {!allLinks?.length && (
               <Warning
                 text={"You don't have any links present."}
                 linkText={"Create One Now"}
@@ -83,7 +122,7 @@ const Dashboard = () => {
               />
             )}
             <div className="dashboard-grid">
-              {freeLinks?.map((item) => {
+              {sortedLinks?.map((item) => {
                 return (
                   <div key={item?._id} className="dashboard-grid-item"
                     onClick={() => handleNavigateLink(item?._id)}

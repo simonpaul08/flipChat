@@ -5,6 +5,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import ResponsivePagination from 'react-responsive-pagination';
 import Loader from "../components/loader";
+import Warning from "../components/common/Warning";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -16,12 +17,14 @@ const Billing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [dataWarning, setDataWarning] = useState(false);
   const recordLimit = 8;
 
 
   // handle fetch transactions 
   const handleFetchTransactions = async () => {
     setIsLoading(true)
+    setDataWarning(false)
 
     try {
       const res = await axios.get(`${SERVER_URL}api/transaction/records/${userDetails?.id}`)
@@ -53,8 +56,11 @@ const Billing = () => {
 
       const slicedRecords = transactions.slice(start, end);
       setPaginatedRecord(slicedRecords)
+    } else if (!transactions.length) {
+      setDataWarning(true)
     }
   }, [transactions, currentPage])
+
 
 
   useEffect(() => {
@@ -76,7 +82,15 @@ const Billing = () => {
         </div>
         <div className="dashboard-main">
           <div className="billing-container">
-
+            {dataWarning &&
+              <div className="profile-warning-container">
+                <Warning
+                  text={
+                    "You haven't made any transactions yet. Once you do, they'll appear here."
+                  }
+                />
+              </div>
+            }
             <table className="billing-table">
               <thead className="billing-table-head">
                 <tr>

@@ -1,6 +1,7 @@
 /* Utils - buttons */
 .btn-primary {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   padding: 1rem 2.8rem;
   background-color: var(--color-green-primary);
   color: var(--color-white);
@@ -14,7 +15,8 @@
 }
 
 .btn-secondary {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
   padding: 1rem 2.8rem;
   background-color: transparent;
   color: var(--color-green-primary);
@@ -440,6 +442,15 @@ textarea {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
+.brandcheck-found {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color: var(--color-danger-light);
+}
+
 .brandcheck-header {
   width: 100%;
   text-align: right;
@@ -459,8 +470,18 @@ textarea {
   color: var(--color-green-primary);
   margin-bottom: 1.5rem;
 }
+.brandcheck-found-title {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--color-danger);
+  margin-bottom: 1.5rem;
+}
 
 .brandcheck-title-sub {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+.brandcheck-found-title-sub {
   font-size: 1.6rem;
   font-weight: 400;
 }
@@ -1238,6 +1259,7 @@ textarea {
   color: var(--color-danger);
   border-color: var(--color-danger);
 }
+
 .pagination-block {
   width: 100%;
   padding: 1.5rem 0;
@@ -1245,6 +1267,7 @@ textarea {
   justify-content: flex-end;
   align-items: center;
 }
+
 .pagination-block .page-link {
   font-size: 1.5rem !important;
 }
@@ -1318,10 +1341,14 @@ textarea {
 }
 
 .open-accordion .faq-item-content {
-  height: 120px;
+  height: 80px;
   padding-top: 0.75rem;
 }
 
+.faq-redirect-text {
+  text-decoration: none;
+  color: var(--color-blue-primary);
+}
 
 
 /* Create Link */
@@ -1405,24 +1432,29 @@ textarea {
   background-color: var(--color-white);
   border-radius: 8px;
 }
+
 .analytics-main {
   padding: 2rem 0;
 }
+
 .analytics-title {
   width: 100%;
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
 }
+
 .analytics-link {
   font-size: 2rem;
   font-weight: 500;
   margin-top: 1rem;
 }
+
 .analytics-link-copy {
   margin-left: 1rem;
   cursor: pointer;
 }
+
 /* Forget Password */
 .change-password-form {
   margin-top: 2rem;

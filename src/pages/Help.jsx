@@ -1,37 +1,38 @@
 import { useState } from "react";
 import ArrowIcon from "../assets/icon_arrow.svg";
+import { Link } from "react-router-dom";
 
 const Help = () => {
   const ACCORDION_LIST = [
     {
       id: 1,
-      title: "How much does premium cost ?",
+      title: <p className="faq-item-title-text">What is a WhatsApp Chat Link ?</p>,
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo cupiditate, iure sed sapiente eaque corporis quibusdam eos unde molestiae necessitatibus error. At rerum accusamus consequuntur minima id itaque non quibusdam distinctio nesciunt ut enim animi exercitationem asperiores necessitatibus incidunt quaerat quam natus recusandae, illo repudiandae consequatur. Expedita architecto fugiat reprehenderit.",
+        <p className="faq-item-content-text">A WhatsApp chat link is a short URL that opens your chat window on WhatsApp with just one click, allowing businesses and individuals to initiate conversations without saving the contact number. For example, <Link className="faq-redirect-text" to={"/dashboard"}>Click HERE</Link></p>
     },
     {
       id: 2,
-      title: "How much does premium cost ?",
+      title: <p className="faq-item-title-text">What is an Agent in <span className="plan-main-para-span">Flipchat.link</span> ?</p>,
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo cupiditate, iure sed sapiente eaque corporis quibusdam eos unde molestiae necessitatibus error. At rerum accusamus consequuntur minima id itaque non quibusdam distinctio nesciunt ut enim animi exercitationem asperiores necessitatibus incidunt quaerat quam natus recusandae, illo repudiandae consequatur. Expedita architecto fugiat reprehenderit.",
+        <p className="faq-item-content-text">An agent is a contact (WhatsApp number) that is linked to a generated WhatsApp link. For users on the premium plan, you can add multiple agents to a single link, allowing dynamic rotation and better management of incoming messages.</p>,
     },
     {
       id: 3,
-      title: "How much does premium cost ?",
+      title: <p className="faq-item-title-text">How Does the Dynamic Link Rotation Work ?</p>,
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo cupiditate, iure sed sapiente eaque corporis quibusdam eos unde molestiae necessitatibus error. At rerum accusamus consequuntur minima id itaque non quibusdam distinctio nesciunt ut enim animi exercitationem asperiores necessitatibus incidunt quaerat quam natus recusandae, illo repudiandae consequatur. Expedita architecto fugiat reprehenderit.",
+        <p className="faq-item-content-text">Dynamic link rotation allows a single WhatsApp link to redirect users to one of multiple specified WhatsApp numbers randomly. This feature ensures that incoming messages are evenly distributed among the agents.</p>,
     },
     {
       id: 4,
-      title: "How much does premium cost ?",
+      title: <p className="faq-item-title-text">How Can I Create a Link with a Custom (Branded) URL ?</p>,
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo cupiditate, iure sed sapiente eaque corporis quibusdam eos unde molestiae necessitatibus error. At rerum accusamus consequuntur minima id itaque non quibusdam distinctio nesciunt ut enim animi exercitationem asperiores necessitatibus incidunt quaerat quam natus recusandae, illo repudiandae consequatur. Expedita architecto fugiat reprehenderit.",
+        <p className="faq-item-content-text"> If you’d like to create a link with a custom URL like <span className="plan-main-para-span">flipchat.link/YourBrand</span>, you can register for Flipchat Premium to get all the benefits, including custom URLs </p>,
     },
     {
       id: 5,
-      title: "How much does premium cost ?",
+      title: <p className="faq-item-title-text">What Are the Benefits of Using <span className="plan-main-para-span">Flipchat.link</span> for My Business ?</p>,
       content:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo cupiditate, iure sed sapiente eaque corporis quibusdam eos unde molestiae necessitatibus error. At rerum accusamus consequuntur minima id itaque non quibusdam distinctio nesciunt ut enim animi exercitationem asperiores necessitatibus incidunt quaerat quam natus recusandae, illo repudiandae consequatur. Expedita architecto fugiat reprehenderit.",
+        <p className="faq-item-content-text">Using <span className="plan-main-para-span">Flipchat.link</span> can streamline communication with your customers, provide a professional appearance with branded links, and improve customer management with dynamic link rotation. It also offers detailed analytics to help you track link performance and optimize your communication strategy.</p>,
     },
   ];
 
@@ -73,11 +74,9 @@ const Help = () => {
           <div className="help-accordion-faq">
             {ACCORDION_LIST?.map((item) => {
               return (
-                <div key={item.id} className={`faq-item ${selected === item.id ? "open-accordion": ""}`} onClick={() => handleOpenAccordion(item.id)}>
+                <div key={item.id} className={`faq-item ${selected === item.id ? "open-accordion" : ""}`} onClick={() => handleOpenAccordion(item.id)}>
                   <div className="faq-item-title">
-                    <p className="faq-item-title-text">
-                      {item?.title}
-                    </p>
+                    {item?.title}
                     <img
                       src={ArrowIcon}
                       alt="arrow icon"
@@ -85,9 +84,7 @@ const Help = () => {
                     />
                   </div>
                   <div className="faq-item-content">
-                    <p className="faq-item-content-text">
-                      {item.content}
-                    </p>
+                    {item.content}
                   </div>
                 </div>
               );

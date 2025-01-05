@@ -151,12 +151,12 @@ const CreatePremiumLink = () => {
       <Toaster richColors position="top-center" duration={2000} />
       <div className="create-form-container">
         <div className="create-warning-container">
-          {formik.values.agents.length >= AGENT_PER_PLAN[userDetails?.planType] && <Warning
+          { userDetails?.planType !== PLANS.FREE && formik.values.agents.length >= AGENT_PER_PLAN[userDetails?.planType] && <Warning
             text={"You’ve exceeded the allowed number of agents for your plan."}
             linkText={"Upgrade Now"}
             link={"/dashboard/plans"}
           />}
-          {premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType] && <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />}
+          {userDetails?.planType !== PLANS.FREE && premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType] && <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />}
 
         </div>
 

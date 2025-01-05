@@ -17,6 +17,7 @@ import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { countries, phoneRegExp } from "../utils/utils";
 import LandingModal from "../components/landingModal";
+import Spinner from "../components/spinner"
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -24,8 +25,10 @@ const Landing = () => {
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
   const [unknownLink, setUnknownLink] = useState("");
+  const [notBrand, setNotBrand] = useState(false);
   const [isBrand, setIsBrand] = useState(false);
   const [brandName, setBrandName] = useState("");
+  const [isFetching, setIsFetching] = useState(false)
 
   const Schema = yup.object().shape({
     agent: yup.object().shape({
@@ -50,6 +53,7 @@ const Landing = () => {
       message: values?.message
     }
 
+    setIsFetching(true)
     try {
       const res = await axios.post(
         `${SERVER_URL}api/link/unknown`,
@@ -74,15 +78,21 @@ const Landing = () => {
       } else {
         toast.error("something went wrong");
       }
+    } finally {
+      setIsFetching(false)
     }
   };
 
   // handle check brand
   const handleCheckBrand = async (e) => {
     e.preventDefault();
+    setIsBrand(false);
+    setNotBrand(false);
     let body = {
       name: brandName,
     };
+
+    setIsFetching(true)
 
     try {
       const res = await axios.post(
@@ -96,10 +106,14 @@ const Landing = () => {
       );
       if (res.data) {
         console.log(res.data);
-        setIsBrand(true);
+        setNotBrand(true);
       }
     } catch (error) {
       console.log(error);
+      if (error?.response?.status === 409) {
+        setIsBrand(true)
+        return
+      }
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
       } else if (error?.message) {
@@ -107,6 +121,8 @@ const Landing = () => {
       } else {
         toast.error("something went wrong");
       }
+    } finally {
+      setIsFetching(false)
     }
   };
 
@@ -126,9 +142,11 @@ const Landing = () => {
   const handleCloseModal = () => {
     setIsModal(false);
     setUnknownLink("");
+    formik.resetForm()
   };
 
   const handleCloseBrand = () => {
+    setNotBrand(false);
     setIsBrand(false);
     setBrandName("");
   };
@@ -290,7 +308,7 @@ const Landing = () => {
                     type="submit"
                     className="btn-primary landing-form-cta"
                   >
-                    Generate My Link
+                    {isFetching ? <Spinner /> : "Generate My Link"}
                   </button>
                 </form>
                 <div className="landing-form-divider">{">"}</div>
@@ -322,11 +340,13 @@ const Landing = () => {
                 />
                 <button className="btn-primary landing-find-cta">
                   {" "}
+
                   <img src={SearchIcon} className="landing-find-cta-icon" />
                   Search FlipChat Link
+
                 </button>
               </form>
-              {isBrand && (
+              {notBrand && (
                 <div className="brandcheck">
                   <div className="brandcheck-header">
                     <img
@@ -350,9 +370,29 @@ const Landing = () => {
                     <p className="brandcheck-para">
                       Get it now before someone else does
                     </p>
-                    <button className="brandcheck-cta btn-primary">
+                    <button className="brandcheck-cta btn-primary" onClick={handleAuth}>
                       Get It Now!
                     </button>
+                  </div>
+                </div>
+              )}
+              {isBrand && (
+                <div className="brandcheck-found">
+                  <div className="brandcheck-header">
+                    <img
+                      src={CrossIcon}
+                      alt="cross icon"
+                      className="brandcheck-cross"
+                      onClick={handleCloseBrand}
+                    />
+                  </div>
+                  <div className="brandcheck-body">
+                    <h3 className="brandcheck-found-title">
+                      😭 flipchat.link/{brandName} 😭{" "}
+                      <span className="brandcheck-found-title-sub">
+                        is not available. Please try another brand.
+                      </span>{" "}
+                    </h3>
                   </div>
                 </div>
               )}
