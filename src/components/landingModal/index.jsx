@@ -7,6 +7,7 @@ import CopyIcon from "../../assets/icon_copy.svg";
 import { Tooltip } from "react-tooltip";
 
 const LandingModal = ({ handleCloseModal, handleAuth, unknownLink, isPremium = false }) => {
+
   const copyToClpboard = () => {
     navigator.clipboard.writeText(`flipchat.link/${unknownLink}`);
   };

@@ -160,6 +160,26 @@ textarea {
   border: none;
 }
 
+/* Modal - Free Modal */
+.qr-modal-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.qr-modal-title {
+  font-size: 2rem;
+}
+.qr-modal-img {
+  width: 200px;
+  height: 200px;
+}
+.qr-modal-text {
+  font-size: 1.5rem;
+  color: var(--color-gray-secondary);
+}
+
 /* Landing */
 .landing {
   width: 100%;
@@ -1453,6 +1473,68 @@ textarea {
 .analytics-link-copy {
   margin-left: 1rem;
   cursor: pointer;
+}
+.analytics-agents {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.analytics-agents-item {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  background-color: var(--color-slate-primary);
+  margin: 1rem 0;
+  margin-right: 1rem;
+  border-radius: 25px;
+}
+.analytics-agents-item:first-child {
+  margin-left: 0;
+}
+.analytics-message {
+  display: inline-block;
+  max-width: 500px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  background-color: var(--color-green-light);
+  font-size: 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+.analytics-actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+.analytics-action-item {
+  padding: 1rem;
+  background-color: var(--color-slate-primary);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+.analytics-data-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.analytics-data {
+  width: 100%;
+}
+.analytics-data-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-right: 0.75rem;
+}
+.analytics-data-text {
+  font-size: 1.35rem;
 }
 
 /* Forget Password */
