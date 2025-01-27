@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
@@ -11,7 +11,7 @@ import Loader from "./loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
 
-const CreateFreeLink = () => {
+const CreateFreeLink = ({ link = false, isEdit = false }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { userDetails } = useAuthContext()
   const [isModal, setIsModal] = useState(false)
@@ -36,19 +36,33 @@ const CreateFreeLink = () => {
     }
     setIsLoading(true);
 
-    let body = {
-      userId: userDetails?.id,
-      agents: [values?.agent],
-      message: values?.message
-    }
-
     try {
-      const res = await axios.post(`${SERVER_URL}api/link/create/free`, { ...body });
-      if (res.data) {
-        toast.success(res.data?.message)
-        setCurrentLink(res.data?.shortLink?.username)
-        setIsModal(true)
+      if (isEdit) {
+        let body = {
+          id: link?._id,
+          agents: [values?.agent],
+          message: values?.message
+        }
+        const res = await axios.patch(`${SERVER_URL}api/link/update/free`, { ...body });
+        if (res.data) {
+          toast.success(res.data?.message)
+          setCurrentLink(res.data?.shortLink?.username)
+          setIsModal(true)
+        }
+      } else {
+        let body = {
+          userId: userDetails?.id,
+          agents: [values?.agent],
+          message: values?.message
+        }
+        const res = await axios.post(`${SERVER_URL}api/link/create/free`, { ...body });
+        if (res.data) {
+          toast.success(res.data?.message)
+          setCurrentLink(res.data?.shortLink?.username)
+          setIsModal(true)
+        }
       }
+
     } catch (error) {
       if (error?.response?.data?.message) {
         toast.error(error?.response?.data?.message);
@@ -83,6 +97,15 @@ const CreateFreeLink = () => {
   const handleGetPremium = () => {
     navigate("/dashboard/plans")
   }
+
+  // set value if edit 
+  useEffect(() => {
+    if (isEdit && link) {
+      formik.setFieldValue('agent.country', link?.agents[0]?.countryCode ?? "")
+      formik.setFieldValue('agent.number', link?.agents[0]?.number ?? "")
+      formik.setFieldValue('message', link?.message ?? "")
+    }
+  }, [link])
   return (
     <>
       {isModal && (
@@ -154,7 +177,7 @@ const CreateFreeLink = () => {
 
           <div className="profile-form-item">
             <button type="submit" className="btn-primary create-cta">
-              Create Link
+              {isEdit === true ? "Update Link" : "Create Link"}
             </button>
           </div>
         </form>

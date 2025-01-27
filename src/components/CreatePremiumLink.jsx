@@ -13,7 +13,8 @@ import Error from "./common/Error";
 import Loader from "./loader";
 
 const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
-const CreatePremiumLink = () => {
+
+const CreatePremiumLink = ({ link = false, isEdit = false }) => {
 
   const { userDetails } = useAuthContext();
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const CreatePremiumLink = () => {
   const [isModal, setIsModal] = useState(false)
   const [currentLink, setCurrentLink] = useState("");
   const [premiumLinkCount, setPremiumLinkCount] = useState(0);
+
+  const isAllowed = isEdit ? false : premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]
 
   const Schema = yup.object().shape({
     username: yup.string().matches(/^\S*$/, "username cannot contain spaces").required("username is required"),
@@ -48,19 +51,33 @@ const CreatePremiumLink = () => {
 
     setIsLoading(true)
 
-    let body = {
-      agents: values?.agents,
-      message: values?.message,
-      username: values?.username,
-      userId: userDetails?.id,
-    }
-
     try {
-      const res = await axios.post(`${SERVER_URL}api/link/create/premium`, { ...body })
-      if (res.data) {
-        toast.success(res.data?.message)
-        setCurrentLink(res.data?.shortLink?.username)
-        setIsModal(true)
+      if (isEdit) {
+        let body = {
+          agents: values?.agents,
+          message: values?.message,
+          username: values?.username,
+          id: link?._id,
+        }
+        const res = await axios.patch(`${SERVER_URL}api/link/update/premium`, { ...body })
+        if (res.data) {
+          toast.success(res.data?.message)
+          setCurrentLink(res.data?.shortLink?.username)
+          setIsModal(true)
+        }
+      } else {
+        let body = {
+          agents: values?.agents,
+          message: values?.message,
+          username: values?.username,
+          userId: userDetails?.id,
+        }
+        const res = await axios.post(`${SERVER_URL}api/link/create/premium`, { ...body })
+        if (res.data) {
+          toast.success(res.data?.message)
+          setCurrentLink(res.data?.shortLink?.username)
+          setIsModal(true)
+        }
       }
     } catch (error) {
       if (error?.response?.data?.message) {
@@ -137,6 +154,17 @@ const CreatePremiumLink = () => {
     }
   }, [userDetails])
 
+  console.log(isFree)
+
+  // set value if edit 
+  useEffect(() => {
+    if (link && isEdit) {
+      formik.setFieldValue('username', link?.username)
+      formik.setFieldValue('agents', link?.agents)
+      formik.setFieldValue('message', link?.message)
+    }
+  }, [link])
+
   return (
     <>
       {isModal && (
@@ -151,12 +179,12 @@ const CreatePremiumLink = () => {
       <Toaster richColors position="top-center" duration={2000} />
       <div className="create-form-container">
         <div className="create-warning-container">
-          { userDetails?.planType !== PLANS.FREE && formik.values.agents.length >= AGENT_PER_PLAN[userDetails?.planType] && <Warning
+          {userDetails?.planType !== PLANS.FREE && formik.values.agents.length >= AGENT_PER_PLAN[userDetails?.planType] && <Warning
             text={"You’ve exceeded the allowed number of agents for your plan."}
             linkText={"Upgrade Now"}
             link={"/dashboard/plans"}
           />}
-          {userDetails?.planType !== PLANS.FREE && premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType] && <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />}
+          {userDetails?.planType !== PLANS.FREE && premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType] && !isEdit && <Error text={"You ran out of premium links."} linkText={"Upgrade Now"} link={"/dashboard/plans"} />}
 
         </div>
 
@@ -174,7 +202,7 @@ const CreatePremiumLink = () => {
                 onChange={formik.handleChange}
                 className="profile-form-input"
                 placeholder="username..."
-                disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
+                disabled={isFree || isAllowed}
               />
               {formik.errors.username && (
                 <p className="auth-error">{formik.errors.username}</p>
@@ -195,7 +223,7 @@ const CreatePremiumLink = () => {
                     className="profile-form-select"
                     value={field.countryCode}
                     onChange={formik.handleChange}
-                    disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
+                    disabled={isFree || isAllowed}
                   >
                     <option value="+91">+91</option>
                     <option value="+92">+92</option>
@@ -210,7 +238,7 @@ const CreatePremiumLink = () => {
                       onChange={formik.handleChange}
                       className="profile-form-input"
                       placeholder="agent number..."
-                      disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
+                      disabled={isFree || isAllowed}
                       maxLength={12}
                       minLength={6}
                     />
@@ -231,7 +259,7 @@ const CreatePremiumLink = () => {
               type="button"
               className="btn-black add-more-cta"
               onClick={handleAddMore}
-              disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
+              disabled={isFree || isAllowed}
             >
               Add More {formik.values.agents.length}/{AGENT_PER_PLAN[userDetails?.planType]}
             </button>
@@ -250,7 +278,7 @@ const CreatePremiumLink = () => {
                 className="profile-form-input"
                 placeholder="message here..."
                 rows={3}
-                disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}
+                disabled={isFree || isAllowed}
               />
               {formik.errors.message && (
                 <p className="auth-error">{formik.errors.message}</p>
@@ -258,7 +286,9 @@ const CreatePremiumLink = () => {
             </div>
           </div>
           <div className="profile-form-item">
-            <button type="submit" className="btn-primary create-cta" disabled={isFree || premiumLinkCount >= LINKS_PER_PLAN[userDetails?.planType]}>Create Link</button>
+            <button type="submit" className="btn-primary create-cta" disabled={isFree || isAllowed}>
+              {isEdit === true ? "Update Link" : "Create Link"}
+            </button>
           </div>
         </form>
       </div>

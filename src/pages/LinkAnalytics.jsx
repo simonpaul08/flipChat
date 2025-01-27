@@ -15,6 +15,9 @@ import Loader from "../components/loader";
 import QRCode from "qrcode";
 import FreeModal from "../components/modal/freeModal";
 import CommonModal from "../components/modal/CommonModal";
+import DatePicker from "react-date-picker";
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
 const LinkAnalytics = () => {
   const { id } = useParams();
@@ -24,6 +27,7 @@ const LinkAnalytics = () => {
   const [generatedQR, setGeneratedQR] = useState('');
   const [qrModal, setQRModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const navigate = useNavigate()
 
   const copyToClpboard = () => {
@@ -91,13 +95,9 @@ const LinkAnalytics = () => {
 
     setIsLoading(true)
     try {
-      const url = currentLink?.linkType === PLANS.FREE ?
-        `${SERVER_URL}api/link/delete/free/${id}` :
-        `${SERVER_URL}api/delete/premium/${id}`
+      const res = await axios.delete(`${SERVER_URL}api/link/delete/${currentLink?.linkType === PLANS.FREE ? "free" : "premium"}/${id}`)
 
-      const res = await axios.delete(url)
-
-      if(res.data) {
+      if (res.data) {
         toast.success(res.data?.message)
       }
     } catch (error) {
@@ -117,6 +117,11 @@ const LinkAnalytics = () => {
 
   }
 
+  // handle edit link 
+  const handleEditLink = () => {
+    navigate(`/dashboard/update/${currentLink?._id}`)
+  }
+
   // qr modal content
   const qrModalContent = (
     <div className="qr-modal-content">
@@ -131,6 +136,10 @@ const LinkAnalytics = () => {
       fetchLinkById(id)
     }
   }, []);
+
+  const today = new Date()
+  const pastYear = new Date()
+  pastYear.setFullYear(pastYear.getFullYear() - 1)
 
   return (
     <>
@@ -151,6 +160,7 @@ const LinkAnalytics = () => {
           para={"Are you sure you want to delete this short link ? This action cannot be undone."}
           submitText="Delete"
         />}
+
       <div className="dashboard">
         <div className="dashboard-header">
           <div className="dashboard-header-title">
@@ -183,7 +193,9 @@ const LinkAnalytics = () => {
                 <div className="analytics-action-item"
                   data-tooltip-id="edit-link"
                   data-tooltip-content="edit link"
-                  data-tooltip-delay-show={200}>
+                  data-tooltip-delay-show={200}
+                  onClick={handleEditLink}
+                >
                   <img
                     src={EditIcon}
                     alt="cross icon"
@@ -241,6 +253,30 @@ const LinkAnalytics = () => {
                 <div className="analytics-data-block">
                   <p className="analytics-data-title">Updated At: </p>
                   <p className="analytics-data-text">{dayjs(currentLink?.updatedAt).format("DD-MM-YYYY")}</p>
+                </div>
+              </div>
+
+              <div className="analytics-chart">
+                <h3 className="analytics-chart-title">Link Analytics</h3>
+                <div className="analytics-date-selector">
+                  <div className="radio-group">
+                    <input type="radio" id="day" name="radio-selector" className="radio-group-input" />
+                    <label htmlFor="day" className="radio-group-text">Day</label>
+                  </div>
+                  <div className="radio-group">
+                    <input type="radio" id="month" name="radio-selector" className="radio-group-input" />
+                    <label htmlFor="month" className="radio-group-text">Month</label>
+                  </div>
+                  <div className="date-selector">
+                    <div className="date-selector-wrapper">
+                      <DatePicker
+                        value={selectedDate}
+                        onChange={(date) => setSelectedDate(date)}
+                        clearIcon={false}
+                        
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -92,6 +92,7 @@ textarea {
   padding: 1rem 3rem;
   background-color: var(--color-gold-light);
   border-radius: 2rem;
+  margin-bottom: 1rem;
 }
 
 .warning-content {
@@ -178,6 +179,15 @@ textarea {
 .qr-modal-text {
   font-size: 1.5rem;
   color: var(--color-gray-secondary);
+}
+
+/* Modal - Edit Modal */
+.edit-modal {
+  width: 100%;
+}
+.edit-modal-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 /* Landing */
@@ -1527,6 +1537,7 @@ textarea {
 }
 .analytics-data {
   width: 100%;
+  margin-bottom: 2rem;
 }
 .analytics-data-title {
   font-size: 1.35rem;
@@ -1536,7 +1547,49 @@ textarea {
 .analytics-data-text {
   font-size: 1.35rem;
 }
+.analytics-chart {
+  width: 100%;
+  padding: 2rem 0;
+}
+.analytics-chart-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.analytics-date-selector {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.radio-group {
+  display: flex;
+  align-items: center;
+  margin-right: 1.5rem;
+}
+.radio-group-input {
+  margin-right: 0.65rem;
+  cursor: pointer; 
+}
+.radio-group-text {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.date-selector {
+  width: 100%;
+}
+.date-selector-wrapper {
+  width: 300px;
+  height: auto;
+}
+.date-picker-comp {
+ width: 100%;
+}
+.react-datepicker__input-container {
+  width: inherit;
+}
 
+.react-datepicker-wrapper {
+  width: 100%;
+}
 /* Forget Password */
 .change-password-form {
   margin-top: 2rem;

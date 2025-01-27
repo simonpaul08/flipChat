@@ -15,6 +15,7 @@ import { useAuthContext } from "./context/AuthContext";
 import ForgetPassword from "./pages/ForgetPassword";
 import LinkAnalytics from "./pages/LinkAnalytics";
 import 'react-responsive-pagination/themes/bootstrap.css';
+import UpdateLink from "./pages/UpdateLink";
 
 const CLIENT_ID = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="create" element={<CreateLink />} />
+          <Route path="update/:id" element={<UpdateLink />} />
           <Route path="link/:id" element={<LinkAnalytics />} />
           <Route path="plans" element={<Plans />} />
           <Route path="profile" element={<Profile />} />
