@@ -168,3 +168,17 @@ export const createRazorpayOption = ({ key, amount, orderId, name, email, phone 
   };
   return options;
 }
+
+// get last 12 months 
+export function getLast12Months() {
+  const months = [];
+  const currentDate = new Date();
+  
+  for (let i = 0; i < 12; i++) {
+    const month = new Date(currentDate);
+    month.setMonth(currentDate.getMonth() - i);
+    months.push(month.toLocaleString('default', { month: 'long', year: 'numeric' }));
+  }
+
+  return months.reverse(); // reverse to start from the current month
+}

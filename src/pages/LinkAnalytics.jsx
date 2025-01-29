@@ -7,7 +7,7 @@ import EditIcon from "../assets/icon_edit.svg";
 import QRIcon from "../assets/icon_qr.svg";
 import { Tooltip } from "react-tooltip";
 import axios from "axios";
-import { PLANS, SERVER_URL } from "../utils/utils";
+import { getLast12Months, PLANS, SERVER_URL } from "../utils/utils";
 import { toast, Toaster } from "sonner";
 import { useAuthContext } from "../context/AuthContext";
 import dayjs from "dayjs";
@@ -28,6 +28,10 @@ const LinkAnalytics = () => {
   const [qrModal, setQRModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedType, setSelectedType] = useState('date');
+  const [last12months, setLast12Months] = useState()
+  const [selectedMonth, setSelectedMonth] = useState()
+
   const navigate = useNavigate()
 
   const copyToClpboard = () => {
@@ -131,15 +135,18 @@ const LinkAnalytics = () => {
     </div>
   )
 
+
   useEffect(() => {
     if (id) {
       fetchLinkById(id)
+      setSelectedType("day")
+      const res = getLast12Months()
+      if(res && res.length) {
+        setLast12Months(res)
+        setSelectedMonth(res[res.length - 1])
+      }
     }
   }, []);
-
-  const today = new Date()
-  const pastYear = new Date()
-  pastYear.setFullYear(pastYear.getFullYear() - 1)
 
   return (
     <>
@@ -260,21 +267,31 @@ const LinkAnalytics = () => {
                 <h3 className="analytics-chart-title">Link Analytics</h3>
                 <div className="analytics-date-selector">
                   <div className="radio-group">
-                    <input type="radio" id="day" name="radio-selector" className="radio-group-input" />
+                    <input type="radio" id="day" name="radio-selector" className="radio-group-input" checked={selectedType === "day"}
+                      onChange={(e) => setSelectedType('day')} />
                     <label htmlFor="day" className="radio-group-text">Day</label>
                   </div>
                   <div className="radio-group">
-                    <input type="radio" id="month" name="radio-selector" className="radio-group-input" />
+                    <input type="radio" id="month" name="radio-selector" className="radio-group-input" checked={selectedType === "month"}
+                      onChange={(e) => setSelectedType('month')} />
                     <label htmlFor="month" className="radio-group-text">Month</label>
                   </div>
                   <div className="date-selector">
                     <div className="date-selector-wrapper">
-                      <DatePicker
+                      {selectedType === "day" ? <DatePicker
                         value={selectedDate}
                         onChange={(date) => setSelectedDate(date)}
-                        clearIcon={false}
-                        
-                      />
+                        className={""}
+                        clearIcon={null}
+                      /> :
+                        <div className="month-selector">
+                          <select name="month" id="month" className="month-selector-input" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+                            {last12months?.map((item) => {
+                              return <option value={item}>{item}</option>
+                            })}
+                          </select>
+                        </div>
+                      }
                     </div>
                   </div>
                 </div>
