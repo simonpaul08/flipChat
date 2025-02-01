@@ -7,7 +7,7 @@ import EditIcon from "../assets/icon_edit.svg";
 import QRIcon from "../assets/icon_qr.svg";
 import { Tooltip } from "react-tooltip";
 import axios from "axios";
-import { getLast12Months, PLANS, SERVER_URL } from "../utils/utils";
+import { PLANS, SERVER_URL } from "../utils/utils";
 import { toast, Toaster } from "sonner";
 import { useAuthContext } from "../context/AuthContext";
 import dayjs from "dayjs";
@@ -15,24 +15,18 @@ import Loader from "../components/loader";
 import QRCode from "qrcode";
 import FreeModal from "../components/modal/freeModal";
 import CommonModal from "../components/modal/CommonModal";
-import DatePicker from "react-date-picker";
-import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
+import Analytics from "../components/analytics";
 
 const LinkAnalytics = () => {
   const { id } = useParams();
   const [currentLink, setCurrentLink] = useState(null);
-  const { userDetails } = useAuthContext()
+  const { userDetails } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedQR, setGeneratedQR] = useState('');
+  const [generatedQR, setGeneratedQR] = useState("");
   const [qrModal, setQRModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedType, setSelectedType] = useState('date');
-  const [last12months, setLast12Months] = useState()
-  const [selectedMonth, setSelectedMonth] = useState()
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const copyToClpboard = () => {
     navigator.clipboard.writeText(`flipchat.link/${currentLink?.username}`);
@@ -40,7 +34,7 @@ const LinkAnalytics = () => {
 
   // fetch link by id
   const fetchLinkById = async (id) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await axios.get(`${SERVER_URL}api/link/shortLink/${id}`);
       if (res.data) {
@@ -56,53 +50,56 @@ const LinkAnalytics = () => {
         toast.error("something went wrong");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
-  // generate qr code 
+  // generate qr code
   const generateQR = async (text) => {
     try {
-      const code = await QRCode.toDataURL(text)
-      console.log(code)
-      setGeneratedQR(code)
-      setQRModal(true)
+      const code = await QRCode.toDataURL(text);
+      console.log(code);
+      setGeneratedQR(code);
+      setQRModal(true);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
-  // handle click delete link 
+  // handle click delete link
   const handleClickDeleteLink = () => {
-    setIsDelete(true)
-  }
+    setIsDelete(true);
+  };
   // handle close qr modal
   const handleCloseQrModal = () => {
     setGeneratedQR("");
-    setQRModal(false)
-  }
+    setQRModal(false);
+  };
 
   // handle submit qr modal
   const handleSubmitQr = () => {
     navigator.clipboard.writeText(`flipchat.link/${currentLink?.username}`);
     setGeneratedQR("");
-    setQRModal(false)
-  }
+    setQRModal(false);
+  };
 
-  // handle close delete modal 
+  // handle close delete modal
   const handleCloseDeleteModal = () => {
     setIsDelete(false);
-  }
+  };
 
   // handle delete link
   const handleDeleteLink = async () => {
-
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const res = await axios.delete(`${SERVER_URL}api/link/delete/${currentLink?.linkType === PLANS.FREE ? "free" : "premium"}/${id}`)
+      const res = await axios.delete(
+        `${SERVER_URL}api/link/delete/${
+          currentLink?.linkType === PLANS.FREE ? "free" : "premium"
+        }/${id}`
+      );
 
       if (res.data) {
-        toast.success(res.data?.message)
+        toast.success(res.data?.message);
       }
     } catch (error) {
       console.log(error);
@@ -114,17 +111,16 @@ const LinkAnalytics = () => {
         toast.error("something went wrong");
       }
     } finally {
-      setIsLoading(false)
-      setIsDelete(false)
-      navigate("/dashboard")
+      setIsLoading(false);
+      setIsDelete(false);
+      navigate("/dashboard");
     }
+  };
 
-  }
-
-  // handle edit link 
+  // handle edit link
   const handleEditLink = () => {
-    navigate(`/dashboard/update/${currentLink?._id}`)
-  }
+    navigate(`/dashboard/update/${currentLink?._id}`);
+  };
 
   // qr modal content
   const qrModalContent = (
@@ -133,18 +129,11 @@ const LinkAnalytics = () => {
       <img src={generatedQR} alt="qr code" className="qr-modal-img" />
       <p className="qr-modal-text">{`flipchat.link/${currentLink?.username}`}</p>
     </div>
-  )
-
+  );
 
   useEffect(() => {
     if (id) {
-      fetchLinkById(id)
-      setSelectedType("day")
-      const res = getLast12Months()
-      if(res && res.length) {
-        setLast12Months(res)
-        setSelectedMonth(res[res.length - 1])
-      }
+      fetchLinkById(id);
     }
   }, []);
 
@@ -152,21 +141,26 @@ const LinkAnalytics = () => {
     <>
       {isLoading && <Loader />}
       <Toaster richColors position="top-center" duration={2000} />
-      {qrModal && <FreeModal
-        handleCancel={handleCloseQrModal}
-        body={qrModalContent}
-        handleSubmit={handleSubmitQr}
-        submitText="Copy Link"
-      />}
+      {qrModal && (
+        <FreeModal
+          handleCancel={handleCloseQrModal}
+          body={qrModalContent}
+          handleSubmit={handleSubmitQr}
+          submitText="Copy Link"
+        />
+      )}
 
-      {isDelete &&
+      {isDelete && (
         <CommonModal
           handleCancel={handleCloseDeleteModal}
           handleSubmit={handleDeleteLink}
           header={"Delete Short Link !"}
-          para={"Are you sure you want to delete this short link ? This action cannot be undone."}
+          para={
+            "Are you sure you want to delete this short link ? This action cannot be undone."
+          }
           submitText="Delete"
-        />}
+        />
+      )}
 
       <div className="dashboard">
         <div className="dashboard-header">
@@ -183,21 +177,20 @@ const LinkAnalytics = () => {
             </div>
             <div className="analytics-main">
               <div className="analytics-title">
-                <h3 className="analytics-link">flipchat.link/{currentLink?.username}</h3>
+                <h3 className="analytics-link">
+                  flipchat.link/{currentLink?.username}
+                </h3>
               </div>
               <div className="analytics-agents">
-                {currentLink?.agents?.map(item => {
-                  const number = `${item?.countryCode} ${item?.number}`
-                  return (
-                    <p className="analytics-agents-item">{number}</p>
-                  )
+                {currentLink?.agents?.map((item, index) => {
+                  const number = `${item?.countryCode} ${item?.number}`;
+                  return <p className="analytics-agents-item" key={index+1}>{number}</p>;
                 })}
               </div>
-              <p className="analytics-message">
-                {currentLink?.message}
-              </p>
+              <p className="analytics-message">{currentLink?.message}</p>
               <div className="analytics-actions">
-                <div className="analytics-action-item"
+                <div
+                  className="analytics-action-item"
                   data-tooltip-id="edit-link"
                   data-tooltip-content="edit link"
                   data-tooltip-delay-show={200}
@@ -210,7 +203,8 @@ const LinkAnalytics = () => {
                   />
                   <Tooltip id="edit-link" />
                 </div>
-                <div className="analytics-action-item"
+                <div
+                  className="analytics-action-item"
                   data-tooltip-id="delete-link"
                   data-tooltip-content="delete link"
                   data-tooltip-delay-show={200}
@@ -223,11 +217,14 @@ const LinkAnalytics = () => {
                   />
                   <Tooltip id="delete-link" />
                 </div>
-                <div className="analytics-action-item"
+                <div
+                  className="analytics-action-item"
                   data-tooltip-id="generate-qr"
                   data-tooltip-content="generate qr code"
                   data-tooltip-delay-show={200}
-                  onClick={() => generateQR(`flipchat.link/${currentLink?.username}`)}
+                  onClick={() =>
+                    generateQR(`flipchat.link/${currentLink?.username}`)
+                  }
                 >
                   <img
                     src={QRIcon}
@@ -236,7 +233,8 @@ const LinkAnalytics = () => {
                   />
                   <Tooltip id="generate-qr" />
                 </div>
-                <div className="analytics-action-item"
+                <div
+                  className="analytics-action-item"
                   data-tooltip-id="copy-unknown-link"
                   data-tooltip-content="copy to clipboard"
                   data-tooltip-delay-show={200}
@@ -253,53 +251,30 @@ const LinkAnalytics = () => {
               <div className="analytics-data">
                 <div className="analytics-data-block">
                   <p className="analytics-data-title">Status: </p>
-                  <div className={`billing-status-tag analytics-billing-tag billing-${userDetails?.planType !== PLANS.FREE ? "success" : "failure"}`}>
-                    {userDetails?.planType !== PLANS.FREE ? "Active" : "InActive"}
+                  <div
+                    className={`billing-status-tag analytics-billing-tag billing-${
+                      userDetails?.planType !== PLANS.FREE
+                        ? "success"
+                        : "failure"
+                    }`}
+                  >
+                    {userDetails?.planType !== PLANS.FREE
+                      ? "Active"
+                      : "InActive"}
                   </div>
                 </div>
                 <div className="analytics-data-block">
                   <p className="analytics-data-title">Updated At: </p>
-                  <p className="analytics-data-text">{dayjs(currentLink?.updatedAt).format("DD-MM-YYYY")}</p>
+                  <p className="analytics-data-text">
+                    {dayjs(currentLink?.updatedAt).format("DD-MM-YYYY")}
+                  </p>
                 </div>
               </div>
-
-              <div className="analytics-chart">
-                <h3 className="analytics-chart-title">Link Analytics</h3>
-                <div className="analytics-date-selector">
-                  <div className="radio-group">
-                    <input type="radio" id="day" name="radio-selector" className="radio-group-input" checked={selectedType === "day"}
-                      onChange={(e) => setSelectedType('day')} />
-                    <label htmlFor="day" className="radio-group-text">Day</label>
-                  </div>
-                  <div className="radio-group">
-                    <input type="radio" id="month" name="radio-selector" className="radio-group-input" checked={selectedType === "month"}
-                      onChange={(e) => setSelectedType('month')} />
-                    <label htmlFor="month" className="radio-group-text">Month</label>
-                  </div>
-                  <div className="date-selector">
-                    <div className="date-selector-wrapper">
-                      {selectedType === "day" ? <DatePicker
-                        value={selectedDate}
-                        onChange={(date) => setSelectedDate(date)}
-                        className={""}
-                        clearIcon={null}
-                      /> :
-                        <div className="month-selector">
-                          <select name="month" id="month" className="month-selector-input" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
-                            {last12months?.map((item) => {
-                              return <option value={item}>{item}</option>
-                            })}
-                          </select>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Analytics />
             </div>
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 };
