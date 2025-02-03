@@ -173,7 +173,7 @@ export const createRazorpayOption = ({ key, amount, orderId, name, email, phone 
 export function getLast12Months() {
   const months = [];
   const currentDate = new Date();
-  
+
   for (let i = 0; i < 12; i++) {
     const month = new Date(currentDate);
     month.setMonth(currentDate.getMonth() - i);
@@ -181,4 +181,37 @@ export function getLast12Months() {
   }
 
   return months.reverse(); // reverse to start from the current month
+}
+
+// hourly data
+export const hourlyData = [
+  { date: "12 AM - 1 AM", clicks: 0 },
+  { date: "1 AM - 2 AM", clicks: 0 },
+  { date: "2 AM - 3 AM", clicks: 0 },
+  { date: "3 AM - 4 AM", clicks: 0 },
+  { date: "4 AM - 5 AM", clicks: 0 },
+  { date: "5 AM - 6 AM", clicks: 0 },
+  { date: "6 AM - 7 AM", clicks: 0 },
+  { date: "7 AM - 8 AM", clicks: 0 },
+  { date: "8 AM - 9 AM", clicks: 0 },
+  { date: "9 AM - 10 AM", clicks: 0 },
+  { date: "10 AM - 11 AM", clicks: 0 },
+  { date: "11 AM - 12 PM", clicks: 0 },
+  { date: "12 PM - 1 PM", clicks: 0 },
+  { date: "1 PM - 2 PM", clicks: 0 },
+  { date: "2 PM - 3 PM", clicks: 0 },
+  { date: "3 PM - 4 PM", clicks: 0 },
+  { date: "4 PM - 5 PM", clicks: 0 },
+  { date: "5 PM - 6 PM", clicks: 0 },
+  { date: "6 PM - 7 PM", clicks: 0 },
+  { date: "7 PM - 8 PM", clicks: 0 },
+  { date: "8 PM - 9 PM", clicks: 0 },
+  { date: "9 PM - 10 PM", clicks: 0 },
+  { date: "10 PM - 11 PM", clicks: 0 },
+  { date: "11 PM - 12 AM", clicks: 0 }
+];
+
+// get day break ups
+export const getDayBreakUps = () => {
+  return hourlyData;
 }
