@@ -8,6 +8,7 @@ import { Loader } from "rsuite";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
+import dayjs from "dayjs";
 
 const Analytics = () => {
   const { id } = useParams();
@@ -16,22 +17,24 @@ const Analytics = () => {
   const [selectedType, setSelectedType] = useState("date");
   const [last12months, setLast12Months] = useState();
   const [selectedMonth, setSelectedMonth] = useState();
-  const [analyticsData, setAnalyticsData] = useState([{ date: new Date('02/02/2025'), clicks: 10 }]);
-  const [LinkAnalytics, setLinkAnalytics] = useState(null)
+  const [analyticsData, setAnalyticsData] = useState([
+    { date: new Date("02/02/2025"), clicks: 10 },
+  ]);
+  const [LinkAnalytics, setLinkAnalytics] = useState(null);
 
-
-  // fetch link analytics by id
-  const fetchLinkAnalyticsById = async (id, selectedDate) => {
+  // fetch day analytics by id
+  const fetchDayAnalyticsById = async (id, selectedDate) => {
     setIsLoading(true);
     try {
-
       let body = {
         id: id,
-        date: selectedDate
-      }
-      const res = await axios.post(`${SERVER_URL}api/analytics/date`, { ...body });
+        date: dayjs(selectedDate),
+      };
+      const res = await axios.post(`${SERVER_URL}api/analytics/date`, {
+        ...body,
+      });
       if (res.data) {
-        console.log(res.data)
+        console.log(res.data);
         setLinkAnalytics(res.data?.data);
         filterChartData(res.data?.data?.data);
       }
@@ -49,62 +52,132 @@ const Analytics = () => {
     }
   };
 
+  // fetch month analytics by id
+  const fetchMonthAnalyticsById = async (id, selectedMonth) => {
+    setIsLoading(true);
+    try {
+      let body = {
+        id: id,
+        month: selectedMonth,
+      };
+      const res = await axios.post(`${SERVER_URL}api/analytics/month`, {
+        ...body,
+      });
+      if (res.data) {
+        console.log(res.data);
+        setLinkAnalytics(res.data?.data);
+        filterMonthlyData(res.data?.data)
+      }
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.data?.message) {
+        toast.error(error?.response?.data?.message);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // handle filter chart data
+  // filter chart data
   const filterChartData = (value) => {
-
     const data = value ?? [];
-    const dayBreaksUps = getDayBreakUps()
+    const dayBreaksUps = getDayBreakUps();
 
-    console.log("data -- ", data)
+    const hourlyData = dayBreaksUps.map((item) => ({ ...item }));
 
-    const hourlyData = [...dayBreaksUps]
+    if (data?.length) {
+      data?.forEach((item) => {
+        const createdAt = new Date(item?.createdAt);
+        const hour = createdAt.getHours();
+        const minutes = createdAt.getMinutes();
 
-    console.log("hourly data -- ", hourlyData)
+        let hourIndex = hour;
+        if (minutes > 0) {
+          hourIndex = hour % 24;
+        } else {
+          hourIndex = (hour + 1) % 24;
+        }
 
-    if(data?.length) {
-      console.log("called - ")
-      data?.forEach(item => {
-        const createdAt = new Date(item?.createdAt); // Convert to Date object
-        const hour = createdAt.getHours(); // Use getHours() to get the local time hour
-  
-        // Map the hour to the appropriate index in the `hourlyData` array
-        // 0 AM corresponds to index 0, 1 AM to index 1, etc.
-        const hourIndex = hour === 0 ? 23 : hour - 1; // Adjust hour to 0-based index for array
-  
-        // Increment the clicks for the corresponding time range
         hourlyData[hourIndex].clicks += 1;
       });
-
+      setAnalyticsData(hourlyData);
     } else {
-      setAnalyticsData(hourlyData)
+      setAnalyticsData(hourlyData);
     }
+  };
 
-  }
+  // filter monthly data
+  const filterMonthlyData = (value) => {
+    const links = value ?? [];
 
-  // handle change date 
+    let data = [];
+
+    // handle here
+
+    console.log(data)
+
+
+    // const dayBreaksUps = getDayBreakUps();
+
+    // const hourlyData = dayBreaksUps.map((item) => ({ ...item }));
+
+    // if (data?.length) {
+    //   data?.forEach((item) => {
+    //     const createdAt = new Date(item?.createdAt);
+    //     const hour = createdAt.getHours();
+    //     const minutes = createdAt.getMinutes();
+
+    //     let hourIndex = hour;
+    //     if (minutes > 0) {
+    //       hourIndex = hour % 24;
+    //     } else {
+    //       hourIndex = (hour + 1) % 24;
+    //     }
+
+    //     hourlyData[hourIndex].clicks += 1;
+    //   });
+    //   setAnalyticsData(hourlyData);
+    // } else {
+    //   setAnalyticsData(hourlyData);
+    // }
+  };
+
+  // handle change date
   const handleChangeDate = (value) => {
-    console.log("value", new Date(value))
-    setSelectedDate(new Date(value))
-    fetchLinkAnalyticsById(id, new Date(value))
-  }
+    setSelectedDate(new Date(value));
+    fetchDayAnalyticsById(id, new Date(value));
+  };
+
+  // handle change day & month
+  const handleChangeDayMonth = (value) => {
+    if (value === "day") {
+      setSelectedType(value);
+      fetchDayAnalyticsById(id, selectedDate);
+    } else if (value === "month") {
+      setSelectedType(value);
+      fetchMonthAnalyticsById(id, selectedMonth);
+    }
+  };
 
   useEffect(() => {
     setSelectedType("day");
     const res = getLast12Months();
+    console.log(res);
     if (res && res.length) {
       setLast12Months(res);
       setSelectedMonth(res[res.length - 1]);
     }
   }, []);
 
-
   useEffect(() => {
     if (id && LinkAnalytics === null) {
-      fetchLinkAnalyticsById(id, selectedDate)
+      fetchDayAnalyticsById(id, selectedDate);
     }
-  }, [])
-
+  }, []);
 
   return (
     <>
@@ -120,7 +193,7 @@ const Analytics = () => {
               name="radio-selector"
               className="radio-group-input"
               checked={selectedType === "day"}
-              onChange={(e) => setSelectedType("day")}
+              onChange={(e) => handleChangeDayMonth("day")}
             />
             <label htmlFor="day" className="radio-group-text">
               Day
@@ -133,7 +206,7 @@ const Analytics = () => {
               name="radio-selector"
               className="radio-group-input"
               checked={selectedType === "month"}
-              onChange={(e) => setSelectedType("month")}
+              onChange={(e) => handleChangeDayMonth("month")}
             />
             <label htmlFor="month" className="radio-group-text">
               Month
@@ -141,14 +214,16 @@ const Analytics = () => {
           </div>
           <div className="date-selector">
             <div className="date-selector-wrapper">
-              {selectedType === "day" ? (
+              {selectedType === "day" && (
                 <DatePicker
                   value={selectedDate}
                   onChange={(date) => handleChangeDate(date)}
                   className={""}
                   clearIcon={null}
                 />
-              ) : (
+              )}
+
+              {selectedType === "month" && (
                 <div className="month-selector">
                   <select
                     name="month"
