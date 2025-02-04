@@ -4,11 +4,11 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { getDayBreakUps, getLast12Months, SERVER_URL } from "../../utils/utils";
-import { Loader } from "rsuite";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
 import dayjs from "dayjs";
+import Spinner from "../spinner";
 
 const Analytics = () => {
   const { id } = useParams();
@@ -21,6 +21,7 @@ const Analytics = () => {
     { date: new Date("02/02/2025"), clicks: 10 },
   ]);
   const [LinkAnalytics, setLinkAnalytics] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   // fetch day analytics by id
   const fetchDayAnalyticsById = async (id, selectedDate) => {
@@ -36,7 +37,7 @@ const Analytics = () => {
       if (res.data) {
         console.log(res.data);
         setLinkAnalytics(res.data?.data);
-        filterChartData(res.data?.data?.data);
+        filterDayData(res.data?.data?.data);
       }
     } catch (error) {
       console.log(error);
@@ -66,7 +67,7 @@ const Analytics = () => {
       if (res.data) {
         console.log(res.data);
         setLinkAnalytics(res.data?.data);
-        filterMonthlyData(res.data?.data)
+        filterMonthlyData(res.data?.data);
       }
     } catch (error) {
       console.log(error);
@@ -83,7 +84,8 @@ const Analytics = () => {
   };
 
   // filter chart data
-  const filterChartData = (value) => {
+  const filterDayData = (value) => {
+    setIsFetching(true);
     const data = value ?? [];
     const dayBreaksUps = getDayBreakUps();
 
@@ -108,53 +110,61 @@ const Analytics = () => {
     } else {
       setAnalyticsData(hourlyData);
     }
+
+    setIsFetching(false);
   };
 
   // filter monthly data
   const filterMonthlyData = (value) => {
+    setIsFetching(true);
     const links = value ?? [];
 
     let data = [];
 
     // handle here
-    links?.forEach(item => {
+    links?.forEach((item) => {
       const innerData = item?.data;
-      data = [...data, ...innerData]
-    })
+      data = [...data, ...innerData];
+    });
 
-
-    const last12months = last12months.map((item) => {
+    const monthlyData = last12months.map((item) => {
       return {
         date: item,
-        clicks: 0
-      }
+        clicks: 0,
+      };
     });
 
     if (data?.length) {
       data?.forEach((item) => {
         const createdAt = new Date(item?.createdAt);
-        const hour = createdAt.getHours();
-        const minutes = createdAt.getMinutes();
+        const month = dayjs(createdAt).format("MMMM YYYY");
 
-        let hourIndex = hour;
-        if (minutes > 0) {
-          hourIndex = hour % 24;
-        } else {
-          hourIndex = (hour + 1) % 24;
+        const monthIndex = monthlyData?.findIndex(
+          (item) => item?.date === month
+        );
+        // If we found the correct month, increment the clicks
+        if (monthIndex !== -1) {
+          monthlyData[monthIndex].clicks += 1;
         }
-
-        hourlyData[hourIndex].clicks += 1;
       });
-      setAnalyticsData(hourlyData);
+      setAnalyticsData(monthlyData);
     } else {
-      setAnalyticsData(hourlyData);
+      setAnalyticsData(monthlyData);
     }
+
+    setIsFetching(false);
   };
 
   // handle change date
   const handleChangeDate = (value) => {
     setSelectedDate(new Date(value));
     fetchDayAnalyticsById(id, new Date(value));
+  };
+
+  // handle change month
+  const handleChangeMonth = (value) => {
+    setSelectedMonth(value);
+    fetchMonthAnalyticsById(id, value);
   };
 
   // handle change day & month
@@ -185,7 +195,6 @@ const Analytics = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
       <Toaster richColors position="top-center" duration={2000} />
       <div className="analytics-chart">
         <h3 className="analytics-chart-title">Link Analytics</h3>
@@ -234,7 +243,7 @@ const Analytics = () => {
                     id="month"
                     className="month-selector-input"
                     value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
+                    onChange={(e) => handleChangeMonth(e.target.value)}
                   >
                     {last12months?.map((item) => {
                       return <option value={item}>{item}</option>;
@@ -244,6 +253,7 @@ const Analytics = () => {
               )}
             </div>
           </div>
+          {(isLoading || isFetching) && <Spinner />}
         </div>
         <div className="analytics-chart-block">
           <ResponsiveBar
