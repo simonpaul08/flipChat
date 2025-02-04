@@ -117,33 +117,38 @@ const Analytics = () => {
     let data = [];
 
     // handle here
+    links?.forEach(item => {
+      const innerData = item?.data;
+      data = [...data, ...innerData]
+    })
 
-    console.log(data)
 
+    const last12months = last12months.map((item) => {
+      return {
+        date: item,
+        clicks: 0
+      }
+    });
 
-    // const dayBreaksUps = getDayBreakUps();
+    if (data?.length) {
+      data?.forEach((item) => {
+        const createdAt = new Date(item?.createdAt);
+        const hour = createdAt.getHours();
+        const minutes = createdAt.getMinutes();
 
-    // const hourlyData = dayBreaksUps.map((item) => ({ ...item }));
+        let hourIndex = hour;
+        if (minutes > 0) {
+          hourIndex = hour % 24;
+        } else {
+          hourIndex = (hour + 1) % 24;
+        }
 
-    // if (data?.length) {
-    //   data?.forEach((item) => {
-    //     const createdAt = new Date(item?.createdAt);
-    //     const hour = createdAt.getHours();
-    //     const minutes = createdAt.getMinutes();
-
-    //     let hourIndex = hour;
-    //     if (minutes > 0) {
-    //       hourIndex = hour % 24;
-    //     } else {
-    //       hourIndex = (hour + 1) % 24;
-    //     }
-
-    //     hourlyData[hourIndex].clicks += 1;
-    //   });
-    //   setAnalyticsData(hourlyData);
-    // } else {
-    //   setAnalyticsData(hourlyData);
-    // }
+        hourlyData[hourIndex].clicks += 1;
+      });
+      setAnalyticsData(hourlyData);
+    } else {
+      setAnalyticsData(hourlyData);
+    }
   };
 
   // handle change date
@@ -166,7 +171,6 @@ const Analytics = () => {
   useEffect(() => {
     setSelectedType("day");
     const res = getLast12Months();
-    console.log(res);
     if (res && res.length) {
       setLast12Months(res);
       setSelectedMonth(res[res.length - 1]);
